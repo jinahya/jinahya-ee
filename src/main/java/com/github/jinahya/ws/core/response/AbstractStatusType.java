@@ -20,7 +20,6 @@ package com.github.jinahya.ws.core.response;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response.Status.Family;
 import javax.ws.rs.core.Response.StatusType;
@@ -34,145 +33,6 @@ public abstract class AbstractStatusType implements StatusType {
 
 
     /**
-     * Creates a new status type for given arguments.
-     *
-     * @param family the status family
-     * @param statusCode the HTTP status code
-     * @param reasonPhrase the HTTP reason phrase
-     *
-     * @return a new instance of this status type.
-     */
-    public static StatusType newInstance(final Family family,
-                                         final int statusCode,
-                                         final String reasonPhrase) {
-
-        return new AbstractStatusType(family, statusCode, reasonPhrase) {
-        };
-    }
-
-
-    /**
-     * Creates a new status type for given arguments.
-     *
-     * @param statusCode the HTTP status code
-     * @param reasonPhrase the HTTP reason phrase
-     *
-     * @return a new instance of this status type.
-     */
-    public static StatusType newInstance(final int statusCode,
-                                         final String reasonPhrase) {
-
-        return newInstance(null, statusCode, reasonPhrase);
-    }
-
-
-    /**
-     * Creates a new status type for given arguments.
-     *
-     * @param status the status
-     * @param reasonPhrase the HTTP reason phrase
-     *
-     * @return a new instance of this status type.
-     */
-    public static StatusType newInstance(final Status status,
-                                         final String reasonPhrase) {
-
-        return newInstance(status.getFamily(), status.getStatusCode(),
-                           reasonPhrase);
-    }
-
-
-    /**
-     * Returns a new response builder for given arguments.
-     *
-     * @param statusCode the HTTP status code
-     * @param reasonPhrase the HTTP reason phrase
-     *
-     * @return a new response builder to build
-     */
-    public static ResponseBuilder buildable(final int statusCode,
-                                            final String reasonPhrase) {
-
-        return Response.status(newInstance(statusCode, reasonPhrase));
-    }
-
-
-    /**
-     * Returns a new response builder for given arguments.
-     *
-     * @param status the status
-     * @param reasonPhrase the HTTP reason phrase
-     *
-     * @return a new response builder to build
-     */
-    public static ResponseBuilder buildable(final Status status,
-                                            final String reasonPhrase) {
-
-        return Response.status(newInstance(status, reasonPhrase));
-    }
-
-
-    /**
-     * Returns a new response for given arguments.
-     *
-     * @param statusCode the HTTP status code
-     * @param reasonPhrase the HTTP reason phrase
-     *
-     * @return a new response to respond
-     */
-    public static Response built(final int statusCode,
-                                 final String reasonPhrase) {
-
-        return buildable(statusCode, reasonPhrase).build();
-    }
-
-
-    /**
-     * Returns a new response for given arguments.
-     *
-     * @param status the status
-     * @param reasonPhrase the HTTP reason phrase
-     *
-     * @return a new response to respond
-     */
-    public static Response built(final Status status,
-                                 final String reasonPhrase) {
-
-        return buildable(status, reasonPhrase).build();
-    }
-
-
-    /**
-     * Returns a new web application exception for given arguments.
-     *
-     * @param statusCode the HTTP status code
-     * @param reasonPhrase the HTTP reason phrase
-     *
-     * @return a new web application exception to throw
-     */
-    public static WebApplicationException throwable(final int statusCode,
-                                                    final String reasonPhrase) {
-
-        return new WebApplicationException(built(statusCode, reasonPhrase));
-    }
-
-
-    /**
-     * Returns a new web application exception for given arguments.
-     *
-     * @param status the HTTP status code
-     * @param reasonPhrase the HTTP reason phrase
-     *
-     * @return a new web application exception to throw
-     */
-    public static WebApplicationException throwable(final Status status,
-                                                    final String reasonPhrase) {
-
-        return new WebApplicationException(built(status, reasonPhrase));
-    }
-
-
-    /**
      * Creates a new instance.
      *
      * @param family the status family
@@ -181,6 +41,8 @@ public abstract class AbstractStatusType implements StatusType {
      */
     protected AbstractStatusType(final Family family, final int statusCode,
                                  final String reasonPhrase) {
+
+        super();
 
         this.family = family;
         this.statusCode = statusCode;
@@ -208,6 +70,8 @@ public abstract class AbstractStatusType implements StatusType {
         if (family != null) {
             return family;
         }
+
+        //return Family.familyOf(statusCode); // Java EE 7
 
         switch (statusCode / 100) {
             case 1:
@@ -247,7 +111,7 @@ public abstract class AbstractStatusType implements StatusType {
      *
      * @see Response#status(StatusType)
      */
-    public Response.ResponseBuilder buildable() {
+    public Response.ResponseBuilder toResponseBuilder() {
 
         return Response.status(this);
     }
@@ -258,11 +122,11 @@ public abstract class AbstractStatusType implements StatusType {
      *
      * @return a new response to respond.
      *
-     * @see #buildable()
+     * @see #toResponseBuilder()
      */
-    public Response built() {
+    public Response toResponse() {
 
-        return buildable().build();
+        return toResponseBuilder().build();
     }
 
 
@@ -271,11 +135,11 @@ public abstract class AbstractStatusType implements StatusType {
      *
      * @return a new web application exception to throw
      *
-     * @see #built()
+     * @see #toResponse()
      */
-    public WebApplicationException throwable() {
+    public WebApplicationException toWebApplicationException() {
 
-        return new WebApplicationException(built());
+        return new WebApplicationException(toResponse());
     }
 
 
@@ -298,3 +162,4 @@ public abstract class AbstractStatusType implements StatusType {
 
 
 }
+
