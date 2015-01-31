@@ -21,6 +21,7 @@ package com.github.jinahya.servlet;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 
 
 /**
@@ -29,6 +30,18 @@ import javax.servlet.ServletOutputStream;
  * @author Jin Kwon <jinahya at gmail.com>
  */
 public class BufferedServletOutputStream extends ServletOutputStream {
+
+
+    @Override
+    public boolean isReady() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+
+    @Override
+    public void setWriteListener(WriteListener writeListener) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 
     /**
