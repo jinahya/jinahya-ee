@@ -22,15 +22,13 @@ import com.github.jinahya.ws.rs.MillisecondsParam;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Date;
-import javax.ws.rs.ext.Provider;
 
 
 /**
  *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
-@Provider
-public class MillisecondsParamDateConverterProvider
+public abstract class MillisecondsParamDateConverterProvider
     implements MillisecondsParamConverterProvider<MillisecondsParamDateConverter> {
 
 
