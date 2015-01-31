@@ -28,7 +28,6 @@ import javax.ws.rs.ext.ParamConverterProvider;
  *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  * @param <T>
- * @param <S>
  */
 public interface MillisecondsParamConverterProvider<T extends MillisecondsParamConverter<?>>
     extends ParamConverterProvider {

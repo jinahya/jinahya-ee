@@ -26,7 +26,7 @@ import static java.util.Optional.ofNullable;
  *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
-public class MillisecondsParamDateConvertera
+public class MillisecondsParamDateConverter
     implements MillisecondsParamConverter<Date> {
 
 
