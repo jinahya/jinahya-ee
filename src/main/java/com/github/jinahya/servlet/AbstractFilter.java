@@ -68,7 +68,7 @@ public abstract class AbstractFilter implements Filter {
      * @throws IllegalStateException if this method called after
      * {@link #destroy()} invoked.
      */
-    protected FilterConfig getFilterConfig() {
+    protected FilterConfig servletConfig() {
 
         if (filterConfig == null) {
             throw new IllegalStateException("no filterConfig");
@@ -86,9 +86,9 @@ public abstract class AbstractFilter implements Filter {
      * @see #getServletConfig()
      * @see FilterConfig#getServletContext()
      */
-    protected ServletContext getServletContext() {
+    protected ServletContext servletContext() {
 
-        return getFilterConfig().getServletContext();
+        return servletConfig().getServletContext();
     }
 
 
@@ -97,12 +97,12 @@ public abstract class AbstractFilter implements Filter {
      *
      * @param message message
      *
-     * @see #getServletContext()
+     * @see #servletContext()
      * @see ServletContext#log(java.lang.String)
      */
     protected void log(final String message) {
 
-        getServletContext().log(message);
+        servletContext().log(message);
     }
 
 
@@ -112,19 +112,20 @@ public abstract class AbstractFilter implements Filter {
      * @param message message
      * @param throwable throwable
      *
-     * @see #getServletContext()
+     * @see #servletContext()
      * @see ServletContext#log(java.lang.String, java.lang.Throwable)
      */
     protected void log(final String message, final Throwable throwable) {
 
-        getServletContext().log(message, throwable);
+        servletContext().log(message, throwable);
     }
 
 
     /**
      * filter config.
      */
-    private FilterConfig filterConfig;
+    private transient FilterConfig filterConfig;
 
 
 }
+

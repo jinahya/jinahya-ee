@@ -89,7 +89,7 @@ public class SuffixToTypeDispatcher extends HttpFilter {
 
         super.init(config);
 
-        contextPath = getServletContext().getContextPath();
+        contextPath = servletContext().getContextPath();
         contextPathLength = contextPath.length();
 
         for (final Enumeration<String> e = config.getInitParameterNames();
