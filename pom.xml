@@ -245,6 +245,7 @@
         <configuration>
           <showDeprecation>true</showDeprecation>
           <showWarnings>true</showWarnings>
+          <useIncrementalCompilation>false</useIncrementalCompilation>
           <verbose>false</verbose>
         </configuration>
       </plugin>
