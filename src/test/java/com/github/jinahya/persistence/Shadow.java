@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Jin Kwon <jinahya at gmail.com>.
+ * Copyright 2013 Jin Kwon &lt;jinahya_at_gmail.com&gt;.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
 package com.github.jinahya.persistence;
 
 
-import com.github.jinahya.persistence.Pkv;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
@@ -45,7 +44,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author Jin Kwon <jinahya at gmail.com>
+ * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 @Entity
 @NamedQueries({
@@ -72,8 +71,8 @@ public class Shadow implements Serializable {
     /**
      * A named query for selecting an instance by {@code :username}.
      */
-    public static final String NQ_FIND_BY_USERNAME =
-        "Shadow.NQ_FIND_BY_USERNAME";
+    public static final String NQ_FIND_BY_USERNAME
+        = "Shadow.NQ_FIND_BY_USERNAME";
 
 
     /**
@@ -350,3 +349,4 @@ public class Shadow implements Serializable {
 
 
 }
+

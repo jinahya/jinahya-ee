@@ -1,6 +1,6 @@
 /*
  * Copyright Error: on line 4, column 29 in Templates/Licenses/license-apache20.txt
- Expecting a date here, found: 2012. 9. 13 Jin Kwon <jinahya at gmail.com>.
+ Expecting a date here, found: 2012. 9. 13 Jin Kwon &lt;jinahya_at_gmail.com&gt;.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

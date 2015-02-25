@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Jin Kwon <jinahya at gmail.com>.
+ * Copyright 2013 Jin Kwon &lt;jinahya_at_gmail.com&gt;.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
 package com.github.jinahya.persistence;
 
 
-import com.github.jinahya.persistence.MappedMorton;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 import javax.xml.bind.DatatypeConverter;
@@ -29,7 +28,7 @@ import org.testng.annotations.Test;
 
 /**
  *
- * @author Jin Kwon <jinahya at gmail.com>
+ * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class MortonTest {
 
@@ -37,8 +36,8 @@ public class MortonTest {
     /**
      * logger.
      */
-    private static final Logger LOGGER =
-        LoggerFactory.getLogger(MortonTest.class);
+    private static final Logger LOGGER
+        = LoggerFactory.getLogger(MortonTest.class);
 
 
     private static final String[] PASSWORDS = new String[]{
@@ -96,7 +95,7 @@ public class MortonTest {
     }
 
 
-    @Test(invocationCount = 32)
+    @Test(invocationCount = 8)
     public void testSaltyWithRandomBland() {
 
         final Random random = new Random();
@@ -114,3 +113,4 @@ public class MortonTest {
 
 
 }
+

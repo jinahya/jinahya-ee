@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Jin Kwon <jinahya at gmail.com>.
+ * Copyright 2012 Jin Kwon &lt;jinahya_at_gmail.com&gt;.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import javax.ws.rs.core.Response.Status;
  *
  * @see <a href="http://tools.ietf.org/html/rfc2616#section-10.4.2">10.4.2 401
  * Unauthorized (RFC 2616 Hypertext Transfer Protocol -- HTTP/1.1)</a>
- * @author Jin Kwon <jinahya at gmail.com>
+ * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class Unauthorized401 extends AbstractStatusType {
 
