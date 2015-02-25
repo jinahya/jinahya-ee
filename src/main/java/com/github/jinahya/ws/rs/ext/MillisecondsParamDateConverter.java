@@ -43,8 +43,8 @@ public class MillisecondsParamDateConverter
     public String toString(final Date value) {
 
         return millisecondsToString(
-            ofNullable(value).
-            map(Date::getTime)
+            ofNullable(value)
+            .map(Date::getTime)
             .orElse(null)
         ).orElse(null);
     }

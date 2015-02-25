@@ -33,26 +33,21 @@ public abstract class MillisecondsParamDateConverterProvider
 
 
     @Override
-    public <S> MillisecondsParamDateConverter getMillisecondsParamConverter(
+    public <S> MillisecondsParamDateConverter getMillisecondsConverter(
         final Class<S> rawType, final Type genericType,
         final Annotation[] annotations) {
 
-        if (!Date.class.equals(rawType)) {
+        if (!Date.class.isAssignableFrom(rawType)) {
             return null;
         }
 
-        boolean millisecondsParam = false;
         for (final Annotation annotation : annotations) {
             if (MillisecondsParam.class.isInstance(annotation)) {
-                millisecondsParam = true;
-                break;
+                return new MillisecondsParamDateConverter();
             }
         }
-        if (!millisecondsParam) {
-            return null;
-        }
 
-        return new MillisecondsParamDateConverter();
+        return null;
     }
 
 

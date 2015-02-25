@@ -18,6 +18,7 @@
 package com.github.jinahya.ws.rs.ext;
 
 
+import com.github.jinahya.ws.rs.MillisecondsParam;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import javax.ws.rs.ext.ParamConverter;
@@ -27,7 +28,7 @@ import javax.ws.rs.ext.ParamConverterProvider;
 /**
  *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
- * @param <T>
+ * @param <T> converter type parameter
  */
 public interface MillisecondsParamConverterProvider<T extends MillisecondsParamConverter<?>>
     extends ParamConverterProvider {
@@ -35,13 +36,34 @@ public interface MillisecondsParamConverterProvider<T extends MillisecondsParamC
 
     @Override
     @SuppressWarnings("unchecked")
-    default <S> ParamConverter<S> getConverter(Class<S> rawType, Type genericType, Annotation[] annotations) {
+    default <S> ParamConverter<S> getConverter(final Class<S> rawType,
+                                               final Type genericType,
+                                               final Annotation[] annotations) {
 
-        return (ParamConverter< S>) getMillisecondsParamConverter(rawType, genericType, annotations);
+        for (final Annotation annotation : annotations) {
+            if (MillisecondsParam.class.isInstance(annotation)) {
+                return (ParamConverter< S>) getMillisecondsConverter(
+                    rawType, genericType, annotations);
+            }
+        }
+
+        return null;
     }
 
 
-    <S> T getMillisecondsParamConverter(final Class<S> rawType, final Type genericType, final Annotation[] annotations);
+    /**
+     * Provides a {@link ParamConverter} that can provide from/to string
+     * conversion for an instance of particular Java type.
+     *
+     * @param <S>
+     * @param rawType
+     * @param genericType
+     * @param annotations
+     *
+     * @return the converter, otherwise {@code null}.
+     */
+    <S> T getMillisecondsConverter(Class<S> rawType, Type genericType,
+                                   Annotation[] annotations);
 
 
 }

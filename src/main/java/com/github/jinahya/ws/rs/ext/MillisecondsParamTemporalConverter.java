@@ -24,11 +24,10 @@ import java.time.temporal.Temporal;
 /**
  *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
- * @param <T>
+ * @param <T> temporal type parameter
  */
 public interface MillisecondsParamTemporalConverter<T extends Temporal>
     extends MillisecondsParamConverter<T> {
-
 
 }
 
