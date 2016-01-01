@@ -32,25 +32,41 @@ import javax.servlet.WriteListener;
 public class BufferedServletOutputStream extends ServletOutputStream {
 
 
-    @Override
-    public boolean isReady() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-
-    @Override
-    public void setWriteListener(WriteListener writeListener) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-
     /**
      * Creates a new instance.
      */
     public BufferedServletOutputStream() {
+
         super();
 
         outputStream = new ByteArrayOutputStream();
+    }
+
+
+    @Override
+    public boolean isReady() {
+
+        return true;
+    }
+
+
+    @Override
+    public void setWriteListener(final WriteListener writeListener) {
+
+        if (writeListener == null) {
+            throw new NullPointerException("null writeListener");
+        }
+
+        if (this.writeListener != null) {
+            throw new IllegalStateException("writeListener alread set");
+        }
+
+        this.writeListener = writeListener;
+        try {
+            this.writeListener.onWritePossible();
+        } catch (final IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
     }
 
 
@@ -62,7 +78,7 @@ public class BufferedServletOutputStream extends ServletOutputStream {
 
 
     /**
-     * Reset this OutputStream.
+     * Resets the underlying {@code ByteArrayOutputStream}.
      */
     public final void reset() {
 
@@ -81,10 +97,10 @@ public class BufferedServletOutputStream extends ServletOutputStream {
     }
 
 
-    /**
-     * buffer stream.
-     */
     private final ByteArrayOutputStream outputStream;
 
 
+    private WriteListener writeListener;
+
 }
+

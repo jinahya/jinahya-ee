@@ -15,21 +15,21 @@
  */
 
 
-package com.github.jinahya.ws.core.response;
+package com.github.jinahya.ws.core;
 
 
 import javax.ws.rs.core.Response.Status;
 
 
 /**
- * A status type for {@code 412 Precondition Failed} which is a member of
+ * A status type for {@code 410 Gone} which is a member of
  * {@code Client Error 4xx}.
  *
- * @see <a href="http://tools.ietf.org/html/rfc2616#section-10.4.13">10.4.13 412
- * Precondition Failed (RFC 2616 Hypertext Transfer Protocol -- HTTP/1.1)</a>
+ * @see <a href="http://tools.ietf.org/html/rfc2616#section-10.4.11">10.4.11 410
+ * Gone (RFC 2616 Hypertext Transfer Protocol -- HTTP/1.1)</a>
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
-public class PreconditionFailed412 extends AbstractStatusType {
+public class Gone410 extends AbstractStatusType {
 
 
     /**
@@ -37,9 +37,9 @@ public class PreconditionFailed412 extends AbstractStatusType {
      *
      * @param reasonPhrase the reason phrase
      */
-    public PreconditionFailed412(final String reasonPhrase) {
+    public Gone410(final String reasonPhrase) {
 
-        super(Status.PRECONDITION_FAILED, reasonPhrase);
+        super(Status.GONE, reasonPhrase);
     }
 
 

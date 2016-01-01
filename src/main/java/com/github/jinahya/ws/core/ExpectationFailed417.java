@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Jin Kwon &lt;jinahya_at_gmail.com&gt;.
+ * Copyright 2012 Jin Kwon &lt;jinahya_at_gmail.com&gt;.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,30 @@
  */
 
 
-package com.github.jinahya.ejb;
+package com.github.jinahya.ws.core;
 
 
-import javax.ejb.LocalBean;
+import javax.ws.rs.core.Response.Status;
 
 
 /**
+ * A status type for {@code 417 Expectation Failed} which is a member of
+ * {@code Client Error 4xx}.
  *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
-@LocalBean
-public class CludBean {
+public class ExpectationFailed417 extends AbstractStatusType {
+
+
+    /**
+     * Creates a new instance with given reason phrase.
+     *
+     * @param reasonPhrase the reason phrase
+     */
+    public ExpectationFailed417(final String reasonPhrase) {
+
+        super(Status.EXPECTATION_FAILED, reasonPhrase);
+    }
+
 }
 

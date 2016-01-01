@@ -15,7 +15,7 @@
  */
 
 
-package com.github.jinahya.ws.core.response;
+package com.github.jinahya.ws.core;
 
 
 import static java.util.Optional.ofNullable;
@@ -55,13 +55,26 @@ public abstract class AbstractStatusType implements StatusType {
      * Creates a new instance with given {@code status} and
      * {@code reasonPhrase}.
      *
+     * @param statusCode the status code
+     * @param reasonPhrase the HTTP reason phrase
+     */
+    public AbstractStatusType(final int statusCode, final String reasonPhrase) {
+
+        this(null, statusCode, reasonPhrase);
+    }
+
+
+    /**
+     * Creates a new instance with given {@code status} and
+     * {@code reasonPhrase}.
+     *
      * @param status the status to wrap
      * @param reasonPhrase the HTTP reason phrase
      */
     protected AbstractStatusType(final Status status,
                                  final String reasonPhrase) {
 
-        this(status.getFamily(), status.getStatusCode(), reasonPhrase);
+        this(status.getStatusCode(), reasonPhrase);
     }
 
 
@@ -125,23 +138,13 @@ public abstract class AbstractStatusType implements StatusType {
     }
 
 
-    /**
-     * family.
-     */
     private final Family family;
 
 
-    /**
-     * status code.
-     */
     private final int statusCode;
 
 
-    /**
-     * reason phrase.
-     */
     private final String reasonPhrase;
-
 
 }
 

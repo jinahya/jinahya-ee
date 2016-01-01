@@ -15,48 +15,32 @@
  */
 
 
-package com.github.jinahya.persistence;
+package com.github.jinahya.ws.core;
+
+
+import javax.ws.rs.core.Response.Status;
 
 
 /**
+ * A status type for {@code 415 Unsupported Media Type} which is a member of
+ * {@code Client Error 4xx}.
  *
+ * @see <a href="http://tools.ietf.org/html/rfc2616#section-10.4.16">10.4.16 415
+ * Unsupported Media Type (RFC 2616 Hypertext Transfer Protocol -- HTTP/1.1)</a>
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
-public final class Pkv {
+public class NotFound404 extends AbstractStatusType {
 
 
     /**
-     * table name.
+     * Creates a new instance with given reason phrase.
+     *
+     * @param reasonPhrase the reason phrase
      */
-    public static final String TABLE = "PKV";
+    public NotFound404(final String reasonPhrase) {
 
-
-    /**
-     * primary key colum name.
-     */
-    public static final String PK_COLUMN_NAME = "K";
-
-
-    /**
-     * primary key value column name.
-     */
-    public static final String VALUE_COLUMN_NAME = "V";
-
-
-    /**
-     * initial value.
-     */
-    public static final int INITIAL_VALUE = 0x01 << 20;
-
-
-    /**
-     * Creates a new instance.
-     */
-    private Pkv() {
-
-        super();
+        super(Status.NOT_FOUND, reasonPhrase);
     }
 
 
 }
-

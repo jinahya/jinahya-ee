@@ -15,21 +15,21 @@
  */
 
 
-package com.github.jinahya.ws.core.response;
+package com.github.jinahya.ws.core;
 
 
 import javax.ws.rs.core.Response.Status;
 
 
 /**
- * A status type for {@code 406 Not Acceptable} which is a member of
+ * A status type for {@code 403 Forbidden} which is a member of
  * {@code Client Error 4xx}.
  *
- * @see <a href="http://tools.ietf.org/html/rfc2616#section-10.4.7">10.4.7 406
- * Not Acceptable (RFC 2616 Hypertext Transfer Protocol -- HTTP/1.1)</a>
+ * @see <a href="http://tools.ietf.org/html/rfc2616#section-10.4.4">10.4.4 403
+ * Forbidden (RFC 2616 Hypertext Transfer Protocol -- HTTP/1.1)</a>
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
-public class NotAcceptable406 extends AbstractStatusType {
+public class Forbidden403 extends AbstractStatusType {
 
 
     /**
@@ -37,9 +37,9 @@ public class NotAcceptable406 extends AbstractStatusType {
      *
      * @param reasonPhrase the reason phrase
      */
-    public NotAcceptable406(final String reasonPhrase) {
+    public Forbidden403(final String reasonPhrase) {
 
-        super(Status.NOT_ACCEPTABLE, reasonPhrase);
+        super(Status.FORBIDDEN, reasonPhrase);
     }
 
 

@@ -15,21 +15,21 @@
  */
 
 
-package com.github.jinahya.ws.core.response;
+package com.github.jinahya.ws.core;
 
 
 import javax.ws.rs.core.Response.Status;
 
 
 /**
- * A status type for {@code 400 Bad Request} which is a member of
+ * A status type for {@code 415 Unsupported Media Type} which is a member of
  * {@code Client Error 4xx}.
  *
- * @see <a href="http://tools.ietf.org/html/rfc2616#section-10.4.1">10.4.1 400
- * Bad Request (RFC 2616 Hypertext Transfer Protocol -- HTTP/1.1)</a>
+ * @see <a href="http://tools.ietf.org/html/rfc2616#section-10.4.16">10.4.16 415
+ * Unsupported Media Type (RFC 2616 Hypertext Transfer Protocol -- HTTP/1.1)</a>
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
-public class BadRequest400 extends AbstractStatusType {
+public class UnsupportedMediaType415 extends AbstractStatusType {
 
 
     /**
@@ -37,9 +37,9 @@ public class BadRequest400 extends AbstractStatusType {
      *
      * @param reasonPhrase the reason phrase
      */
-    public BadRequest400(final String reasonPhrase) {
+    public UnsupportedMediaType415(final String reasonPhrase) {
 
-        super(Status.BAD_REQUEST, reasonPhrase);
+        super(Status.UNSUPPORTED_MEDIA_TYPE, reasonPhrase);
     }
 
 

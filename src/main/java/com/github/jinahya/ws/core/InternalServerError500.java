@@ -15,7 +15,7 @@
  */
 
 
-package com.github.jinahya.ws.core.response;
+package com.github.jinahya.ws.core;
 
 
 import javax.ws.rs.core.Response.Status;

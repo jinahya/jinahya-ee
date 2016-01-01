@@ -15,31 +15,30 @@
  */
 
 
-package com.github.jinahya.ws.core.response;
+package com.github.jinahya.ws.core;
 
 
 import javax.ws.rs.core.Response.Status;
 
 
 /**
- * A status type for {@code 415 Unsupported Media Type} which is a member of
+ * A status type for {@code 401 Unauthorized} which is a member of
  * {@code Client Error 4xx}.
  *
- * @see <a href="http://tools.ietf.org/html/rfc2616#section-10.4.16">10.4.16 415
- * Unsupported Media Type (RFC 2616 Hypertext Transfer Protocol -- HTTP/1.1)</a>
+ * @see <a href="http://tools.ietf.org/html/rfc2616#section-10.4.2">10.4.2 401
+ * Unauthorized (RFC 2616 Hypertext Transfer Protocol -- HTTP/1.1)</a>
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
-public class NotFound404 extends AbstractStatusType {
-
+public class Unauthorized401 extends AbstractStatusType {
 
     /**
      * Creates a new instance with given reason phrase.
      *
      * @param reasonPhrase the reason phrase
      */
-    public NotFound404(final String reasonPhrase) {
+    public Unauthorized401(final String reasonPhrase) {
 
-        super(Status.NOT_FOUND, reasonPhrase);
+        super(Status.UNAUTHORIZED, reasonPhrase);
     }
 
 
