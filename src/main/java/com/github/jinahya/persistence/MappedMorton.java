@@ -36,8 +36,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -60,13 +58,6 @@ public abstract class MappedMorton implements Serializable {
      * generated.
      */
     private static final long serialVersionUID = 4243525203653288446L;
-
-
-    /**
-     * logger.
-     */
-    private static final Logger LOGGER =
-        LoggerFactory.getLogger(MappedMorton.class);
 
 
     /**
@@ -122,12 +113,8 @@ public abstract class MappedMorton implements Serializable {
                                    final int iterationCount,
                                    final int keyLength) {
 
-        LOGGER.debug("pbkdf2({}, {}, {}, {}", password, salt, iterationCount,
-                     keyLength);
-
         // we don't have to check those arguments.
         // arguments are directly passed to PBEKeySpec
-
 //        // An empty char[] is used if null is specified for password.
 //        //Objects.requireNonNull(salt, "password");
 //
@@ -147,15 +134,14 @@ public abstract class MappedMorton implements Serializable {
 //            throw new IllegalArgumentException(
 //                "keyLength(" + keyLength + ") <= 0");
 //        }
-
         try {
-            final SecretKeyFactory secretKeyFactory =
-                SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            final SecretKeyFactory secretKeyFactory
+                = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             final KeySpec keySpec = new PBEKeySpec(
                 password, salt, iterationCount, keyLength);
             try {
-                final SecretKey secretKey =
-                    secretKeyFactory.generateSecret(keySpec);
+                final SecretKey secretKey
+                    = secretKeyFactory.generateSecret(keySpec);
                 return secretKey.getEncoded();
             } catch (final InvalidKeySpecException ikse) {
                 throw new RuntimeException(ikse);
@@ -234,8 +220,6 @@ public abstract class MappedMorton implements Serializable {
      */
     protected static byte[] sodium(final int length) {
 
-        LOGGER.debug("sodium({})", length);
-
         if (length <= 0) {
             throw new IllegalArgumentException("length(" + length + ") <= 0");
         }
@@ -285,8 +269,6 @@ public abstract class MappedMorton implements Serializable {
      */
     public byte[] salty(final byte[] bland) {
 
-        LOGGER.debug("salty({})", bland);
-
         if (bland == null) {
             throw new NullPointerException("bland");
         }
@@ -321,5 +303,5 @@ public abstract class MappedMorton implements Serializable {
     @XmlTransient
     private byte[] sodium;
 
-
 }
+

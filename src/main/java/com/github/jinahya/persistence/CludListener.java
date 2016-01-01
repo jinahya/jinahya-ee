@@ -23,8 +23,6 @@ import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -32,13 +30,6 @@ import org.slf4j.LoggerFactory;
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class CludListener {
-
-
-    /**
-     * logger.
-     */
-    private static final Logger LOGGER =
-        LoggerFactory.getLogger(CludListener.class);
 
 
     /**
@@ -104,5 +95,5 @@ public class CludListener {
 
     private final boolean setDeletedAtOnPreRemove;
 
-
 }
+

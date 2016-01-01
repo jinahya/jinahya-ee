@@ -63,7 +63,6 @@ public abstract class HttpFilter extends AbstractFilter {
 
             doFilter((HttpServletRequest) request,
                      (HttpServletResponse) response, chain);
-
             return;
         }
 
@@ -88,3 +87,4 @@ public abstract class HttpFilter extends AbstractFilter {
 
 
 }
+

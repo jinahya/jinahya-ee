@@ -18,6 +18,7 @@
 package com.github.jinahya.ws.core.response;
 
 
+import static java.util.Optional.ofNullable;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -67,26 +68,7 @@ public abstract class AbstractStatusType implements StatusType {
     @Override
     public Family getFamily() {
 
-        if (family != null) {
-            return family;
-        }
-
-        //return Family.familyOf(statusCode); // Java EE 7
-
-        switch (statusCode / 100) {
-            case 1:
-                return Family.INFORMATIONAL;
-            case 2:
-                return Family.SUCCESSFUL;
-            case 3:
-                return Family.REDIRECTION;
-            case 4:
-                return Family.CLIENT_ERROR;
-            case 5:
-                return Family.SERVER_ERROR;
-            default:
-                return Family.OTHER;
-        }
+        return ofNullable(family).orElse(Family.familyOf(statusCode));
     }
 
 

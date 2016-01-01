@@ -18,7 +18,6 @@
 package com.github.jinahya.servlet;
 
 
-import com.github.jinahya.servlet.AbstractFilter;
 import java.io.IOException;
 import java.util.logging.Logger;
 import javax.servlet.FilterChain;
@@ -35,16 +34,14 @@ import javax.servlet.ServletResponse;
 public class DefaultFilter extends AbstractFilter {
 
 
-    private static final Logger LOGGER =
-        Logger.getLogger(DefaultFilter.class.getName());
+    private static final Logger LOGGER
+        = Logger.getLogger(DefaultFilter.class.getName());
 
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
 
         super.init(filterConfig);
-
-        log("after super.init(filterConfig)");
     }
 
 
@@ -56,8 +53,6 @@ public class DefaultFilter extends AbstractFilter {
 
     @Override
     public void destroy() {
-
-        log("before super.destroy()");
 
         super.destroy();
     }

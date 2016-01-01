@@ -19,10 +19,10 @@ package com.github.jinahya.persistence;
 
 
 import java.util.Date;
-import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlTransient;
@@ -44,9 +44,7 @@ public abstract class MappedClud implements Clud {
      *
      * @return a safe copy of given date
      */
-    public static Date copy(final Date date) {
-
-        Objects.requireNonNull(date, "date");
+    private static Date copy(final Date date) {
 
         return date == null ? null : new Date(date.getTime());
     }
@@ -61,9 +59,9 @@ public abstract class MappedClud implements Clud {
 
 
     @Override
-    public void setCreatedAt(final Date locatedAt) {
+    public void setCreatedAt(final Date createdAt) {
 
-        this.locatedAt = copy(locatedAt);
+        this.createdAt = copy(createdAt);
     }
 
 
@@ -112,6 +110,15 @@ public abstract class MappedClud implements Clud {
     }
 
 
+    @PrePersist
+    private void persisting() {
+
+        if (createdAt == null) {
+            createdAt = new Date();
+        }
+    }
+
+
     @Basic(optional = false)
     @Column(name = "CREATED_AT", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -137,3 +144,4 @@ public abstract class MappedClud implements Clud {
 
 
 }
+

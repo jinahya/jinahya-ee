@@ -21,6 +21,7 @@ package com.github.jinahya.ws.rs.core;
 import java.io.IOException;
 import java.io.OutputStream;
 import javax.ws.rs.core.StreamingOutput;
+import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.transform.Result;
@@ -57,14 +58,12 @@ public class SchemaStreamingOutput implements StreamingOutput {
 
         context.generateSchema(new SchemaOutputResolver() {
 
-
             @Override
             public Result createOutput(final String namespaceUri,
                                        final String suggestedFileName)
                 throws IOException {
 
                 return new StreamResult(output) {
-
 
                     @Override
                     public String getSystemId() {
@@ -82,3 +81,4 @@ public class SchemaStreamingOutput implements StreamingOutput {
 
 
 }
+

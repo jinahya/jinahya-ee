@@ -20,7 +20,6 @@ package com.github.jinahya.servlet;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 
@@ -32,15 +31,6 @@ import javax.servlet.ServletException;
 public abstract class AbstractFilter implements Filter {
 
 
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * Overridden to store given {@code filterConfig}.
-     *
-     * @param filterConfig {@inheritDoc}
-     *
-     * @throws ServletException {@inheritDoc}
-     */
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
 
@@ -48,11 +38,6 @@ public abstract class AbstractFilter implements Filter {
     }
 
 
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * Overridden to remove the stored {@code filterConfig} instance.
-     */
     @Override
     public void destroy() {
 
@@ -61,71 +46,17 @@ public abstract class AbstractFilter implements Filter {
 
 
     /**
-     * Returns config.
+     * Returns a {@code FilterConfig}.
      *
-     * @return filerConfig
-     *
-     * @throws IllegalStateException if this method called after
-     * {@link #destroy()} invoked.
+     * @return a {@code FilterConfig}
      */
-    protected FilterConfig servletConfig() {
-
-        if (filterConfig == null) {
-            throw new IllegalStateException("no filterConfig");
-        }
+    protected FilterConfig filterConfig() {
 
         return filterConfig;
     }
 
 
-    /**
-     * Returns servlet context.
-     *
-     * @return the servlet context
-     *
-     * @see #servletConfig()
-     * @see FilterConfig#getServletContext()
-     */
-    protected ServletContext servletContext() {
-
-        return servletConfig().getServletContext();
-    }
-
-
-    /**
-     * Logs given {@code message}.
-     *
-     * @param message message
-     *
-     * @see #servletContext()
-     * @see ServletContext#log(java.lang.String)
-     */
-    protected void log(final String message) {
-
-        servletContext().log(message);
-    }
-
-
-    /**
-     * Logs given {@code message} with specified {@code cause}.
-     *
-     * @param message message
-     * @param throwable throwable
-     *
-     * @see #servletContext()
-     * @see ServletContext#log(java.lang.String, java.lang.Throwable)
-     */
-    protected void log(final String message, final Throwable throwable) {
-
-        servletContext().log(message, throwable);
-    }
-
-
-    /**
-     * filter config.
-     */
     private transient FilterConfig filterConfig;
-
 
 }
 

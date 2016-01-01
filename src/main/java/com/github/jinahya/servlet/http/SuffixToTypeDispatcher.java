@@ -31,8 +31,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -47,15 +45,15 @@ public class SuffixToTypeDispatcher extends HttpFilter {
     /**
      * A regular expression for file suffix.
      */
-    public static final String SUFFIX_EXPRESSION =
-        "file\\.suffix\\.([^\\.]+)";
+    public static final String SUFFIX_EXPRESSION
+        = "file\\.suffix\\.([^\\.]+)";
 
 
     /**
      * A precompiled pattern of {@link #SUFFIX_EXPRESSION}.
      */
-    protected static final Pattern SUFFIX_PATTERN =
-        Pattern.compile(SUFFIX_EXPRESSION);
+    protected static final Pattern SUFFIX_PATTERN
+        = Pattern.compile(SUFFIX_EXPRESSION);
 
 
     /**
@@ -67,29 +65,20 @@ public class SuffixToTypeDispatcher extends HttpFilter {
     /**
      * A precompiled pattern of {@link #TYPE_EXPRESSION}.
      */
-    protected static final Pattern TYPE_PATTERN =
-        Pattern.compile(TYPE_EXPRESSION);
+    protected static final Pattern TYPE_PATTERN
+        = Pattern.compile(TYPE_EXPRESSION);
 
 
-    private static final Pattern NAME_PATTERN =
-        Pattern.compile("([^\\.]+)\\.([^\\.]+)");
-
-
-    /**
-     * logger.
-     */
-    private static final Logger LOGGER =
-        LoggerFactory.getLogger(SuffixToTypeDispatcher.class);
+    private static final Pattern NAME_PATTERN
+        = Pattern.compile("([^\\.]+)\\.([^\\.]+)");
 
 
     @Override
     public void init(final FilterConfig config) throws ServletException {
 
-        LOGGER.debug("init({}", config);
-
         super.init(config);
 
-        contextPath = servletContext().getContextPath();
+        contextPath = filterConfig().getServletContext().getContextPath();
         contextPathLength = contextPath.length();
 
         for (final Enumeration<String> e = config.getInitParameterNames();
@@ -109,7 +98,6 @@ public class SuffixToTypeDispatcher extends HttpFilter {
             if (map == null) {
                 map = new HashMap<>();
             }
-            LOGGER.debug("{} -> {}", suffix, type);
             map.put(suffix, type);
         }
     }
@@ -121,27 +109,21 @@ public class SuffixToTypeDispatcher extends HttpFilter {
                             final FilterChain chain)
         throws IOException, ServletException {
 
-        LOGGER.debug("doFilter({}, {}, {})", request, response, chain);
-
         if (map == null) {
-            LOGGER.debug("null map");
             chain.doFilter(request, response);
             return;
         }
 
         final String requestUri = request.getRequestURI();
         if (requestUri == null) {
-            LOGGER.debug("null requestUri");
             chain.doFilter(request, response);
             return;
         }
 
         final String resourcePath = requestUri.substring(contextPathLength);
-        LOGGER.debug("resourcePath: {}", resourcePath);
 
         final int lastSlashIndex = resourcePath.lastIndexOf('/');
         if (lastSlashIndex == -1) {
-            LOGGER.debug("no last slash");
             chain.doFilter(request, response);
             return;
         }
@@ -149,30 +131,25 @@ public class SuffixToTypeDispatcher extends HttpFilter {
         final String fileName = resourcePath.substring(lastSlashIndex + 1);
         final Matcher fileNameMatcher = NAME_PATTERN.matcher(fileName);
         if (!fileNameMatcher.matches()) {
-            LOGGER.debug("fileName doesn't match");
             chain.doFilter(request, response);
             return;
         }
 
         final String fileSuffix = fileNameMatcher.group(2);
-        LOGGER.debug("fileSuffix: {}", fileSuffix);
         final String mediaType = map.get(fileSuffix);
         if (mediaType == null) {
-            LOGGER.debug("no mapped media type");
             chain.doFilter(request, response);
             return;
         }
 
         final String path = resourcePath.substring(
             0, resourcePath.length() - fileSuffix.length() - 1);
-        LOGGER.debug("path: {}", path);
 
-        final ServletRequest wrapper =
-            HeadersRequestWrapper.newPrecedingInstance(
-            request, "Accept", mediaType);
+        final ServletRequest wrapper
+            = HeadersRequestWrapper.newPrecedingInstance(
+                request, "Accept", mediaType);
         final RequestDispatcher dispatcher = request.getRequestDispatcher(path);
         dispatcher.forward(wrapper, response);
-        LOGGER.debug("fowarded");
 
         return;
     }
@@ -186,5 +163,5 @@ public class SuffixToTypeDispatcher extends HttpFilter {
 
     private Map<String, String> map = null;
 
-
 }
+

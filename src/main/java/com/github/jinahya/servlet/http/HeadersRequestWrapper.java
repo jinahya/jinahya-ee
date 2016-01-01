@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -36,13 +34,6 @@ import org.slf4j.LoggerFactory;
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class HeadersRequestWrapper extends HttpServletRequestWrapper {
-
-
-    /**
-     * logger.
-     */
-    private static final Logger LOGGER =
-        LoggerFactory.getLogger(HeadersRequestWrapper.class);
 
 
     /**
@@ -61,8 +52,8 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
             throw new NullPointerException("headers");
         }
 
-        final HttpServletRequest instance =
-            new HeadersRequestWrapper(request, headers, null);
+        final HttpServletRequest instance
+            = new HeadersRequestWrapper(request, headers, null);
 
         return instance;
     }
@@ -138,8 +129,8 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
             throw new NullPointerException("headers");
         }
 
-        final HttpServletRequest instance =
-            new HeadersRequestWrapper(request, headers, null);
+        final HttpServletRequest instance
+            = new HeadersRequestWrapper(request, headers, null);
 
         return instance;
     }
@@ -262,8 +253,6 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
     @Override
     public String getHeader(final String name) {
 
-        LOGGER.debug("getHeader({})", name);
-
         final List<String> values = headers.get(name);
         if (values != null && !values.isEmpty()) {
             return values.get(0);
@@ -283,8 +272,6 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
     @Override
     public Enumeration<String> getHeaders(final String name) {
 
-        LOGGER.debug("getHeaders({})", name);
-
         List<String> values = headers.get(name);
         if (values == null) {
             return Collections.emptyEnumeration();
@@ -302,8 +289,6 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
     @Override
     public Enumeration<String> getHeaderNames() {
 
-        LOGGER.debug("getHeaderNames()");
-
         return Collections.enumeration(headers.keySet());
     }
 
@@ -313,5 +298,5 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      */
     private final Map<String, List<String>> headers;
 
-
 }
+
