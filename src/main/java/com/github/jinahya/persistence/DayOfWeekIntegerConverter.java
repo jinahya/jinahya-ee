@@ -17,11 +17,13 @@ package com.github.jinahya.persistence;
 
 import java.time.DayOfWeek;
 import static java.util.Optional.ofNullable;
+import javax.persistence.Converter;
 
 /**
  *
  * @author Jin Kwon &lt;onacit@gmail.com&gt;
  */
+@Converter
 public class DayOfWeekIntegerConverter
         implements EnumAttributeConverter<DayOfWeek, Integer> {
 
