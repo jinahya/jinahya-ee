@@ -13,13 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.ws.core;
 
-
 import javax.ws.rs.core.Response.Status;
-
 
 /**
  * A status type for {@code 400 Bad Request} which is a member of
@@ -35,7 +31,6 @@ import javax.ws.rs.core.Response.Status;
 @Deprecated
 public class BadRequest400 extends AbstractStatusType {
 
-
     /**
      * Creates a new instance with given reason phrase.
      *
@@ -47,4 +42,3 @@ public class BadRequest400 extends AbstractStatusType {
     }
 
 }
-

@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.ws.rs.ext;
-
 
 import com.github.jinahya.ws.rs.MillisecondsParam;
 import java.lang.annotation.Annotation;
@@ -24,15 +21,13 @@ import java.lang.reflect.Type;
 import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 
-
 /**
  *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  * @param <T> converter type parameter
  */
 public interface MillisecondsParamConverterProvider<T extends MillisecondsParamConverter<?>>
-    extends ParamConverterProvider {
-
+        extends ParamConverterProvider {
 
     @Override
     @SuppressWarnings("unchecked")
@@ -43,13 +38,12 @@ public interface MillisecondsParamConverterProvider<T extends MillisecondsParamC
         for (final Annotation annotation : annotations) {
             if (MillisecondsParam.class.isInstance(annotation)) {
                 return (ParamConverter< S>) getMillisecondsConverter(
-                    rawType, genericType, annotations);
+                        rawType, genericType, annotations);
             }
         }
 
         return null;
     }
-
 
     /**
      * Provides a {@link ParamConverter} that can provide from/to string
@@ -65,6 +59,4 @@ public interface MillisecondsParamConverterProvider<T extends MillisecondsParamC
     <S> T getMillisecondsConverter(Class<S> rawType, Type genericType,
                                    Annotation[] annotations);
 
-
 }
-

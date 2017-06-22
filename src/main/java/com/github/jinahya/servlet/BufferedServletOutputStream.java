@@ -13,16 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.servlet;
-
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.WriteListener;
-
 
 /**
  * Buffered implementation of ServletOutputStream.
@@ -30,7 +26,6 @@ import javax.servlet.WriteListener;
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class BufferedServletOutputStream extends ServletOutputStream {
-
 
     /**
      * Creates a new instance.
@@ -42,13 +37,11 @@ public class BufferedServletOutputStream extends ServletOutputStream {
         outputStream = new ByteArrayOutputStream();
     }
 
-
     @Override
     public boolean isReady() {
 
         return true;
     }
-
 
     @Override
     public void setWriteListener(final WriteListener writeListener) {
@@ -69,13 +62,11 @@ public class BufferedServletOutputStream extends ServletOutputStream {
         }
     }
 
-
     @Override
     public void write(final int b) throws IOException {
 
         outputStream.write(b);
     }
-
 
     /**
      * Resets the underlying {@code ByteArrayOutputStream}.
@@ -84,7 +75,6 @@ public class BufferedServletOutputStream extends ServletOutputStream {
 
         outputStream.reset();
     }
-
 
     /**
      * Returns buffered bytes.
@@ -96,11 +86,8 @@ public class BufferedServletOutputStream extends ServletOutputStream {
         return outputStream.toByteArray();
     }
 
-
     private final ByteArrayOutputStream outputStream;
-
 
     private WriteListener writeListener;
 
 }
-

@@ -13,14 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.validation;
-
 
 import com.github.jinahya.validation.constraints.CollapsedStringSize;
 import com.github.jinahya.validation.constraints.NormalizedStringSize;
-
 
 /**
  *
@@ -28,34 +24,26 @@ import com.github.jinahya.validation.constraints.NormalizedStringSize;
  */
 public class Flower {
 
-
     public String getName() {
         return name;
     }
-
 
     public void setName(final String name) {
         this.name = name;
     }
 
-
     public String getMeaning() {
         return meaning;
     }
-
 
     public void setMeaning(final String meaning) {
         this.meaning = meaning;
     }
 
-
     @CollapsedStringSize(min = 1, max = 40)
     private String name;
-
 
     @NormalizedStringSize(min = 0, max = 40)
     private String meaning;
 
-
 }
-

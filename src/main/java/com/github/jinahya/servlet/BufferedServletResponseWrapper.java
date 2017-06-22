@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.servlet;
-
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -25,13 +22,11 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletResponse;
 import javax.servlet.ServletResponseWrapper;
 
-
 /**
  *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class BufferedServletResponseWrapper extends ServletResponseWrapper {
-
 
     /**
      * Creates a new instance.
@@ -45,7 +40,6 @@ public class BufferedServletResponseWrapper extends ServletResponseWrapper {
         outputStream = new BufferedServletOutputStream();
     }
 
-
     @Override
     public final void flushBuffer() throws IOException {
 
@@ -56,37 +50,32 @@ public class BufferedServletResponseWrapper extends ServletResponseWrapper {
         getOutputStream().flush();
     }
 
-
     @Override
     public final ServletOutputStream getOutputStream() throws IOException {
-        
+
         return outputStream;
     }
-
 
     @Override
     public final PrintWriter getWriter() throws IOException {
 
         if (writer == null) {
             writer = new PrintWriter(new OutputStreamWriter(
-                getOutputStream(), getResponse().getCharacterEncoding()));
+                    getOutputStream(), getResponse().getCharacterEncoding()));
         }
 
         return writer;
     }
-
 
     @Override
     public final void reset() {
         outputStream.reset();
     }
 
-
     @Override
     public final void resetBuffer() {
         outputStream.reset();
     }
-
 
     /**
      * Returns buffered bytes.
@@ -94,21 +83,18 @@ public class BufferedServletResponseWrapper extends ServletResponseWrapper {
      * @return buffered bytes
      */
     public final byte[] bytes() {
-        
+
         return outputStream.bytes();
     }
-
 
     /**
      * output stream.
      */
     private final BufferedServletOutputStream outputStream;
 
-
     /**
      * writer.
      */
     private PrintWriter writer;
-
 
 }

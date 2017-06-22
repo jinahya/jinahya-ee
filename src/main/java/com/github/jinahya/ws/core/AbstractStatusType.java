@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.ws.core;
-
 
 import static java.util.Optional.ofNullable;
 import javax.ws.rs.WebApplicationException;
@@ -25,13 +22,11 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response.Status.Family;
 import javax.ws.rs.core.Response.StatusType;
 
-
 /**
  *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public abstract class AbstractStatusType implements StatusType {
-
 
     /**
      * Creates a new instance.
@@ -50,7 +45,6 @@ public abstract class AbstractStatusType implements StatusType {
         this.reasonPhrase = reasonPhrase;
     }
 
-
     /**
      * Creates a new instance with given {@code status} and
      * {@code reasonPhrase}.
@@ -62,7 +56,6 @@ public abstract class AbstractStatusType implements StatusType {
 
         this(null, statusCode, reasonPhrase);
     }
-
 
     /**
      * Creates a new instance with given {@code status} and
@@ -77,13 +70,11 @@ public abstract class AbstractStatusType implements StatusType {
         this(status.getStatusCode(), reasonPhrase);
     }
 
-
     @Override
     public Family getFamily() {
 
         return ofNullable(family).orElse(Family.familyOf(statusCode));
     }
-
 
     @Override
     public String getReasonPhrase() {
@@ -91,13 +82,11 @@ public abstract class AbstractStatusType implements StatusType {
         return reasonPhrase;
     }
 
-
     @Override
     public int getStatusCode() {
 
         return statusCode;
     }
-
 
     /**
      * Returns a new response builder for this status type.
@@ -111,7 +100,6 @@ public abstract class AbstractStatusType implements StatusType {
         return Response.status(this);
     }
 
-
     /**
      * Returns a new response for this status type.
      *
@@ -123,7 +111,6 @@ public abstract class AbstractStatusType implements StatusType {
 
         return toResponseBuilder().build();
     }
-
 
     /**
      * Returns a new web application exception for this status type.
@@ -137,14 +124,10 @@ public abstract class AbstractStatusType implements StatusType {
         return new WebApplicationException(toResponse());
     }
 
-
     private final Family family;
 
-
     private final int statusCode;
-
 
     private final String reasonPhrase;
 
 }
-

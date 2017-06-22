@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.servlet.http;
-
 
 /**
  * Filter for transforming XML to (X)HTML.
@@ -25,25 +22,22 @@ package com.github.jinahya.servlet.http;
  */
 public abstract class XML2HTMLFilter extends XSLTFilter {
 
-
     /**
      * Preferred Media Type for HTML.
      *
      * @see <a href="http://tools.ietf.org/html/rfc2854">
-     *      The 'text/html' Media Type (RFC2854)</a>
+     * The 'text/html' Media Type (RFC2854)</a>
      */
     protected static final String MEDIA_TYPE_TEXT_HTML = "text/html";
-
 
     /**
      * Preferred Media Type for XHTML.
      *
      * @see <a href="http://www.w3.org/TR/xhtml-media-types/">
-     *      XHTML Media Types - Second Edition (W3C)</a>
+     * XHTML Media Types - Second Edition (W3C)</a>
      */
-    protected static final String MEDIA_TYPE_APPLICATION_XHTML_XML =
-        "application/xhtml+xml";
-
+    protected static final String MEDIA_TYPE_APPLICATION_XHTML_XML
+            = "application/xhtml+xml";
 
     /**
      * {@inheritDoc}
@@ -55,7 +49,6 @@ public abstract class XML2HTMLFilter extends XSLTFilter {
         return PREFERRED_CHARACTER_ENCODING;
     }
 
-
     /**
      * {@inheritDoc}
      *
@@ -66,6 +59,4 @@ public abstract class XML2HTMLFilter extends XSLTFilter {
         return MEDIA_TYPE_APPLICATION_XHTML_XML;
     }
 
-
 }
-

@@ -13,16 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.ws.rs.core;
-
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.ws.rs.core.StreamingOutput;
-
 
 /**
  *
@@ -30,24 +26,15 @@ import javax.ws.rs.core.StreamingOutput;
  */
 public final class StreamingOutputs {
 
-
     public static StreamingOutput of(final Path path) {
-
         return o -> Files.copy(path, o);
     }
 
-
     public static StreamingOutput of(final File file) {
-
         return StreamingOutputs.of(file.toPath());
     }
 
-
     private StreamingOutputs() {
-
         super();
     }
-
-
 }
-

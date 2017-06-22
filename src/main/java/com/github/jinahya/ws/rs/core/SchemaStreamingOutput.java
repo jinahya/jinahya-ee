@@ -13,20 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.ws.rs.core;
-
 
 import java.io.IOException;
 import java.io.OutputStream;
 import javax.ws.rs.core.StreamingOutput;
-import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
-
 
 /**
  * An implementation for generating an XML Schema from a JAXBContext.
@@ -34,7 +29,6 @@ import javax.xml.transform.stream.StreamResult;
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class SchemaStreamingOutput implements StreamingOutput {
-
 
     /**
      * Creates a new instance.
@@ -52,7 +46,6 @@ public class SchemaStreamingOutput implements StreamingOutput {
         this.context = context;
     }
 
-
     @Override
     public void write(final OutputStream output) throws IOException {
 
@@ -61,7 +54,7 @@ public class SchemaStreamingOutput implements StreamingOutput {
             @Override
             public Result createOutput(final String namespaceUri,
                                        final String suggestedFileName)
-                throws IOException {
+                    throws IOException {
 
                 return new StreamResult(output) {
 
@@ -76,9 +69,6 @@ public class SchemaStreamingOutput implements StreamingOutput {
         });
     }
 
-
     private final JAXBContext context;
 
-
 }
-

@@ -13,29 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.servlet.http;
 
-
+import com.github.jinahya.servlet.AbstractFilter;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import java.net.URL;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -45,9 +39,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import com.github.jinahya.servlet.AbstractFilter;
-
-
 /**
  * XSLT Filter.
  *
@@ -55,35 +46,33 @@ import com.github.jinahya.servlet.AbstractFilter;
  */
 public abstract class XSLTFilter extends AbstractFilter {
 
-
     /**
      * Preferred character encoding.
      */
     protected static final String PREFERRED_CHARACTER_ENCODING = "UTF-8";
 
-
     @Override
     public void doFilter(final ServletRequest request,
                          final ServletResponse response,
                          final FilterChain chain)
-        throws IOException, ServletException {
+            throws IOException, ServletException {
 
         if (request instanceof HttpServletRequest) {
             throw new IllegalArgumentException(
-                request + " is not an instance of" + HttpServletRequest.class);
+                    request + " is not an instance of" + HttpServletRequest.class);
         }
 
         if (request instanceof HttpServletResponse) {
             throw new IllegalArgumentException(
-                response + " is not an instance of"
-                + HttpServletResponse.class);
+                    response + " is not an instance of"
+                    + HttpServletResponse.class);
         }
 
         final HttpServletRequest httpRequest = (HttpServletRequest) request;
         final HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        final BufferedResponseWrapper responseWrapper =
-            new BufferedResponseWrapper(httpResponse);
+        final BufferedResponseWrapper responseWrapper
+                = new BufferedResponseWrapper(httpResponse);
 
         chain.doFilter(request, responseWrapper); // ------------- doFilter(...)
 
@@ -94,7 +83,7 @@ public abstract class XSLTFilter extends AbstractFilter {
             ((HttpServletResponse) response).setStatus(status);
             response.setContentType(responseWrapper.getContentType());
             response.setCharacterEncoding(
-                responseWrapper.getCharacterEncoding());
+                    responseWrapper.getCharacterEncoding());
             response.getOutputStream().write(outputBytes);
             response.flushBuffer();
             return;
@@ -105,14 +94,14 @@ public abstract class XSLTFilter extends AbstractFilter {
             resource = getStylesheetResource();
             if (resource == null) {
                 ((HttpServletResponse) response).sendError(
-                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "failed to get stylesheet resource: null returned");
+                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                        "failed to get stylesheet resource: null returned");
                 return;
             }
         } catch (IOException e) {
             ((HttpServletResponse) response).sendError(
-                HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                "failed to get stylesheet resource: " + e.getMessage());
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "failed to get stylesheet resource: " + e.getMessage());
             return;
         }
 
@@ -121,9 +110,9 @@ public abstract class XSLTFilter extends AbstractFilter {
             source = new StreamSource(resource.openStream());
         } catch (IOException ioe) {
             ((HttpServletResponse) response).sendError(
-                HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                "failed to open stream from stylesheet resource("
-                + resource + "): " + ioe.getMessage());
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "failed to open stream from stylesheet resource("
+                    + resource + "): " + ioe.getMessage());
             return;
         }
 
@@ -132,8 +121,8 @@ public abstract class XSLTFilter extends AbstractFilter {
             transformer = getTransformerFactory().newTransformer(source);
         } catch (TransformerConfigurationException tce) {
             ((HttpServletResponse) response).sendError(
-                HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                "failed to create transformer: " + tce.getMessage());
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "failed to create transformer: " + tce.getMessage());
             return;
         }
 
@@ -153,22 +142,21 @@ public abstract class XSLTFilter extends AbstractFilter {
 
         try {
             transformer.transform(
-                new StreamSource(new InputStreamReader(
-                new ByteArrayInputStream(outputBytes),
-                responseWrapper.getCharacterEncoding())),
-                new StreamResult(response.getWriter()));
+                    new StreamSource(new InputStreamReader(
+                            new ByteArrayInputStream(outputBytes),
+                            responseWrapper.getCharacterEncoding())),
+                    new StreamResult(response.getWriter()));
 
             response.flushBuffer();
             return;
 
         } catch (TransformerException te) {
             ((HttpServletResponse) response).sendError(
-                HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                "failed to transform: " + te.getMessage());
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "failed to transform: " + te.getMessage());
             return;
         }
     }
-
 
     /**
      * Fills output properties for the Transformer.
@@ -179,15 +167,13 @@ public abstract class XSLTFilter extends AbstractFilter {
         properties.put(OutputKeys.ENCODING, getOutputCharacterEncoding());
     }
 
-
     /**
      * Fills parameters for the Transformer.
      *
      * @param parameters parameters to be filled
      */
     protected abstract void getTransformerParameters(
-        Map<String, Object> parameters);
-
+            Map<String, Object> parameters);
 
     /**
      * Returns stylesheet resource.
@@ -197,7 +183,6 @@ public abstract class XSLTFilter extends AbstractFilter {
      */
     protected abstract URL getStylesheetResource() throws IOException;
 
-
     /**
      * Returns output content type.
      *
@@ -205,14 +190,12 @@ public abstract class XSLTFilter extends AbstractFilter {
      */
     protected abstract String getOutputContentType();
 
-
     /**
      * Returns output character encoding.
      *
      * @return output character encoding.
      */
     protected abstract String getOutputCharacterEncoding();
-
 
     /**
      * Returns a <code>TransformerFactory</code> instance. The default
@@ -230,10 +213,9 @@ public abstract class XSLTFilter extends AbstractFilter {
         return transformerFactory;
     }
 
-
-    /** transformerFactory. */
+    /**
+     * transformerFactory.
+     */
     private TransformerFactory transformerFactory;
 
-
 }
-

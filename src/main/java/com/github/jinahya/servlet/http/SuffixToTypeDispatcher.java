@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.servlet.http;
-
 
 import java.io.IOException;
 import java.util.Enumeration;
@@ -32,7 +29,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /**
  * A {@link javax.servlet.Filter} implementation which dispatches suffixed path
  * to a typed path.
@@ -41,37 +37,31 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SuffixToTypeDispatcher extends HttpFilter {
 
-
     /**
      * A regular expression for file suffix.
      */
     public static final String SUFFIX_EXPRESSION
-        = "file\\.suffix\\.([^\\.]+)";
-
+            = "file\\.suffix\\.([^\\.]+)";
 
     /**
      * A precompiled pattern of {@link #SUFFIX_EXPRESSION}.
      */
     protected static final Pattern SUFFIX_PATTERN
-        = Pattern.compile(SUFFIX_EXPRESSION);
-
+            = Pattern.compile(SUFFIX_EXPRESSION);
 
     /**
      * A regular expression for media type.
      */
     public static final String TYPE_EXPRESSION = "media/type/(.+)";
 
-
     /**
      * A precompiled pattern of {@link #TYPE_EXPRESSION}.
      */
     protected static final Pattern TYPE_PATTERN
-        = Pattern.compile(TYPE_EXPRESSION);
-
+            = Pattern.compile(TYPE_EXPRESSION);
 
     private static final Pattern NAME_PATTERN
-        = Pattern.compile("([^\\.]+)\\.([^\\.]+)");
-
+            = Pattern.compile("([^\\.]+)\\.([^\\.]+)");
 
     @Override
     public void init(final FilterConfig config) throws ServletException {
@@ -102,12 +92,11 @@ public class SuffixToTypeDispatcher extends HttpFilter {
         }
     }
 
-
     @Override
     protected void doFilter(final HttpServletRequest request,
                             final HttpServletResponse response,
                             final FilterChain chain)
-        throws IOException, ServletException {
+            throws IOException, ServletException {
 
         if (map == null) {
             chain.doFilter(request, response);
@@ -143,25 +132,21 @@ public class SuffixToTypeDispatcher extends HttpFilter {
         }
 
         final String path = resourcePath.substring(
-            0, resourcePath.length() - fileSuffix.length() - 1);
+                0, resourcePath.length() - fileSuffix.length() - 1);
 
         final ServletRequest wrapper
-            = HeadersRequestWrapper.newPrecedingInstance(
-                request, "Accept", mediaType);
+                = HeadersRequestWrapper.newPrecedingInstance(
+                        request, "Accept", mediaType);
         final RequestDispatcher dispatcher = request.getRequestDispatcher(path);
         dispatcher.forward(wrapper, response);
 
         return;
     }
 
-
     private transient String contextPath;
 
-
     private transient int contextPathLength;
-
 
     private Map<String, String> map = null;
 
 }
-

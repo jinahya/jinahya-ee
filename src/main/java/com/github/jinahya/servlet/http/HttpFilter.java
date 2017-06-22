@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.servlet.http;
-
 
 import com.github.jinahya.servlet.AbstractFilter;
 import java.io.IOException;
@@ -27,7 +24,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /**
  * A {@code Filter} implementation which handles {@code HttpServletRequest} and
  * {@code HttpServletResponse}.
@@ -35,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public abstract class HttpFilter extends AbstractFilter {
-
 
     /**
      * {@inheritDoc} The
@@ -62,7 +57,7 @@ public abstract class HttpFilter extends AbstractFilter {
     public void doFilter(final ServletRequest request,
                          final ServletResponse response,
                          final FilterChain chain)
-        throws IOException, ServletException {
+            throws IOException, ServletException {
 
         if (request instanceof HttpServletRequest
             && response instanceof HttpServletResponse) {
@@ -74,7 +69,6 @@ public abstract class HttpFilter extends AbstractFilter {
 
         chain.doFilter(request, response);
     }
-
 
     /**
      * Does filtering on given arguments.
@@ -89,7 +83,6 @@ public abstract class HttpFilter extends AbstractFilter {
     protected abstract void doFilter(HttpServletRequest request,
                                      HttpServletResponse response,
                                      FilterChain chain)
-        throws IOException, ServletException;
+            throws IOException, ServletException;
 
 }
-

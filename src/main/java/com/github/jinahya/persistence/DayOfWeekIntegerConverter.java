@@ -20,6 +20,8 @@ import static java.util.Optional.ofNullable;
 import javax.persistence.Converter;
 
 /**
+ * A converter for converting a {@link DayOfWeek} into an {@code Integer} and
+ * vice versa.
  *
  * @author Jin Kwon &lt;onacit@gmail.com&gt;
  */

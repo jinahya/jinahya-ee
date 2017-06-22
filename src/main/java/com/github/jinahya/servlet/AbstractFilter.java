@@ -13,15 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.servlet;
-
 
 import javax.servlet.Filter;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
-
 
 /**
  * Abstract implementation of {@link Filter}.
@@ -30,20 +26,17 @@ import javax.servlet.ServletException;
  */
 public abstract class AbstractFilter implements Filter {
 
-
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
 
         this.filterConfig = filterConfig;
     }
 
-
     @Override
     public void destroy() {
 
         filterConfig = null;
     }
-
 
     /**
      * Returns a {@code FilterConfig}.
@@ -55,8 +48,6 @@ public abstract class AbstractFilter implements Filter {
         return filterConfig;
     }
 
-
     private transient FilterConfig filterConfig;
 
 }
-

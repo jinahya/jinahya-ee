@@ -13,13 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.ws.core;
 
-
 import javax.ws.rs.core.Response.Status;
-
 
 /**
  * A status type for {@code 411 Length Required} which is a member of
@@ -28,7 +24,6 @@ import javax.ws.rs.core.Response.Status;
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class LengthRequired411 extends AbstractStatusType {
-
 
     /**
      * Creates a new instance with given reason phrase.
@@ -41,4 +36,3 @@ public class LengthRequired411 extends AbstractStatusType {
     }
 
 }
-

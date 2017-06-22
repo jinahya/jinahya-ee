@@ -13,15 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.ws.rs.ext;
-
 
 import java.util.Optional;
 import static java.util.Optional.ofNullable;
 import javax.ws.rs.ext.ParamConverter;
-
 
 /**
  *
@@ -30,18 +26,14 @@ import javax.ws.rs.ext.ParamConverter;
  */
 public interface MillisecondsParamConverter<T> extends ParamConverter<T> {
 
-
     default Optional<Long> millisecondsFromString(final String value) {
 
         return ofNullable(value).map(Long::parseLong);
     }
-
 
     default Optional<String> millisecondsToString(final Long value) {
 
         return ofNullable(value).map(Object::toString);
     }
 
-
 }
-

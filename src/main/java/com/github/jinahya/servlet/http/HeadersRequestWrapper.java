@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.servlet.http;
-
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,13 +25,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-
 /**
  *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class HeadersRequestWrapper extends HttpServletRequestWrapper {
-
 
     /**
      * Creates a new instance with preceding headers.
@@ -45,19 +40,18 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      * @return a new instance
      */
     public static HttpServletRequest newPrecedingInstance(
-        final HttpServletRequest request,
-        final Map<String, List<String>> headers) {
+            final HttpServletRequest request,
+            final Map<String, List<String>> headers) {
 
         if (headers == null) {
             throw new NullPointerException("headers");
         }
 
         final HttpServletRequest instance
-            = new HeadersRequestWrapper(request, headers, null);
+                = new HeadersRequestWrapper(request, headers, null);
 
         return instance;
     }
-
 
     /**
      * Creates a new instance with a preceding header.
@@ -69,8 +63,8 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      * @return a new instance.
      */
     public static HttpServletRequest newPrecedingInstance(
-        final HttpServletRequest request,
-        final String name, List<String> values) {
+            final HttpServletRequest request,
+            final String name, List<String> values) {
 
         if (name == null) {
             throw new NullPointerException("name");
@@ -85,7 +79,6 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
 
         return newPrecedingInstance(request, headers);
     }
-
 
     /**
      * Creates a new instance with a preceding header.
@@ -97,8 +90,8 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      * @return a new instance
      */
     public static HttpServletRequest newPrecedingInstance(
-        final HttpServletRequest request,
-        final String name, final String value) {
+            final HttpServletRequest request,
+            final String name, final String value) {
 
         if (name == null) {
             throw new NullPointerException("name");
@@ -109,9 +102,8 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
         }
 
         return newPrecedingInstance(
-            request, name, Arrays.asList(value));
+                request, name, Arrays.asList(value));
     }
-
 
     /**
      * Creates a new instance with succeeding headers.
@@ -122,19 +114,18 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      * @return a new instance
      */
     public static HttpServletRequest newSuccedingInstance(
-        final HttpServletRequest request,
-        final Map<String, List<String>> headers) {
+            final HttpServletRequest request,
+            final Map<String, List<String>> headers) {
 
         if (headers == null) {
             throw new NullPointerException("headers");
         }
 
         final HttpServletRequest instance
-            = new HeadersRequestWrapper(request, headers, null);
+                = new HeadersRequestWrapper(request, headers, null);
 
         return instance;
     }
-
 
     /**
      * Creates a new instance with a succeeding header.
@@ -146,8 +137,8 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      * @return a new instance.
      */
     public static HttpServletRequest newSucceedingInstance(
-        final HttpServletRequest request,
-        final String name, List<String> values) {
+            final HttpServletRequest request,
+            final String name, List<String> values) {
 
         if (name == null) {
             throw new NullPointerException("name");
@@ -163,7 +154,6 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
         return newPrecedingInstance(request, headers);
     }
 
-
     /**
      * Creates a new instance with a succeeding header.
      *
@@ -174,8 +164,8 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      * @return a new instance
      */
     public static HttpServletRequest newSucceedingInstance(
-        final HttpServletRequest request,
-        final String name, final String value) {
+            final HttpServletRequest request,
+            final String name, final String value) {
 
         if (name == null) {
             throw new NullPointerException("name");
@@ -186,9 +176,8 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
         }
 
         return newPrecedingInstance(
-            request, name, Arrays.asList(value));
+                request, name, Arrays.asList(value));
     }
-
 
     /**
      * Creates a new instance with {@code request} and additional headers.
@@ -200,9 +189,9 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      * {@code null} allowed.
      */
     public HeadersRequestWrapper(
-        final HttpServletRequest request,
-        final Map<String, List<String>> precedingHeaders,
-        final Map<String, List<String>> succeedingHeaders) {
+            final HttpServletRequest request,
+            final Map<String, List<String>> precedingHeaders,
+            final Map<String, List<String>> succeedingHeaders) {
 
         super(request);
 
@@ -242,7 +231,6 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
         }
     }
 
-
     /**
      * {@inheritDoc}
      *
@@ -260,7 +248,6 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
 
         return null;
     }
-
 
     /**
      * {@inheritDoc}
@@ -280,7 +267,6 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
         return Collections.enumeration(values);
     }
 
-
     /**
      * {@inheritDoc}
      *
@@ -292,11 +278,9 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
         return Collections.enumeration(headers.keySet());
     }
 
-
     /**
      * aggregated headers.
      */
     private final Map<String, List<String>> headers;
 
 }
-

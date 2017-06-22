@@ -13,13 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.ws.rs.ext;
 
-
 import java.time.temporal.Temporal;
-
 
 /**
  *
@@ -27,7 +23,6 @@ import java.time.temporal.Temporal;
  * @param <T> temporal type parameter
  */
 public interface MillisecondsParamTemporalConverter<T extends Temporal>
-    extends MillisecondsParamConverter<T> {
+        extends MillisecondsParamConverter<T> {
 
 }
-

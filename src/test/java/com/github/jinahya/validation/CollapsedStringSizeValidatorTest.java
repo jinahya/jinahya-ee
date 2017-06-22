@@ -14,9 +14,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
 package com.github.jinahya.validation;
-
 
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -25,17 +23,14 @@ import javax.validation.ValidatorFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-
 /**
  *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class CollapsedStringSizeValidatorTest {
 
-
-    private static final ValidatorFactory VALIDATOR_FACTORY =
-        Validation.buildDefaultValidatorFactory();
-
+    private static final ValidatorFactory VALIDATOR_FACTORY
+            = Validation.buildDefaultValidatorFactory();
 
     @Test
     public void testMin() {
@@ -43,13 +38,12 @@ public class CollapsedStringSizeValidatorTest {
         final Flower flower = new Flower();
         flower.setName("        ");
 
-        final Set<ConstraintViolation<Flower>> violation =
-            VALIDATOR_FACTORY.getValidator().validate(flower);
+        final Set<ConstraintViolation<Flower>> violation
+                = VALIDATOR_FACTORY.getValidator().validate(flower);
 
         Assert.assertEquals(violation.size(), 1);
         System.out.println(violation.iterator().next());
     }
-
 
     @Test
     public void testMax() {
@@ -58,17 +52,14 @@ public class CollapsedStringSizeValidatorTest {
         flower.setName("aaaaaaaaaa" + "aaaaaaaaaa" + "aaaaaaaaaa" + "aaaaaaaaaa"
                        + "b");
 
-        final Set<ConstraintViolation<Flower>> violation =
-            VALIDATOR_FACTORY.getValidator().validate(flower);
+        final Set<ConstraintViolation<Flower>> violation
+                = VALIDATOR_FACTORY.getValidator().validate(flower);
 
         Assert.assertEquals(violation.size(), 1);
         System.out.println(violation.iterator().next());
     }
 
-
     public void test() {
     }
 
-
 }
-

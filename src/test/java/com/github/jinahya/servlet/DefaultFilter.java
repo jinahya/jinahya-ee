@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.servlet;
-
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -26,17 +23,14 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-
 /**
  *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class DefaultFilter extends AbstractFilter {
 
-
     private static final Logger LOGGER
-        = Logger.getLogger(DefaultFilter.class.getName());
-
+            = Logger.getLogger(DefaultFilter.class.getName());
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -44,12 +38,10 @@ public class DefaultFilter extends AbstractFilter {
         super.init(filterConfig);
     }
 
-
     @Override
     public void doFilter(ServletRequest sr, ServletResponse sr1, FilterChain fc) throws IOException, ServletException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 
     @Override
     public void destroy() {
@@ -57,6 +49,4 @@ public class DefaultFilter extends AbstractFilter {
         super.destroy();
     }
 
-
 }
-

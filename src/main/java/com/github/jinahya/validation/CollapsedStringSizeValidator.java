@@ -13,31 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.validation;
-
 
 import com.github.jinahya.validation.constraints.CollapsedStringSize;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 
-
 /**
  *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class CollapsedStringSizeValidator
-    implements ConstraintValidator<CollapsedStringSize, String> {
-
+        implements ConstraintValidator<CollapsedStringSize, String> {
 
     @Override
     public void initialize(final CollapsedStringSize constraintAnnotation) {
         min = constraintAnnotation.min();
         max = constraintAnnotation.max();
     }
-
 
     @Override
     public boolean isValid(final String value,
@@ -52,12 +46,8 @@ public class CollapsedStringSizeValidator
         return collapsed.length() > min && collapsed.length() < max;
     }
 
-
     private int min;
-
 
     private int max;
 
-
 }
-
