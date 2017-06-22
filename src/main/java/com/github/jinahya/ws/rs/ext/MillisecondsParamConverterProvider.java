@@ -34,14 +34,12 @@ public interface MillisecondsParamConverterProvider<T extends MillisecondsParamC
     default <S> ParamConverter<S> getConverter(final Class<S> rawType,
                                                final Type genericType,
                                                final Annotation[] annotations) {
-
         for (final Annotation annotation : annotations) {
             if (MillisecondsParam.class.isInstance(annotation)) {
                 return (ParamConverter< S>) getMillisecondsConverter(
                         rawType, genericType, annotations);
             }
         }
-
         return null;
     }
 
@@ -58,5 +56,4 @@ public interface MillisecondsParamConverterProvider<T extends MillisecondsParamC
      */
     <S> T getMillisecondsConverter(Class<S> rawType, Type genericType,
                                    Annotation[] annotations);
-
 }

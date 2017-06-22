@@ -27,13 +27,10 @@ import javax.ws.rs.ext.ParamConverter;
 public interface MillisecondsParamConverter<T> extends ParamConverter<T> {
 
     default Optional<Long> millisecondsFromString(final String value) {
-
         return ofNullable(value).map(Long::parseLong);
     }
 
     default Optional<String> millisecondsToString(final Long value) {
-
         return ofNullable(value).map(Object::toString);
     }
-
 }

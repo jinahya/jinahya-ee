@@ -36,18 +36,14 @@ public class NormalizedStringSizeValidator
     @Override
     public boolean isValid(final String value,
                            final ConstraintValidatorContext context) {
-
         if (value == null) {
             return true;
         }
-
         final String collapsed = new CollapsedStringAdapter().unmarshal(value);
-
         return collapsed.length() > min && collapsed.length() < max;
     }
 
     private int min;
 
     private int max;
-
 }

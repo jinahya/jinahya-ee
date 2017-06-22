@@ -40,26 +40,19 @@ public abstract class JAXBSchemaGeneratorServlet extends HttpServlet {
     protected void doGet(final HttpServletRequest req,
                          final HttpServletResponse resp)
             throws ServletException, IOException {
-
         try {
             final JAXBContext context = getJAXBContext();
-
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.setContentType("application/xml");
             resp.setCharacterEncoding("UTF-8");
-
             final ServletResponseResult result
                     = new ServletResponseResult(resp);
             result.setSystemId(req);
-
             final SchemaOutputResolver resolver
                     = result.toSchemaOutputResolver();
-
             context.generateSchema(resolver);
-
             resp.flushBuffer();
             return;
-
         } catch (JAXBException jaxbe) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                            jaxbe.getErrorCode() + ":" + jaxbe.getMessage());
@@ -74,5 +67,4 @@ public abstract class JAXBSchemaGeneratorServlet extends HttpServlet {
      * @throws JAXBException if a JAXB error occurs.
      */
     protected abstract JAXBContext getJAXBContext() throws JAXBException;
-
 }

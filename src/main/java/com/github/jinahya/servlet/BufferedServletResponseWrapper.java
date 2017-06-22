@@ -34,36 +34,29 @@ public class BufferedServletResponseWrapper extends ServletResponseWrapper {
      * @param response response
      */
     public BufferedServletResponseWrapper(final ServletResponse response) {
-
         super(response);
-
         outputStream = new BufferedServletOutputStream();
     }
 
     @Override
     public final void flushBuffer() throws IOException {
-
         if (writer != null) {
             writer.flush();
         }
-
         getOutputStream().flush();
     }
 
     @Override
     public final ServletOutputStream getOutputStream() throws IOException {
-
         return outputStream;
     }
 
     @Override
     public final PrintWriter getWriter() throws IOException {
-
         if (writer == null) {
             writer = new PrintWriter(new OutputStreamWriter(
                     getOutputStream(), getResponse().getCharacterEncoding()));
         }
-
         return writer;
     }
 
@@ -83,7 +76,6 @@ public class BufferedServletResponseWrapper extends ServletResponseWrapper {
      * @return buffered bytes
      */
     public final byte[] bytes() {
-
         return outputStream.bytes();
     }
 

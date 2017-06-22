@@ -28,13 +28,11 @@ public abstract class AbstractFilter implements Filter {
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
-
         this.filterConfig = filterConfig;
     }
 
     @Override
     public void destroy() {
-
         filterConfig = null;
     }
 
@@ -44,10 +42,8 @@ public abstract class AbstractFilter implements Filter {
      * @return a {@code FilterConfig}
      */
     protected FilterConfig filterConfig() {
-
         return filterConfig;
     }
 
     private transient FilterConfig filterConfig;
-
 }

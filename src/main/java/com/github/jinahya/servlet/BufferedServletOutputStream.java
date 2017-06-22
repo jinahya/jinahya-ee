@@ -31,29 +31,23 @@ public class BufferedServletOutputStream extends ServletOutputStream {
      * Creates a new instance.
      */
     public BufferedServletOutputStream() {
-
         super();
-
         outputStream = new ByteArrayOutputStream();
     }
 
     @Override
     public boolean isReady() {
-
         return true;
     }
 
     @Override
     public void setWriteListener(final WriteListener writeListener) {
-
         if (writeListener == null) {
             throw new NullPointerException("null writeListener");
         }
-
         if (this.writeListener != null) {
             throw new IllegalStateException("writeListener alread set");
         }
-
         this.writeListener = writeListener;
         try {
             this.writeListener.onWritePossible();
@@ -64,7 +58,6 @@ public class BufferedServletOutputStream extends ServletOutputStream {
 
     @Override
     public void write(final int b) throws IOException {
-
         outputStream.write(b);
     }
 
@@ -72,7 +65,6 @@ public class BufferedServletOutputStream extends ServletOutputStream {
      * Resets the underlying {@code ByteArrayOutputStream}.
      */
     public final void reset() {
-
         outputStream.reset();
     }
 
@@ -82,12 +74,10 @@ public class BufferedServletOutputStream extends ServletOutputStream {
      * @return buffered bytes
      */
     public final byte[] bytes() {
-
         return outputStream.toByteArray();
     }
 
     private final ByteArrayOutputStream outputStream;
 
     private WriteListener writeListener;
-
 }

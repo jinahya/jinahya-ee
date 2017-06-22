@@ -36,7 +36,6 @@ public class ServletResponseResult extends StreamResult {
      */
     public ServletResponseResult(final HttpServletResponse response)
             throws IOException {
-
         super(response.getOutputStream());
     }
 
@@ -47,11 +46,9 @@ public class ServletResponseResult extends StreamResult {
      * @param request servlet request
      */
     public void setSystemId(final HttpServletRequest request) {
-
         if (request == null) {
             throw new NullPointerException("null request");
         }
-
         setSystemId(request.getRequestURL().toString());
     }
 
@@ -61,18 +58,13 @@ public class ServletResponseResult extends StreamResult {
      * @return self as a SchemaOutputResolver.
      */
     public SchemaOutputResolver toSchemaOutputResolver() {
-
         return new SchemaOutputResolver() {
-
             @Override
             public Result createOutput(final String namespaceUri,
                                        final String suggestedFileName)
                     throws IOException {
-
                 return ServletResponseResult.this;
             }
-
         };
     }
-
 }

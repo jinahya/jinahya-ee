@@ -58,15 +58,12 @@ public abstract class HttpFilter extends AbstractFilter {
                          final ServletResponse response,
                          final FilterChain chain)
             throws IOException, ServletException {
-
         if (request instanceof HttpServletRequest
             && response instanceof HttpServletResponse) {
-
             doFilter((HttpServletRequest) request,
                      (HttpServletResponse) response, chain);
             return;
         }
-
         chain.doFilter(request, response);
     }
 
@@ -84,5 +81,4 @@ public abstract class HttpFilter extends AbstractFilter {
                                      HttpServletResponse response,
                                      FilterChain chain)
             throws IOException, ServletException;
-
 }

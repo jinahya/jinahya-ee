@@ -42,14 +42,11 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
     public static HttpServletRequest newPrecedingInstance(
             final HttpServletRequest request,
             final Map<String, List<String>> headers) {
-
         if (headers == null) {
             throw new NullPointerException("headers");
         }
-
         final HttpServletRequest instance
                 = new HeadersRequestWrapper(request, headers, null);
-
         return instance;
     }
 
@@ -65,18 +62,14 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
     public static HttpServletRequest newPrecedingInstance(
             final HttpServletRequest request,
             final String name, List<String> values) {
-
         if (name == null) {
             throw new NullPointerException("name");
         }
-
         if (values == null) {
             throw new NullPointerException("values");
         }
-
         final Map<String, List<String>> headers = new HashMap<>(1);
         headers.put(name, values);
-
         return newPrecedingInstance(request, headers);
     }
 
@@ -92,15 +85,12 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
     public static HttpServletRequest newPrecedingInstance(
             final HttpServletRequest request,
             final String name, final String value) {
-
         if (name == null) {
             throw new NullPointerException("name");
         }
-
         if (value == null) {
             throw new NullPointerException("value");
         }
-
         return newPrecedingInstance(
                 request, name, Arrays.asList(value));
     }
@@ -116,14 +106,11 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
     public static HttpServletRequest newSuccedingInstance(
             final HttpServletRequest request,
             final Map<String, List<String>> headers) {
-
         if (headers == null) {
             throw new NullPointerException("headers");
         }
-
         final HttpServletRequest instance
                 = new HeadersRequestWrapper(request, headers, null);
-
         return instance;
     }
 
@@ -139,18 +126,14 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
     public static HttpServletRequest newSucceedingInstance(
             final HttpServletRequest request,
             final String name, List<String> values) {
-
         if (name == null) {
             throw new NullPointerException("name");
         }
-
         if (values == null) {
             throw new NullPointerException("values");
         }
-
         final Map<String, List<String>> headers = new HashMap<>(1);
         headers.put(name, values);
-
         return newPrecedingInstance(request, headers);
     }
 
@@ -166,17 +149,13 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
     public static HttpServletRequest newSucceedingInstance(
             final HttpServletRequest request,
             final String name, final String value) {
-
         if (name == null) {
             throw new NullPointerException("name");
         }
-
         if (value == null) {
             throw new NullPointerException("value");
         }
-
-        return newPrecedingInstance(
-                request, name, Arrays.asList(value));
+        return newPrecedingInstance(request, name, Arrays.asList(value));
     }
 
     /**
@@ -192,11 +171,8 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
             final HttpServletRequest request,
             final Map<String, List<String>> precedingHeaders,
             final Map<String, List<String>> succeedingHeaders) {
-
         super(request);
-
         headers = new HashMap<>();
-
         if (precedingHeaders != null) {
             for (final String name : precedingHeaders.keySet()) {
                 List<String> values = headers.get(name);
@@ -258,12 +234,10 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      */
     @Override
     public Enumeration<String> getHeaders(final String name) {
-
         List<String> values = headers.get(name);
         if (values == null) {
             return Collections.emptyEnumeration();
         }
-
         return Collections.enumeration(values);
     }
 
@@ -274,7 +248,6 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      */
     @Override
     public Enumeration<String> getHeaderNames() {
-
         return Collections.enumeration(headers.keySet());
     }
 
@@ -282,5 +255,4 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      * aggregated headers.
      */
     private final Map<String, List<String>> headers;
-
 }

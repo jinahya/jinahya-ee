@@ -36,39 +36,29 @@ public class SchemaStreamingOutput implements StreamingOutput {
      * @param context the context.
      */
     public SchemaStreamingOutput(final JAXBContext context) {
-
         super();
-
         if (context == null) {
             throw new NullPointerException("context");
         }
-
         this.context = context;
     }
 
     @Override
     public void write(final OutputStream output) throws IOException {
-
         context.generateSchema(new SchemaOutputResolver() {
-
             @Override
             public Result createOutput(final String namespaceUri,
                                        final String suggestedFileName)
                     throws IOException {
-
                 return new StreamResult(output) {
-
                     @Override
                     public String getSystemId() {
                         return suggestedFileName;
                     }
-
                 };
             }
-
         });
     }
 
     private final JAXBContext context;
-
 }

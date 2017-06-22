@@ -24,5 +24,4 @@ import java.time.temporal.Temporal;
  */
 public interface MillisecondsParamTemporalConverter<T extends Temporal>
         extends MillisecondsParamConverter<T> {
-
 }

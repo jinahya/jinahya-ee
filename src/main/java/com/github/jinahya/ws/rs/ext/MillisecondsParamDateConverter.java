@@ -27,7 +27,6 @@ public class MillisecondsParamDateConverter
 
     @Override
     public Date fromString(final String value) {
-
         return millisecondsFromString(value)
                 .map(Date::new)
                 .orElse(null);
@@ -35,12 +34,10 @@ public class MillisecondsParamDateConverter
 
     @Override
     public String toString(final Date value) {
-
         return millisecondsToString(
                 ofNullable(value)
                         .map(Date::getTime)
                         .orElse(null)
         ).orElse(null);
     }
-
 }
