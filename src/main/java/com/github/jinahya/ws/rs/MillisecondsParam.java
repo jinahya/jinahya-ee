@@ -22,7 +22,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 @Documented

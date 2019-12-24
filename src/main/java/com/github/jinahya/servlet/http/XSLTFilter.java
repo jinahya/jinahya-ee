@@ -16,14 +16,7 @@
 package com.github.jinahya.servlet.http;
 
 import com.github.jinahya.servlet.AbstractFilter;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -38,6 +31,14 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 /**
  * XSLT Filter.
@@ -149,7 +150,6 @@ public abstract class XSLTFilter extends AbstractFilter {
 
             response.flushBuffer();
             return;
-
         } catch (TransformerException te) {
             ((HttpServletResponse) response).sendError(
                     HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
@@ -198,9 +198,8 @@ public abstract class XSLTFilter extends AbstractFilter {
     protected abstract String getOutputCharacterEncoding();
 
     /**
-     * Returns a <code>TransformerFactory</code> instance. The default
-     * implementation returns {@link TransformerFactory#newInstance()}. Override
-     * this method if you want to use a custom factory.
+     * Returns a <code>TransformerFactory</code> instance. The default implementation returns {@link
+     * TransformerFactory#newInstance()}. Override this method if you want to use a custom factory.
      *
      * @return a new instance of TransformerFactory.
      */
@@ -217,5 +216,4 @@ public abstract class XSLTFilter extends AbstractFilter {
      * transformerFactory.
      */
     private TransformerFactory transformerFactory;
-
 }

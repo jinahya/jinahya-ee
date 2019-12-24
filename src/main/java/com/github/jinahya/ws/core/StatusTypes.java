@@ -19,7 +19,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response.StatusType;
 
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class StatusTypes {
@@ -45,5 +44,4 @@ public class StatusTypes {
 
         super();
     }
-
 }

@@ -16,12 +16,12 @@
 package com.github.jinahya.ws.rs.ext;
 
 import com.github.jinahya.ws.rs.MillisecondsParam;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Date;
 
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public abstract class MillisecondsParamDateConverterProvider

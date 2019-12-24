@@ -16,15 +16,15 @@
 package com.github.jinahya.servlet.http;
 
 import com.github.jinahya.servlet.BufferedServletOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class BufferedResponseWrapper extends HttpServletResponseWrapper {

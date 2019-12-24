@@ -15,14 +15,14 @@
  */
 package com.github.jinahya.ws.rs.ext;
 
-import java.util.Optional;
-import static java.util.Optional.ofNullable;
 import javax.ws.rs.ext.ParamConverter;
+import java.util.Optional;
+
+import static java.util.Optional.ofNullable;
 
 /**
- *
- * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  * @param <T>
+ * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public interface MillisecondsParamConverter<T> extends ParamConverter<T> {
 

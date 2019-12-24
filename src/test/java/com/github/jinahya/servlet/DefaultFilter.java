@@ -15,16 +15,15 @@
  */
 package com.github.jinahya.servlet;
 
-import java.io.IOException;
-import java.util.logging.Logger;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class DefaultFilter extends AbstractFilter {
@@ -48,5 +47,4 @@ public class DefaultFilter extends AbstractFilter {
 
         super.destroy();
     }
-
 }

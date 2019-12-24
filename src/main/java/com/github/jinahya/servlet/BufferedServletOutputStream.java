@@ -15,10 +15,10 @@
  */
 package com.github.jinahya.servlet;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.WriteListener;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * Buffered implementation of ServletOutputStream.

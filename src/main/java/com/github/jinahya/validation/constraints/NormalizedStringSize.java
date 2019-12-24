@@ -16,16 +16,16 @@
 package com.github.jinahya.validation.constraints;
 
 import com.github.jinahya.validation.NormalizedStringSizeValidator;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import javax.validation.Constraint;
-import javax.validation.Payload;
 
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 @Constraint(validatedBy = NormalizedStringSizeValidator.class)
@@ -44,5 +44,4 @@ public @interface NormalizedStringSize {
     int min() default 0;
 
     int max() default Integer.MAX_VALUE;
-
 }

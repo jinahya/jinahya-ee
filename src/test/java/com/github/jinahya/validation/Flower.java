@@ -19,7 +19,6 @@ import com.github.jinahya.validation.constraints.CollapsedStringSize;
 import com.github.jinahya.validation.constraints.NormalizedStringSize;
 
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class Flower {
@@ -45,5 +44,4 @@ public class Flower {
 
     @NormalizedStringSize(min = 0, max = 40)
     private String meaning;
-
 }

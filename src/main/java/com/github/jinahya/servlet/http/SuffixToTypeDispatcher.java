@@ -15,12 +15,6 @@
  */
 package com.github.jinahya.servlet.http;
 
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.RequestDispatcher;
@@ -28,10 +22,15 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- * A {@link javax.servlet.Filter} implementation which dispatches suffixed path
- * to a typed path.
+ * A {@link javax.servlet.Filter} implementation which dispatches suffixed path to a typed path.
  *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
@@ -72,7 +71,7 @@ public class SuffixToTypeDispatcher extends HttpFilter {
         contextPathLength = contextPath.length();
 
         for (final Enumeration<String> e = config.getInitParameterNames();
-             e.hasMoreElements();) {
+             e.hasMoreElements(); ) {
             final String name = e.nextElement();
             final Matcher suffixMatcher = SUFFIX_PATTERN.matcher(name);
             if (!suffixMatcher.matches()) {
@@ -136,7 +135,7 @@ public class SuffixToTypeDispatcher extends HttpFilter {
 
         final ServletRequest wrapper
                 = HeadersRequestWrapper.newPrecedingInstance(
-                        request, "Accept", mediaType);
+                request, "Accept", mediaType);
         final RequestDispatcher dispatcher = request.getRequestDispatcher(path);
         dispatcher.forward(wrapper, response);
 
@@ -148,5 +147,4 @@ public class SuffixToTypeDispatcher extends HttpFilter {
     private transient int contextPathLength;
 
     private Map<String, String> map = null;
-
 }

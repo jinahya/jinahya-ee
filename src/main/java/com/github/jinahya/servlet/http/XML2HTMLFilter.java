@@ -58,5 +58,4 @@ public abstract class XML2HTMLFilter extends XSLTFilter {
     protected String getOutputContentType() {
         return MEDIA_TYPE_APPLICATION_XHTML_XML;
     }
-
 }

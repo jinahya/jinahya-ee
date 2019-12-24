@@ -1,8 +1,9 @@
 package com.github.jinahya.persistence;
 
-import static java.util.Optional.ofNullable;
-import java.util.UUID;
 import javax.persistence.AttributeConverter;
+import java.util.UUID;
+
+import static java.util.Optional.ofNullable;
 
 public class UuidAttributeStringConverter
         implements AttributeConverter<UUID, String> {

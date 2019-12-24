@@ -18,12 +18,11 @@ package com.github.jinahya.ws.core;
 import javax.ws.rs.core.Response.Status;
 
 /**
- * A status type for {@code 406 Not Acceptable} which is a member of
- * {@code Client Error 4xx}.
+ * A status type for {@code 406 Not Acceptable} which is a member of {@code Client Error 4xx}.
  *
+ * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  * @see <a href="http://tools.ietf.org/html/rfc2616#section-10.4.7">10.4.7 406
  * Not Acceptable (RFC 2616 Hypertext Transfer Protocol -- HTTP/1.1)</a>
- * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class NotAcceptable406 extends AbstractStatusType {
 
@@ -36,5 +35,4 @@ public class NotAcceptable406 extends AbstractStatusType {
 
         super(Status.NOT_ACCEPTABLE, reasonPhrase);
     }
-
 }

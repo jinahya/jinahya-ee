@@ -15,11 +15,11 @@
  */
 package com.github.jinahya.persistence;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.UUID;
-import org.testng.annotations.Test;
 
 /**
- *
  * @author Jin Kwon &lt;onacit at gmail.com&gt;
  */
 public class UuidAttributeStringConverterTest
@@ -29,12 +29,12 @@ public class UuidAttributeStringConverterTest
         super(UuidAttributeStringConverter.class);
     }
 
-    @Test(invocationCount = 128)
+    @Test
     public void withEntityAttribute() {
         withEntityAttribute(UUID.randomUUID());
     }
 
-    @Test(invocationCount = 128)
+    @Test
     public void withDatabaseColumn() {
         withDatabaseColumn(UUID.randomUUID().toString());
     }

@@ -16,12 +16,12 @@
 package com.github.jinahya.validation;
 
 import com.github.jinahya.validation.constraints.CollapsedStringSize;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class CollapsedStringSizeValidator

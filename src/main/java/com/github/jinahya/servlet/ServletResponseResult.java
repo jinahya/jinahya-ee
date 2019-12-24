@@ -15,15 +15,14 @@
  */
 package com.github.jinahya.servlet;
 
-import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
+import java.io.IOException;
 
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class ServletResponseResult extends StreamResult {

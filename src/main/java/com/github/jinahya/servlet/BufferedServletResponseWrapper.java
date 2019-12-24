@@ -15,15 +15,14 @@
  */
 package com.github.jinahya.servlet;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletResponse;
 import javax.servlet.ServletResponseWrapper;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class BufferedServletResponseWrapper extends ServletResponseWrapper {
@@ -88,5 +87,4 @@ public class BufferedServletResponseWrapper extends ServletResponseWrapper {
      * writer.
      */
     private PrintWriter writer;
-
 }

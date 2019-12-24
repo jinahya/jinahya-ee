@@ -15,15 +15,15 @@
  */
 package com.github.jinahya.ws.core;
 
-import static java.util.Optional.ofNullable;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response.Status.Family;
 import javax.ws.rs.core.Response.StatusType;
 
+import static java.util.Optional.ofNullable;
+
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public abstract class AbstractStatusType implements StatusType {
@@ -31,8 +31,8 @@ public abstract class AbstractStatusType implements StatusType {
     /**
      * Creates a new instance.
      *
-     * @param family the status family
-     * @param statusCode the HTTP status code
+     * @param family       the status family
+     * @param statusCode   the HTTP status code
      * @param reasonPhrase the HTTP reason phrase
      */
     protected AbstractStatusType(final Family family, final int statusCode,
@@ -46,10 +46,9 @@ public abstract class AbstractStatusType implements StatusType {
     }
 
     /**
-     * Creates a new instance with given {@code status} and
-     * {@code reasonPhrase}.
+     * Creates a new instance with given {@code status} and {@code reasonPhrase}.
      *
-     * @param statusCode the status code
+     * @param statusCode   the status code
      * @param reasonPhrase the HTTP reason phrase
      */
     public AbstractStatusType(final int statusCode, final String reasonPhrase) {
@@ -58,10 +57,9 @@ public abstract class AbstractStatusType implements StatusType {
     }
 
     /**
-     * Creates a new instance with given {@code status} and
-     * {@code reasonPhrase}.
+     * Creates a new instance with given {@code status} and {@code reasonPhrase}.
      *
-     * @param status the status to wrap
+     * @param status       the status to wrap
      * @param reasonPhrase the HTTP reason phrase
      */
     protected AbstractStatusType(final Status status,
@@ -92,7 +90,6 @@ public abstract class AbstractStatusType implements StatusType {
      * Returns a new response builder for this status type.
      *
      * @return a new response builder to build
-     *
      * @see Response#status(StatusType)
      */
     public Response.ResponseBuilder toResponseBuilder() {
@@ -104,7 +101,6 @@ public abstract class AbstractStatusType implements StatusType {
      * Returns a new response for this status type.
      *
      * @return a new response to respond.
-     *
      * @see #toResponseBuilder()
      */
     public Response toResponse() {
@@ -116,7 +112,6 @@ public abstract class AbstractStatusType implements StatusType {
      * Returns a new web application exception for this status type.
      *
      * @return a new web application exception to throw
-     *
      * @see #toResponse()
      */
     public WebApplicationException toWebApplicationException() {
@@ -129,5 +124,4 @@ public abstract class AbstractStatusType implements StatusType {
     private final int statusCode;
 
     private final String reasonPhrase;
-
 }

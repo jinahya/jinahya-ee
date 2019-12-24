@@ -15,13 +15,13 @@
  */
 package com.github.jinahya.persistence;
 
-import java.time.DayOfWeek;
-import static java.util.Optional.ofNullable;
 import javax.persistence.Converter;
+import java.time.DayOfWeek;
+
+import static java.util.Optional.ofNullable;
 
 /**
- * A converter for converting a {@link DayOfWeek} into an {@code Integer} and
- * vice versa.
+ * A converter for converting a {@link DayOfWeek} into an {@code Integer} and vice versa.
  *
  * @author Jin Kwon &lt;onacit@gmail.com&gt;
  */

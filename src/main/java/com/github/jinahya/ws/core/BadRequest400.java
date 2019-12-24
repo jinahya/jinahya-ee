@@ -18,15 +18,13 @@ package com.github.jinahya.ws.core;
 import javax.ws.rs.core.Response.Status;
 
 /**
- * A status type for {@code 400 Bad Request} which is a member of
- * {@code Client Error 4xx}.
+ * A status type for {@code 400 Bad Request} which is a member of {@code Client Error 4xx}.
  *
+ * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  * @see <a href="http://tools.ietf.org/html/rfc2616#section-10.4.1">10.4.1 400
  * Bad Request (RFC 2616 Hypertext Transfer Protocol -- HTTP/1.1)</a>
- * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
- * @deprecated Use
- * {@link StatusTypes#newInstance(javax.ws.rs.core.Response.Status, java.lang.String)}
- * with {@link Status#BAD_REQUEST} and {@code reasonPhrase}
+ * @deprecated Use {@link StatusTypes#newInstance(javax.ws.rs.core.Response.Status, java.lang.String)} with {@link
+ * Status#BAD_REQUEST} and {@code reasonPhrase}
  */
 @Deprecated
 public class BadRequest400 extends AbstractStatusType {
@@ -40,5 +38,4 @@ public class BadRequest400 extends AbstractStatusType {
 
         super(Status.BAD_REQUEST, reasonPhrase);
     }
-
 }

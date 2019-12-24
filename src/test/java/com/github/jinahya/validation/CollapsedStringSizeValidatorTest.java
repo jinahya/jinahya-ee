@@ -16,15 +16,16 @@
  */
 package com.github.jinahya.validation;
 
-import java.util.Set;
+import org.junit.jupiter.api.Test;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class CollapsedStringSizeValidatorTest {
@@ -41,7 +42,7 @@ public class CollapsedStringSizeValidatorTest {
         final Set<ConstraintViolation<Flower>> violation
                 = VALIDATOR_FACTORY.getValidator().validate(flower);
 
-        Assert.assertEquals(violation.size(), 1);
+        assertEquals(1, violation.size());
         System.out.println(violation.iterator().next());
     }
 
@@ -55,11 +56,10 @@ public class CollapsedStringSizeValidatorTest {
         final Set<ConstraintViolation<Flower>> violation
                 = VALIDATOR_FACTORY.getValidator().validate(flower);
 
-        Assert.assertEquals(violation.size(), 1);
+        assertEquals(1, violation.size());
         System.out.println(violation.iterator().next());
     }
 
     public void test() {
     }
-
 }

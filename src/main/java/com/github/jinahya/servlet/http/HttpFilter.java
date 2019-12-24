@@ -16,41 +16,35 @@
 package com.github.jinahya.servlet.http;
 
 import com.github.jinahya.servlet.AbstractFilter;
-import java.io.IOException;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
- * A {@code Filter} implementation which handles {@code HttpServletRequest} and
- * {@code HttpServletResponse}.
+ * A {@code Filter} implementation which handles {@code HttpServletRequest} and {@code HttpServletResponse}.
  *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public abstract class HttpFilter extends AbstractFilter {
 
     /**
-     * {@inheritDoc} The
-     * {@code doFilter(ServletRequest, ServletResponse, FilterChain)} method of
-     * {@code HttpFilter}, if {@code request} is an instance of
-     * {@link HttpServletRequest} and {@code response} is an instance of
-     * {@link HttpServletResponse}, invokes
-     * {@link #doFilter(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, javax.servlet.FilterChain)}
-     * or invokes
-     * {@link FilterChain#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse)}
-     * on given {@code filter} with specified {@code request} and
-     * {@code response}.
+     * {@inheritDoc} The {@code doFilter(ServletRequest, ServletResponse, FilterChain)} method of {@code HttpFilter}, if
+     * {@code request} is an instance of {@link HttpServletRequest} and {@code response} is an instance of {@link
+     * HttpServletResponse}, invokes {@link #doFilter(javax.servlet.http.HttpServletRequest,
+     * javax.servlet.http.HttpServletResponse, javax.servlet.FilterChain)} or invokes {@link
+     * FilterChain#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse)} on given {@code filter} with
+     * specified {@code request} and {@code response}.
      *
-     * @param request {@inheritDoc}
+     * @param request  {@inheritDoc}
      * @param response {@inheritDoc}
-     * @param chain {@inheritDoc}
-     *
-     * @throws IOException {@inheritDoc }
+     * @param chain    {@inheritDoc}
+     * @throws IOException      {@inheritDoc }
      * @throws ServletException {@inheritDoc }
-     *
      * @see #doFilter(HttpServletRequest, HttpServletResponse, FilterChain)
      */
     @Override
@@ -70,11 +64,10 @@ public abstract class HttpFilter extends AbstractFilter {
     /**
      * Does filtering on given arguments.
      *
-     * @param request the HTTP servlet request
+     * @param request  the HTTP servlet request
      * @param response the HTTP servlet response
-     * @param chain the filter chain
-     *
-     * @throws IOException if an I/O error occurs.
+     * @param chain    the filter chain
+     * @throws IOException      if an I/O error occurs.
      * @throws ServletException if a servlet related error occurs.
      */
     protected abstract void doFilter(HttpServletRequest request,

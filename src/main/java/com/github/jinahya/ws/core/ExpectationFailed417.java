@@ -18,8 +18,7 @@ package com.github.jinahya.ws.core;
 import javax.ws.rs.core.Response.Status;
 
 /**
- * A status type for {@code 417 Expectation Failed} which is a member of
- * {@code Client Error 4xx}.
+ * A status type for {@code 417 Expectation Failed} which is a member of {@code Client Error 4xx}.
  *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
@@ -34,5 +33,4 @@ public class ExpectationFailed417 extends AbstractStatusType {
 
         super(Status.EXPECTATION_FAILED, reasonPhrase);
     }
-
 }

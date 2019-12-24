@@ -16,7 +16,7 @@
 package com.github.jinahya.servlet.http;
 
 import com.github.jinahya.servlet.ServletResponseResult;
-import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,9 +24,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.SchemaOutputResolver;
+import java.io.IOException;
 
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public abstract class JAXBSchemaGeneratorServlet extends HttpServlet {

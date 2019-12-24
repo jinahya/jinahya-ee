@@ -16,10 +16,10 @@
 package com.github.jinahya.ws.rs.ext;
 
 import java.util.Date;
+
 import static java.util.Optional.ofNullable;
 
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class MillisecondsParamDateConverter

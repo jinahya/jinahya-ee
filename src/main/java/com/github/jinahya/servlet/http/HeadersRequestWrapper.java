@@ -15,6 +15,8 @@
  */
 package com.github.jinahya.servlet.http;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,11 +24,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class HeadersRequestWrapper extends HttpServletRequestWrapper {
@@ -36,7 +35,6 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      *
      * @param request the actual request
      * @param headers the preceding headers.
-     *
      * @return a new instance
      */
     public static HttpServletRequest newPrecedingInstance(
@@ -54,9 +52,8 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      * Creates a new instance with a preceding header.
      *
      * @param request the actual request
-     * @param name the preceding header name
-     * @param values the preceding header values.
-     *
+     * @param name    the preceding header name
+     * @param values  the preceding header values.
      * @return a new instance.
      */
     public static HttpServletRequest newPrecedingInstance(
@@ -77,9 +74,8 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      * Creates a new instance with a preceding header.
      *
      * @param request the actual request
-     * @param name the preceding header name
-     * @param value the preceding header value.
-     *
+     * @param name    the preceding header name
+     * @param value   the preceding header value.
      * @return a new instance
      */
     public static HttpServletRequest newPrecedingInstance(
@@ -100,7 +96,6 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      *
      * @param request the actual request
      * @param headers the succeeding headers.
-     *
      * @return a new instance
      */
     public static HttpServletRequest newSuccedingInstance(
@@ -118,9 +113,8 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      * Creates a new instance with a succeeding header.
      *
      * @param request the actual request
-     * @param name the succeeding header name
-     * @param values the succeeding header values.
-     *
+     * @param name    the succeeding header name
+     * @param values  the succeeding header values.
      * @return a new instance.
      */
     public static HttpServletRequest newSucceedingInstance(
@@ -141,9 +135,8 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      * Creates a new instance with a succeeding header.
      *
      * @param request the actual request
-     * @param name the succeeding header name
-     * @param value the succeeding header value.
-     *
+     * @param name    the succeeding header name
+     * @param value   the succeeding header value.
      * @return a new instance
      */
     public static HttpServletRequest newSucceedingInstance(
@@ -161,11 +154,9 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
     /**
      * Creates a new instance with {@code request} and additional headers.
      *
-     * @param request the request
-     * @param precedingHeaders additional headers precede requested headers;
-     * {@code null} allowed.
-     * @param succeedingHeaders additional header succeed requested headers;
-     * {@code null} allowed.
+     * @param request           the request
+     * @param precedingHeaders  additional headers precede requested headers; {@code null} allowed.
+     * @param succeedingHeaders additional header succeed requested headers; {@code null} allowed.
      */
     public HeadersRequestWrapper(
             final HttpServletRequest request,
@@ -185,7 +176,7 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
         }
 
         for (final Enumeration<String> names = request.getHeaderNames();
-             names.hasMoreElements();) {
+             names.hasMoreElements(); ) {
             final String name = names.nextElement();
             List<String> value = headers.get(name);
             if (value == null) {
@@ -211,7 +202,6 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      * {@inheritDoc}
      *
      * @param name {@inheritDoc}
-     *
      * @return {@inheritDoc}
      */
     @Override
@@ -229,7 +219,6 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      * {@inheritDoc}
      *
      * @param name {@inheritDoc}
-     *
      * @return {@inheritDoc}
      */
     @Override
