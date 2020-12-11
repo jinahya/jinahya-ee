@@ -1,0 +1,8 @@
+[submodule "dot-idea-codestyles"]
+	path = dot-idea-codestyles
+	url = https://github.com/onacit/dot-idea-codestyles.git
+	branch = master
+[submodule ".idea/codeStyles"]
+	path = .idea/codeStyles
+	url = https://github.com/onacit/dot-idea-codestyles.git
+	branch = master
