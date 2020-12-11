@@ -13,42 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.ws.rs.ext;
 
-
 import java.util.Date;
+
 import static java.util.Optional.ofNullable;
 
-
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class MillisecondsParamDateConverter
-    implements MillisecondsParamConverter<Date> {
-
+        implements MillisecondsParamConverter<Date> {
 
     @Override
     public Date fromString(final String value) {
-
         return millisecondsFromString(value)
-            .map(Date::new)
-            .orElse(null);
+                .map(Date::new)
+                .orElse(null);
     }
-
 
     @Override
     public String toString(final Date value) {
-
         return millisecondsToString(
-            ofNullable(value)
-            .map(Date::getTime)
-            .orElse(null)
+                ofNullable(value)
+                        .map(Date::getTime)
+                        .orElse(null)
         ).orElse(null);
     }
-
-
 }
-

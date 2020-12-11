@@ -16,8 +16,9 @@
 package com.github.jinahya.persistence;
 
 import javax.persistence.AttributeConverter;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.fail;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class AttributeConveterTest<T extends AttributeConverter<X, Y>, X, Y> {
 
@@ -39,16 +40,14 @@ public abstract class AttributeConveterTest<T extends AttributeConverter<X, Y>, 
         final T converterInstance = converterInstance();
         final Y databaseColumn
                 = converterInstance.convertToDatabaseColumn(entityAttribute);
-        assertEquals(converterInstance.convertToEntityAttribute(databaseColumn),
-                     entityAttribute);
+        assertEquals(entityAttribute, converterInstance.convertToEntityAttribute(databaseColumn));
     }
 
     protected void withDatabaseColumn(final Y databaseColumn) {
         final T converterInstance = converterInstance();
         final X entityAttribute
                 = converterInstance.convertToEntityAttribute(databaseColumn);
-        assertEquals(converterInstance.convertToDatabaseColumn(entityAttribute),
-                     databaseColumn);
+        assertEquals(databaseColumn, converterInstance.convertToDatabaseColumn(entityAttribute));
     }
 
     protected final Class<T> converterClass;

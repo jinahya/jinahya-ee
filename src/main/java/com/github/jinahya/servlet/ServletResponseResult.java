@@ -13,28 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.servlet;
-
-
-import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import javax.xml.bind.SchemaOutputResolver;
-
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
-
+import java.io.IOException;
 
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class ServletResponseResult extends StreamResult {
-
 
     /**
      * Creates a new instance.
@@ -43,11 +34,9 @@ public class ServletResponseResult extends StreamResult {
      * @throws IOException if an I/O error occurs.
      */
     public ServletResponseResult(final HttpServletResponse response)
-        throws IOException {
-
+            throws IOException {
         super(response.getOutputStream());
     }
-
 
     /**
      * Sets systemId with given <code>request</code>'s
@@ -56,14 +45,11 @@ public class ServletResponseResult extends StreamResult {
      * @param request servlet request
      */
     public void setSystemId(final HttpServletRequest request) {
-
         if (request == null) {
             throw new NullPointerException("null request");
         }
-
         setSystemId(request.getRequestURL().toString());
     }
-
 
     /**
      * Returns self as a SchemaOutputResolver.
@@ -71,22 +57,13 @@ public class ServletResponseResult extends StreamResult {
      * @return self as a SchemaOutputResolver.
      */
     public SchemaOutputResolver toSchemaOutputResolver() {
-
         return new SchemaOutputResolver() {
-
-
             @Override
             public Result createOutput(final String namespaceUri,
                                        final String suggestedFileName)
-                throws IOException {
-
+                    throws IOException {
                 return ServletResponseResult.this;
             }
-
-
         };
     }
-
-
 }
-

@@ -13,67 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.servlet.http;
 
-
-import java.io.IOException;
+import com.github.jinahya.servlet.ServletResponseResult;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.SchemaOutputResolver;
-
-import com.github.jinahya.servlet.ServletResponseResult;
-
+import java.io.IOException;
 
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public abstract class JAXBSchemaGeneratorServlet extends HttpServlet {
 
-
-    /** GENERATED. */
+    /**
+     * GENERATED.
+     */
     private static final long serialVersionUID = -4515187927939394335L;
-
 
     @Override
     protected void doGet(final HttpServletRequest req,
                          final HttpServletResponse resp)
-        throws ServletException, IOException {
-
+            throws ServletException, IOException {
         try {
             final JAXBContext context = getJAXBContext();
-
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.setContentType("application/xml");
             resp.setCharacterEncoding("UTF-8");
-
-            final ServletResponseResult result =
-                new ServletResponseResult(resp);
+            final ServletResponseResult result
+                    = new ServletResponseResult(resp);
             result.setSystemId(req);
-
-            final SchemaOutputResolver resolver =
-                result.toSchemaOutputResolver();
-
+            final SchemaOutputResolver resolver
+                    = result.toSchemaOutputResolver();
             context.generateSchema(resolver);
-
             resp.flushBuffer();
             return;
-
         } catch (JAXBException jaxbe) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                            jaxbe.getErrorCode() + ":" + jaxbe.getMessage());
             return;
         }
     }
-
 
     /**
      * Creates the JAXBContex for generating schema.
@@ -82,7 +67,4 @@ public abstract class JAXBSchemaGeneratorServlet extends HttpServlet {
      * @throws JAXBException if a JAXB error occurs.
      */
     protected abstract JAXBContext getJAXBContext() throws JAXBException;
-
-
 }
-

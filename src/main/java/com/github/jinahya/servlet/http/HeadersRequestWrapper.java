@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.servlet.http;
 
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,189 +24,146 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-
 
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class HeadersRequestWrapper extends HttpServletRequestWrapper {
-
 
     /**
      * Creates a new instance with preceding headers.
      *
      * @param request the actual request
      * @param headers the preceding headers.
-     *
      * @return a new instance
      */
     public static HttpServletRequest newPrecedingInstance(
-        final HttpServletRequest request,
-        final Map<String, List<String>> headers) {
-
+            final HttpServletRequest request,
+            final Map<String, List<String>> headers) {
         if (headers == null) {
             throw new NullPointerException("headers");
         }
-
         final HttpServletRequest instance
-            = new HeadersRequestWrapper(request, headers, null);
-
+                = new HeadersRequestWrapper(request, headers, null);
         return instance;
     }
 
-
     /**
      * Creates a new instance with a preceding header.
      *
      * @param request the actual request
-     * @param name the preceding header name
-     * @param values the preceding header values.
-     *
+     * @param name    the preceding header name
+     * @param values  the preceding header values.
      * @return a new instance.
      */
     public static HttpServletRequest newPrecedingInstance(
-        final HttpServletRequest request,
-        final String name, List<String> values) {
-
+            final HttpServletRequest request,
+            final String name, List<String> values) {
         if (name == null) {
             throw new NullPointerException("name");
         }
-
         if (values == null) {
             throw new NullPointerException("values");
         }
-
         final Map<String, List<String>> headers = new HashMap<>(1);
         headers.put(name, values);
-
         return newPrecedingInstance(request, headers);
     }
-
 
     /**
      * Creates a new instance with a preceding header.
      *
      * @param request the actual request
-     * @param name the preceding header name
-     * @param value the preceding header value.
-     *
+     * @param name    the preceding header name
+     * @param value   the preceding header value.
      * @return a new instance
      */
     public static HttpServletRequest newPrecedingInstance(
-        final HttpServletRequest request,
-        final String name, final String value) {
-
+            final HttpServletRequest request,
+            final String name, final String value) {
         if (name == null) {
             throw new NullPointerException("name");
         }
-
         if (value == null) {
             throw new NullPointerException("value");
         }
-
         return newPrecedingInstance(
-            request, name, Arrays.asList(value));
+                request, name, Arrays.asList(value));
     }
-
 
     /**
      * Creates a new instance with succeeding headers.
      *
      * @param request the actual request
      * @param headers the succeeding headers.
-     *
      * @return a new instance
      */
     public static HttpServletRequest newSuccedingInstance(
-        final HttpServletRequest request,
-        final Map<String, List<String>> headers) {
-
+            final HttpServletRequest request,
+            final Map<String, List<String>> headers) {
         if (headers == null) {
             throw new NullPointerException("headers");
         }
-
         final HttpServletRequest instance
-            = new HeadersRequestWrapper(request, headers, null);
-
+                = new HeadersRequestWrapper(request, headers, null);
         return instance;
     }
 
-
     /**
      * Creates a new instance with a succeeding header.
      *
      * @param request the actual request
-     * @param name the succeeding header name
-     * @param values the succeeding header values.
-     *
+     * @param name    the succeeding header name
+     * @param values  the succeeding header values.
      * @return a new instance.
      */
     public static HttpServletRequest newSucceedingInstance(
-        final HttpServletRequest request,
-        final String name, List<String> values) {
-
+            final HttpServletRequest request,
+            final String name, List<String> values) {
         if (name == null) {
             throw new NullPointerException("name");
         }
-
         if (values == null) {
             throw new NullPointerException("values");
         }
-
         final Map<String, List<String>> headers = new HashMap<>(1);
         headers.put(name, values);
-
         return newPrecedingInstance(request, headers);
     }
-
 
     /**
      * Creates a new instance with a succeeding header.
      *
      * @param request the actual request
-     * @param name the succeeding header name
-     * @param value the succeeding header value.
-     *
+     * @param name    the succeeding header name
+     * @param value   the succeeding header value.
      * @return a new instance
      */
     public static HttpServletRequest newSucceedingInstance(
-        final HttpServletRequest request,
-        final String name, final String value) {
-
+            final HttpServletRequest request,
+            final String name, final String value) {
         if (name == null) {
             throw new NullPointerException("name");
         }
-
         if (value == null) {
             throw new NullPointerException("value");
         }
-
-        return newPrecedingInstance(
-            request, name, Arrays.asList(value));
+        return newPrecedingInstance(request, name, Arrays.asList(value));
     }
-
 
     /**
      * Creates a new instance with {@code request} and additional headers.
      *
-     * @param request the request
-     * @param precedingHeaders additional headers precede requested headers;
-     * {@code null} allowed.
-     * @param succeedingHeaders additional header succeed requested headers;
-     * {@code null} allowed.
+     * @param request           the request
+     * @param precedingHeaders  additional headers precede requested headers; {@code null} allowed.
+     * @param succeedingHeaders additional header succeed requested headers; {@code null} allowed.
      */
     public HeadersRequestWrapper(
-        final HttpServletRequest request,
-        final Map<String, List<String>> precedingHeaders,
-        final Map<String, List<String>> succeedingHeaders) {
-
+            final HttpServletRequest request,
+            final Map<String, List<String>> precedingHeaders,
+            final Map<String, List<String>> succeedingHeaders) {
         super(request);
-
         headers = new HashMap<>();
-
         if (precedingHeaders != null) {
             for (final String name : precedingHeaders.keySet()) {
                 List<String> values = headers.get(name);
@@ -220,7 +176,7 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
         }
 
         for (final Enumeration<String> names = request.getHeaderNames();
-             names.hasMoreElements();) {
+             names.hasMoreElements(); ) {
             final String name = names.nextElement();
             List<String> value = headers.get(name);
             if (value == null) {
@@ -242,12 +198,10 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
         }
     }
 
-
     /**
      * {@inheritDoc}
      *
      * @param name {@inheritDoc}
-     *
      * @return {@inheritDoc}
      */
     @Override
@@ -261,25 +215,20 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
         return null;
     }
 
-
     /**
      * {@inheritDoc}
      *
      * @param name {@inheritDoc}
-     *
      * @return {@inheritDoc}
      */
     @Override
     public Enumeration<String> getHeaders(final String name) {
-
         List<String> values = headers.get(name);
         if (values == null) {
             return Collections.emptyEnumeration();
         }
-
         return Collections.enumeration(values);
     }
-
 
     /**
      * {@inheritDoc}
@@ -288,15 +237,11 @@ public class HeadersRequestWrapper extends HttpServletRequestWrapper {
      */
     @Override
     public Enumeration<String> getHeaderNames() {
-
         return Collections.enumeration(headers.keySet());
     }
-
 
     /**
      * aggregated headers.
      */
     private final Map<String, List<String>> headers;
-
 }
-

@@ -13,20 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.github.jinahya.ws.core;
-
 
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response.StatusType;
 
-
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class StatusTypes {
-
 
     public static StatusType newInstance(final int statusCode,
                                          final String reasonPhrase) {
@@ -34,7 +29,6 @@ public class StatusTypes {
         return new AbstractStatusType(statusCode, reasonPhrase) {
         };
     }
-
 
     public static StatusType newInstance(final Status status,
                                          final String reasonPhrase) {
@@ -46,11 +40,8 @@ public class StatusTypes {
         return newInstance(status.getStatusCode(), reasonPhrase);
     }
 
-
     protected StatusTypes() {
 
         super();
     }
-
 }
-

@@ -13,21 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.ws.core;
-
 
 import javax.ws.rs.core.Response.Status;
 
-
 /**
- * A status type for {@code 401 Unauthorized} which is a member of
- * {@code Client Error 4xx}.
+ * A status type for {@code 401 Unauthorized} which is a member of {@code Client Error 4xx}.
  *
+ * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  * @see <a href="http://tools.ietf.org/html/rfc2616#section-10.4.2">10.4.2 401
  * Unauthorized (RFC 2616 Hypertext Transfer Protocol -- HTTP/1.1)</a>
- * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class Unauthorized401 extends AbstractStatusType {
 
@@ -40,6 +35,4 @@ public class Unauthorized401 extends AbstractStatusType {
 
         super(Status.UNAUTHORIZED, reasonPhrase);
     }
-
-
 }

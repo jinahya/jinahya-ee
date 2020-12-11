@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Jin Kwon &lt;onacit at gmail.com&gt;.
+ * Copyright 2017 Jin Kwon &lt;onacit@gmail.com&gt;.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,27 +15,14 @@
  */
 package com.github.jinahya.persistence;
 
-import org.junit.jupiter.api.Test;
-
-import java.util.UUID;
+import javax.persistence.AttributeConverter;
 
 /**
- * @author Jin Kwon &lt;onacit at gmail.com&gt;
+ * An attribute converter for enums.
+ *
+ * @author Jin Kwon &lt;onacit@gmail.com&gt;
  */
-public class UuidAttributeStringConverterTest
-        extends AttributeConveterTest<UuidAttributeStringConverter, UUID, String> {
+public interface EnumAttributeConverter<E extends Enum<E>, Y>
+        extends AttributeConverter<E, Y> {
 
-    public UuidAttributeStringConverterTest() {
-        super(UuidAttributeStringConverter.class);
-    }
-
-    @Test
-    public void withEntityAttribute() {
-        withEntityAttribute(UUID.randomUUID());
-    }
-
-    @Test
-    public void withDatabaseColumn() {
-        withDatabaseColumn(UUID.randomUUID().toString());
-    }
 }

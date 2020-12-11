@@ -13,24 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.ws.core;
-
 
 import javax.ws.rs.core.Response.Status;
 
-
 /**
- * A status type for {@code 500 Internal Server Error} which is a member of
- * {@code Server Error 5xx}.
+ * A status type for {@code 500 Internal Server Error} which is a member of {@code Server Error 5xx}.
  *
+ * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  * @see <a href="http://tools.ietf.org/html/rfc2616#section-10.5.1">10.5.1 500
  * Internal Server Error (RFC 2616 Hypertext Transfer Protocol -- HTTP/1.1)</a>
- * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public class InternalServerError500 extends AbstractStatusType {
-
 
     /**
      * Creates a new instance with given reason phrase.
@@ -41,6 +35,4 @@ public class InternalServerError500 extends AbstractStatusType {
 
         super(Status.INTERNAL_SERVER_ERROR, reasonPhrase);
     }
-
-
 }

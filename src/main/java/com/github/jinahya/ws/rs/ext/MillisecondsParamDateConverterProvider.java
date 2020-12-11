@@ -13,43 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.github.jinahya.ws.rs.ext;
 
-
 import com.github.jinahya.ws.rs.MillisecondsParam;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Date;
 
-
 /**
- *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
 public abstract class MillisecondsParamDateConverterProvider
-    implements MillisecondsParamConverterProvider<MillisecondsParamDateConverter> {
-
+        implements MillisecondsParamConverterProvider<MillisecondsParamDateConverter> {
 
     @Override
     public <S> MillisecondsParamDateConverter getMillisecondsConverter(
-        final Class<S> rawType, final Type genericType,
-        final Annotation[] annotations) {
-
+            final Class<S> rawType, final Type genericType,
+            final Annotation[] annotations) {
         if (!Date.class.isAssignableFrom(rawType)) {
             return null;
         }
-
         for (final Annotation annotation : annotations) {
             if (MillisecondsParam.class.isInstance(annotation)) {
                 return new MillisecondsParamDateConverter();
             }
         }
-
         return null;
     }
-
-
 }
-
