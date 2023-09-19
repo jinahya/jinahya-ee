@@ -13,6 +13,8 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * .
@@ -45,37 +47,68 @@ public abstract class _PersistableColor implements _Persistable {
     // -----------------------------------------------------------------------------------------------------------------
     private static final String PATTERN_HEX_CHAR = "[0-9a-f]";
 
-    private static final String PATTERN_HEXADECIMAL_NOTATION3 = PATTERN_HEX_CHAR + "{3}";
+    private static final String REGEXP_CSS_HEXADECIMAL_NOTATION3 = PATTERN_HEX_CHAR + "{3}";
 
-    private static final String PATTERN_HEXADECIMAL_NOTATION4 = PATTERN_HEX_CHAR + "{4}";
+    static final Pattern PATTERN_CSS_HEXADECIMAL_NOTATION3 = Pattern.compile(REGEXP_CSS_HEXADECIMAL_NOTATION3);
 
-    private static final String PATTERN_HEXADECIMAL_NOTATION6 = PATTERN_HEX_CHAR + "{6}";
+    private static final String REGEXP_CSS_HEXADECIMAL_NOTATION4 = PATTERN_HEX_CHAR + "{4}";
 
-    private static final String PATTERN_HEXADECIMAL_NOTATION8 = PATTERN_HEX_CHAR + "{8}";
+    static final Pattern PATTERN_CSS_HEXADECIMAL_NOTATION4 = Pattern.compile(REGEXP_CSS_HEXADECIMAL_NOTATION4);
 
-    private static final String PATTERN_HEXADECIMAL_NOTATION =
-            '(' + PATTERN_HEX_CHAR + "{3}|(?1){4}|(?1){6}|(?1){8}|(?1){4})";
+    private static final String REGEXP_CSS_HEXADECIMAL_NOTATION6 = PATTERN_HEX_CHAR + "{6}";
+
+    static final Pattern PATTERN_CSS_HEXADECIMAL_NOTATION6 = Pattern.compile(REGEXP_CSS_HEXADECIMAL_NOTATION6);
+
+    private static final String REGEXP_CSS_HEXADECIMAL_NOTATION8 = PATTERN_HEX_CHAR + "{8}";
+
+    static final Pattern PATTERN_CSS_HEXADECIMAL_NOTATION8 = Pattern.compile(REGEXP_CSS_HEXADECIMAL_NOTATION8);
+
+    // https://stackoverflow.com/q/47633735/330457
+    private static final String REGEXP_CSS_HEXADECIMAL_NOTATION =
+            REGEXP_CSS_HEXADECIMAL_NOTATION3 + '|' +
+            REGEXP_CSS_HEXADECIMAL_NOTATION4 + '|' +
+            REGEXP_CSS_HEXADECIMAL_NOTATION6 + '|' +
+            REGEXP_CSS_HEXADECIMAL_NOTATION8;
+
+    static final Pattern PATTERN_CSS_HEXADECIMAL_NOTATION = Pattern.compile(REGEXP_CSS_HEXADECIMAL_NOTATION);
 
     // -----------------------------------------------------------------------------------------------------------------
-    public static <T extends _PersistableColor> T fromHexadecimalNotation3(final Supplier<? extends T> instanceSupplier,
-                                                                           final String hexadecimalNotation) {
-        Objects.requireNonNull(instanceSupplier, "instanceSupplier is null");
-        Objects.requireNonNull(hexadecimalNotation, "hexadecimalNotation is null");
-        final var nibbles = new ArrayList<Integer>(8);
-        try (var scanner = new Scanner(hexadecimalNotation.toLowerCase())) {
-            while (scanner.hasNext()) {
-                nibbles.add(Integer.parseInt(scanner.next(PATTERN_HEX_CHAR), 16));
+    public static <T extends _PersistableColor> T fromCssRgbHexadecimalNotation(
+            final Supplier<? extends T> initializer, final CharSequence cssRgbHexadecimalNotation) {
+        Objects.requireNonNull(initializer, "initializer is null");
+        Objects.requireNonNull(cssRgbHexadecimalNotation, "cssRgbHexadecimalNotation is null");
+        if (!PATTERN_CSS_HEXADECIMAL_NOTATION.matcher(cssRgbHexadecimalNotation).matches()) {
+            throw new IllegalArgumentException("invalid CSS RGB Hexadecimal Notation: " + cssRgbHexadecimalNotation);
+        }
+        final T instance = Objects.requireNonNull(initializer.get(), "null supplied from " + initializer);
+        final var nibbles = String.valueOf(cssRgbHexadecimalNotation).chars().map(c -> Character.digit(c, 16)).boxed().collect(Collectors.toList());
+        if (nibbles.size() == 3 || nibbles.size() == 4) {
+            final var r = nibbles.remove(0);
+            instance.setRed((r << 4) | r);
+            final var g = nibbles.remove(0);
+            instance.setGreen((g << 4) | g);
+            final var b = nibbles.remove(0);
+            instance.setBlue((b << 4) | b);
+            if (nibbles.isEmpty()) {
+                instance.setAlpha(0);
+            } else {
+                final var a = nibbles.remove(0);
+                instance.setAlpha((a << 4) | a);
             }
+            assert nibbles.isEmpty();
+            return instance;
         }
-        if (nibbles.size() == 8) {
+        assert nibbles.size() == 6 || nibbles.size() == 8;
+        instance.setRed((nibbles.remove(0) << 4) | nibbles.remove(0));
+        instance.setGreen((nibbles.remove(0) << 4) | nibbles.remove(0));
+        instance.setBlue((nibbles.remove(0) << 4) | nibbles.remove(0));
+        if (nibbles.isEmpty()) {
+            instance.setAlpha(0);
+        } else {
+            instance.setAlpha((nibbles.remove(0) << 4) | nibbles.remove(0));
         }
-        if (nibbles.size() == 6) {
-        }
-        if (nibbles.size() == 4) {
-        }
-        if (nibbles.size() == 3) {
-        }
-        return null;
+        assert nibbles.isEmpty();
+        return instance;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -149,15 +182,15 @@ public abstract class _PersistableColor implements _Persistable {
         Objects.requireNonNull(function, "function is null");
         return apply(
                 r -> g -> b -> a ->
-                        function.apply(r >> Short.SIZE)
-                                .apply(g >> Short.SIZE)
-                                .apply(b >> Short.SIZE)
-                                .apply(a >> Short.SIZE)
+                        function.apply(r >> 4)
+                                .apply(g >> 4)
+                                .apply(b >> 4)
+                                .apply(a >> 4)
         );
     }
 
     @SuppressWarnings({"unchecked"})
-    public <A extends Appendable> A toHexadecimalNotation3(final A appendable) {
+    public <A extends Appendable> A toCssRgbHexadecimalNotation3(final A appendable) {
         Objects.requireNonNull(appendable, "appendable is null");
         return (A) applyHigh(
                 r -> g -> b -> a -> new Formatter(appendable).format("%1$x%2$x%3$x", r, g, b).out()
@@ -165,7 +198,7 @@ public abstract class _PersistableColor implements _Persistable {
     }
 
     @SuppressWarnings({"unchecked"})
-    public <A extends Appendable> A toHexadecimalNotation6(final A appendable) {
+    public <A extends Appendable> A toCssRgbHexadecimalNotation6(final A appendable) {
         Objects.requireNonNull(appendable, "appendable is null");
         return (A) apply(
                 r -> g -> b -> a -> new Formatter(appendable).format("%1$02x%2$02x%3$02x", r, g, b).out()
@@ -173,35 +206,35 @@ public abstract class _PersistableColor implements _Persistable {
     }
 
     @SuppressWarnings({"unchecked"})
-    public <A extends Appendable> A toHexadecimalNotation4(final A appendable) {
+    public <A extends Appendable> A toCssRgbHexadecimalNotation4(final A appendable) {
         Objects.requireNonNull(appendable, "appendable is null");
         return (A) applyHigh(
-                r -> g -> b -> a -> new Formatter(appendable).format("1$%x%2$x%x%3$x%4$x", r, g, b, a).out()
+                r -> g -> b -> a -> new Formatter(appendable).format("%1$x%2$x%3$x%4$x", r, g, b, a).out()
         );
     }
 
     @SuppressWarnings({"unchecked"})
-    public <A extends Appendable> A toHexadecimalNotation8(final A appendable) {
+    public <A extends Appendable> A toCssRgbHexadecimalNotation8(final A appendable) {
         Objects.requireNonNull(appendable, "appendable is null");
         return (A) apply(
                 r -> g -> b -> a -> new Formatter(appendable).format("%1$02x%2$02x%3$02x%4$02x", r, g, b, a).out()
         );
     }
 
-    public String toHexadecimalNotation3() {
-        return toHexadecimalNotation3(new StringBuilder()).toString();
+    public String toCssRgbHexadecimalNotation3() {
+        return toCssRgbHexadecimalNotation3(new StringBuilder()).toString();
     }
 
-    public String toHexadecimalNotation6() {
-        return toHexadecimalNotation6(new StringBuilder()).toString();
+    public String toCssRgbHexadecimalNotation6() {
+        return toCssRgbHexadecimalNotation6(new StringBuilder()).toString();
     }
 
-    public String toHexadecimalNotation4() {
-        return toHexadecimalNotation4(new StringBuilder()).toString();
+    public String toCssRgbHexadecimalNotation4() {
+        return toCssRgbHexadecimalNotation4(new StringBuilder()).toString();
     }
 
-    public String toHexadecimalNotation8() {
-        return toHexadecimalNotation8(new StringBuilder()).toString();
+    public String toCssRgbHexadecimalNotation8() {
+        return toCssRgbHexadecimalNotation8(new StringBuilder()).toString();
     }
 
     // ------------------------------------------------------------------------------------------------------------- red
