@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 @SuppressWarnings({
         "java:S101" // _Persistable...
 })
-public abstract class _PersistableInstant implements _Persistable {
+public abstract class _PersistableInstant extends _AbstractPersistable {
 
     @Serial
     private static final long serialVersionUID = -6521255355577442373L;
@@ -47,7 +47,7 @@ public abstract class _PersistableInstant implements _Persistable {
         Objects.requireNonNull(initializer, "initializer is null");
         Objects.requireNonNull(instant, "instant is null");
         final T instance = Objects.requireNonNull(initializer.get(), "null supplied from " + initializer);
-        instance.setEpochSecond(instance.getEpochSecond());
+        instance.setEpochSecond(instant.getEpochSecond());
         instance.setNano(instant.getNano());
         return instance;
     }
@@ -73,23 +73,26 @@ public abstract class _PersistableInstant implements _Persistable {
 
     @Override
     public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof _PersistableInstant)) {
+        if (this == obj) return true;
+        if (!(obj instanceof _PersistableInstant that)) return false;
+        if (!super.equals(obj)) {
             return false;
         }
-        final _PersistableInstant that = (_PersistableInstant) obj;
+        ;
         return Objects.equals(epochSecond, that.epochSecond)
                && Objects.equals(nano, that.nano);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(epochSecond, nano);
+        return Objects.hash(
+                super.hashCode(),
+                epochSecond,
+                nano
+        );
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 
     public OffsetDateTime toOffsetDateTime(final ZoneId zone) {
         Objects.requireNonNull(zone, "zone is null");

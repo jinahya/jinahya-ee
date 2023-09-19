@@ -7,10 +7,8 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.ArrayList;
-import java.util.Formatter;
+import java.io.Serial;
 import java.util.Objects;
-import java.util.Scanner;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
@@ -27,7 +25,10 @@ import java.util.stream.Collectors;
 @SuppressWarnings({
         "java:S101" // _Persistable...
 })
-public abstract class _PersistableColor implements _Persistable {
+public abstract class _PersistableColor extends _AbstractPersistable {
+
+    @Serial
+    private static final long serialVersionUID = -5630953064592505401L;
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -132,23 +133,26 @@ public abstract class _PersistableColor implements _Persistable {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
         if (!(obj instanceof _PersistableColor that)) {
             return false;
         }
+        if (!super.equals(obj)) {
+            return false;
+        }
         return Objects.equals(red, that.red)
                && Objects.equals(green, that.green)
                && Objects.equals(blue, that.blue)
-               && Objects.equals(alpha, that.alpha)
-                ;
+               && Objects.equals(alpha, that.alpha);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
+                super.hashCode(),
                 red,
                 green,
                 blue,
@@ -156,9 +160,9 @@ public abstract class _PersistableColor implements _Persistable {
         );
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 
-    public <R> R apply(
+    protected <R> R apply(
             final IntFunction<
                     ? extends IntFunction<
                             ? extends IntFunction<
@@ -173,7 +177,7 @@ public abstract class _PersistableColor implements _Persistable {
                 ;
     }
 
-    public <R> R applyHigh(
+    protected <R> R applyHigh(
             final IntFunction<
                     ? extends IntFunction<
                             ? extends IntFunction<
@@ -189,52 +193,20 @@ public abstract class _PersistableColor implements _Persistable {
         );
     }
 
-    @SuppressWarnings({"unchecked"})
-    public <A extends Appendable> A toCssRgbHexadecimalNotation3(final A appendable) {
-        Objects.requireNonNull(appendable, "appendable is null");
-        return (A) applyHigh(
-                r -> g -> b -> a -> new Formatter(appendable).format("%1$x%2$x%3$x", r, g, b).out()
-        );
-    }
-
-    @SuppressWarnings({"unchecked"})
-    public <A extends Appendable> A toCssRgbHexadecimalNotation6(final A appendable) {
-        Objects.requireNonNull(appendable, "appendable is null");
-        return (A) apply(
-                r -> g -> b -> a -> new Formatter(appendable).format("%1$02x%2$02x%3$02x", r, g, b).out()
-        );
-    }
-
-    @SuppressWarnings({"unchecked"})
-    public <A extends Appendable> A toCssRgbHexadecimalNotation4(final A appendable) {
-        Objects.requireNonNull(appendable, "appendable is null");
-        return (A) applyHigh(
-                r -> g -> b -> a -> new Formatter(appendable).format("%1$x%2$x%3$x%4$x", r, g, b, a).out()
-        );
-    }
-
-    @SuppressWarnings({"unchecked"})
-    public <A extends Appendable> A toCssRgbHexadecimalNotation8(final A appendable) {
-        Objects.requireNonNull(appendable, "appendable is null");
-        return (A) apply(
-                r -> g -> b -> a -> new Formatter(appendable).format("%1$02x%2$02x%3$02x%4$02x", r, g, b, a).out()
-        );
-    }
-
     public String toCssRgbHexadecimalNotation3() {
-        return toCssRgbHexadecimalNotation3(new StringBuilder()).toString();
-    }
-
-    public String toCssRgbHexadecimalNotation6() {
-        return toCssRgbHexadecimalNotation6(new StringBuilder()).toString();
+        return applyHigh(r -> g -> b -> a -> String.format("%1$x%2$x%3$x", r, g, b));
     }
 
     public String toCssRgbHexadecimalNotation4() {
-        return toCssRgbHexadecimalNotation4(new StringBuilder()).toString();
+        return applyHigh(r -> g -> b -> a -> String.format("%1$x%2$x%3$x%4$x", r, g, b, a));
+    }
+
+    public String toCssRgbHexadecimalNotation6() {
+        return apply(r -> g -> b -> a -> String.format("%1$02x%2$02x%3$02x", r, g, b));
     }
 
     public String toCssRgbHexadecimalNotation8() {
-        return toCssRgbHexadecimalNotation8(new StringBuilder()).toString();
+        return apply(r -> g -> b -> a -> String.format("%1$02x%2$02x%3$02x%4$02x", r, g, b, a));
     }
 
     // ------------------------------------------------------------------------------------------------------------- red

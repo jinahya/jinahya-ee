@@ -3,30 +3,34 @@ package com.github.jinahya.persistence;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-abstract class _PersistableTest<T extends _Persistable> {
+abstract class _PersistableTest<P extends _Persistable> {
 
-    _PersistableTest(final Class<T> persistableClass) {
+    _PersistableTest(final Class<P> entityClass) {
         super();
-        this.persistableClass = Objects.requireNonNull(persistableClass, "persistableClass is null");
-        initializerOfNew = this::newPersistableInstance;
-        initializerOfNewRandomized = this::newRandomizedPersistableInstance;
+        this.entityClass = Objects.requireNonNull(entityClass, "entityClass is null");
+        entityInitializer = this::newEntityInstance;
+        randomizedEntityInitializer = this::newRandomizedEntityInstance;
     }
 
-    T newRandomizedPersistableInstance() {
-        return newPersistableInstance();
+    P newRandomizedEntityInstance() {
+        return newEntityInstance();
     }
 
-    T newPersistableInstance() {
+    P newEntityInstance() {
         try {
-            return persistableClass.getConstructor().newInstance();
+            final var constructor = entityClass.getDeclaredConstructor();
+            if (!constructor.canAccess(null)) {
+                constructor.setAccessible(true);
+            }
+            return constructor.newInstance();
         } catch (final ReflectiveOperationException roe) {
             throw new RuntimeException(roe);
         }
     }
 
-    final Class<T> persistableClass;
+    final Class<P> entityClass;
 
-    final Supplier<T> initializerOfNew;
+    final Supplier<P> entityInitializer;
 
-    final Supplier<T> initializerOfNewRandomized;
+    final Supplier<P> randomizedEntityInitializer;
 }

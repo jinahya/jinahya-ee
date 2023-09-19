@@ -9,40 +9,42 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.TemporalAccessor;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-abstract class _PersistableInstantTest<T extends _PersistableInstant> extends _PersistableTest<T> {
+import static org.assertj.core.api.Assertions.assertThat;
+
+abstract class _PersistableInstantTest<T extends _PersistableInstant>
+        extends _AbstractPersistableTest<T> {
+
+    static Stream<TemporalAccessor> temporalStream() {
+        return Stream.of(
+                Instant.now(),
+                ZonedDateTime.now(),
+                OffsetDateTime.now()
+        );
+    }
 
     _PersistableInstantTest(final Class<T> persistableClass) {
         super(persistableClass);
-        this.persistableInitializer = () -> {
-            try {
-                return persistableClass.getConstructor().newInstance();
-            } catch (ReflectiveOperationException roe) {
-                throw new RuntimeException(roe);
-            }
-        };
     }
 
     @DisplayName("from(initializer,instant)")
     @Nested
     class FromTest {
 
-        private static Stream<TemporalAccessor> temporalAccessorStream() {
-            return Stream.of(
-                    Instant.now(),
-                    ZonedDateTime.now(),
-                    OffsetDateTime.now()
-            );
+        private static Stream<TemporalAccessor> temporalStream() {
+            return _PersistableInstantTest.temporalStream();
         }
 
-        @MethodSource({"temporalAccessorStream"})
+        @MethodSource({"temporalStream"})
         @ParameterizedTest
-        void __(final TemporalAccessor temporalAccessor) {
-            _PersistableInstant.from(persistableInitializer, Instant.from(temporalAccessor));
+        void __(final TemporalAccessor temporal) {
+            final var instant = Instant.from(temporal);
+            final var instance = _PersistableInstant.from(entityInitializer, instant);
+            assertThat(instance)
+                    .isNotNull()
+                    .extracting(_PersistableInstant::toInstant)
+                    .isEqualTo(instant);
         }
     }
-
-    final Supplier<? extends T> persistableInitializer;
 }
