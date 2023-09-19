@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 /**
  * .
  *
- * @see <a href="https://www.w3.org/TR/css-color-3/#rgba-color">.2.2. RGBA color values</a> (CSS Color Module Level 3)
- * @see <a href="https://www.w3.org/TR/css-color-4/#hex-color">.2. The RGB Hexadecimal Notations: #RRGGBB</a> (CSS Color
- * Module Level 4)
+ * @see <a href="https://www.w3.org/TR/css-color-3/#rgba-color">4.2.2. RGBA color values</a> (CSS Color Module Level 3)
+ * @see <a href="https://www.w3.org/TR/css-color-4/#hex-color">5.2. The RGB Hexadecimal Notations: '#RRGGBB'</a> (CSS
+ * Color Module Level 4)
  */
 @MappedSuperclass
 @SuppressWarnings({
@@ -74,6 +74,18 @@ public abstract class _PersistableColor extends _AbstractPersistable {
     static final Pattern PATTERN_CSS_HEXADECIMAL_NOTATION = Pattern.compile(REGEXP_CSS_HEXADECIMAL_NOTATION);
 
     // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Returns an instance, supplied by specified supplier, whose color components set with values parsed from specified
+     * hexadecimal notation.
+     *
+     * @param initializer               the supplier for the instance.
+     * @param cssRgbHexadecimalNotation the hexadecimal notation to parse.
+     * @param <T>                       color type parameter
+     * @return an instance.
+     * @see <a href="https://www.w3.org/TR/css-color-4/#hex-color">5.2. The RGB Hexadecimal Notations: '#RRGGBB'</a>
+     * (CSS Color Module Level 4)
+     */
     public static <T extends _PersistableColor> T fromCssRgbHexadecimalNotation(
             final Supplier<? extends T> initializer, final CharSequence cssRgbHexadecimalNotation) {
         Objects.requireNonNull(initializer, "initializer is null");
@@ -82,7 +94,10 @@ public abstract class _PersistableColor extends _AbstractPersistable {
             throw new IllegalArgumentException("invalid CSS RGB Hexadecimal Notation: " + cssRgbHexadecimalNotation);
         }
         final T instance = Objects.requireNonNull(initializer.get(), "null supplied from " + initializer);
-        final var nibbles = String.valueOf(cssRgbHexadecimalNotation).chars().map(c -> Character.digit(c, 16)).boxed().collect(Collectors.toList());
+        final var nibbles = cssRgbHexadecimalNotation.chars()
+                .map(c -> Character.digit(c, 16))
+                .boxed()
+                .collect(Collectors.toList());
         if (nibbles.size() == 3 || nibbles.size() == 4) {
             final var r = nibbles.remove(0);
             instance.setRed((r << 4) | r);
@@ -193,18 +208,50 @@ public abstract class _PersistableColor extends _AbstractPersistable {
         );
     }
 
+    /**
+     * Returns a {@code 3}-long hexadecimal string representation of color components.
+     *
+     * @return a string representation of {@code rgb}.
+     * @see #toCssRgbHexadecimalNotation4()
+     * @see <a href="https://www.w3.org/TR/css-color-4/#hex-color">5.2. The RGB Hexadecimal Notations: '#RRGGBB'</a>
+     * (CSS Color Module Level 4)
+     */
     public String toCssRgbHexadecimalNotation3() {
         return applyHigh(r -> g -> b -> a -> String.format("%1$x%2$x%3$x", r, g, b));
     }
 
+    /**
+     * Returns a {@code 4}-long hexadecimal string representation of color components.
+     *
+     * @return a string representation of {@code rgba}.
+     * @see #toCssRgbHexadecimalNotation3()
+     * @see <a href="https://www.w3.org/TR/css-color-4/#hex-color">5.2. The RGB Hexadecimal Notations: '#RRGGBB'</a>
+     * (CSS Color Module Level 4)
+     */
     public String toCssRgbHexadecimalNotation4() {
         return applyHigh(r -> g -> b -> a -> String.format("%1$x%2$x%3$x%4$x", r, g, b, a));
     }
 
+    /**
+     * Returns a {@code 6}-long hexadecimal string representation of color components.
+     *
+     * @return a string representation of {@code rrggbb}.
+     * @see #toCssRgbHexadecimalNotation8()
+     * @see <a href="https://www.w3.org/TR/css-color-4/#hex-color">5.2. The RGB Hexadecimal Notations: '#RRGGBB'</a>
+     * (CSS Color Module Level 4)
+     */
     public String toCssRgbHexadecimalNotation6() {
         return apply(r -> g -> b -> a -> String.format("%1$02x%2$02x%3$02x", r, g, b));
     }
 
+    /**
+     * Returns a {@code 8}-long hexadecimal string representation of color components.
+     *
+     * @return a string representation of {@code rrggbbaa}.
+     * @see #toCssRgbHexadecimalNotation6()
+     * @see <a href="https://www.w3.org/TR/css-color-4/#hex-color">5.2. The RGB Hexadecimal Notations: '#RRGGBB'</a>
+     * (CSS Color Module Level 4)
+     */
     public String toCssRgbHexadecimalNotation8() {
         return apply(r -> g -> b -> a -> String.format("%1$02x%2$02x%3$02x%4$02x", r, g, b, a));
     }
