@@ -15,7 +15,7 @@
  */
 package com.github.jinahya.ws.core;
 
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.Response.Status;
 
 /**
  * A status type for {@code 410 Gone} which is a member of {@code Client Error 4xx}.

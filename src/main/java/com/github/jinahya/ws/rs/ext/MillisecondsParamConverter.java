@@ -15,7 +15,7 @@
  */
 package com.github.jinahya.ws.rs.ext;
 
-import javax.ws.rs.ext.ParamConverter;
+import jakarta.ws.rs.ext.ParamConverter;
 import java.util.Optional;
 
 import static java.util.Optional.ofNullable;

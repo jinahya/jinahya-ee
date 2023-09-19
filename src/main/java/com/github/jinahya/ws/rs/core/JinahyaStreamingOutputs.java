@@ -15,7 +15,7 @@
  */
 package com.github.jinahya.ws.rs.core;
 
-import javax.ws.rs.core.StreamingOutput;
+import jakarta.ws.rs.core.StreamingOutput;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.Consumer;

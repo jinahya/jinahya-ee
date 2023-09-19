@@ -17,8 +17,8 @@ package com.github.jinahya.ws.rs.ext;
 
 import com.github.jinahya.ws.rs.MillisecondsParam;
 
-import javax.ws.rs.ext.ParamConverter;
-import javax.ws.rs.ext.ParamConverterProvider;
+import jakarta.ws.rs.ext.ParamConverter;
+import jakarta.ws.rs.ext.ParamConverterProvider;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 

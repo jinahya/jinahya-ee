@@ -16,13 +16,13 @@
 package com.github.jinahya.servlet.http;
 
 import com.github.jinahya.servlet.AbstractFilter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -198,8 +198,8 @@ public abstract class XSLTFilter extends AbstractFilter {
     protected abstract String getOutputCharacterEncoding();
 
     /**
-     * Returns a <code>TransformerFactory</code> instance. The default implementation returns {@link
-     * TransformerFactory#newInstance()}. Override this method if you want to use a custom factory.
+     * Returns a <code>TransformerFactory</code> instance. The default implementation returns
+     * {@link TransformerFactory#newInstance()}. Override this method if you want to use a custom factory.
      *
      * @return a new instance of TransformerFactory.
      */

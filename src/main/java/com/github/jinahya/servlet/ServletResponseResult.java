@@ -15,9 +15,10 @@
  */
 package com.github.jinahya.servlet;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.SchemaOutputResolver;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.xml.bind.SchemaOutputResolver;
+
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;

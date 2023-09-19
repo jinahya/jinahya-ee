@@ -1,6 +1,6 @@
 package com.github.jinahya.persistence;
 
-import javax.persistence.AttributeConverter;
+import jakarta.persistence.AttributeConverter;
 import java.util.UUID;
 
 import static java.util.Optional.ofNullable;

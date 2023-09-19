@@ -15,9 +15,9 @@
  */
 package com.github.jinahya.servlet;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletResponse;
-import javax.servlet.ServletResponseWrapper;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.ServletResponseWrapper;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;

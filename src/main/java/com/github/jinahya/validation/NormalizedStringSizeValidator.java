@@ -17,9 +17,9 @@ package com.github.jinahya.validation;
 
 import com.github.jinahya.validation.constraints.NormalizedStringSize;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import jakarta.xml.bind.annotation.adapters.CollapsedStringAdapter;
 
 /**
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;

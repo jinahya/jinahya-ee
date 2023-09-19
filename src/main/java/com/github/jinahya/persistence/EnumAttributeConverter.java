@@ -15,7 +15,7 @@
  */
 package com.github.jinahya.persistence;
 
-import javax.persistence.AttributeConverter;
+import jakarta.persistence.AttributeConverter;
 
 /**
  * An attribute converter for enums.

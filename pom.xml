@@ -23,15 +23,29 @@
     <tag>HEAD</tag>
   </scm>
   <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+    <maven.compiler.release>${maven.compiler.target}</maven.compiler.release>
     <maven.compiler.testSource>${maven.compiler.source}</maven.compiler.testSource>
     <maven.compiler.testTarget>${maven.compiler.testSource}</maven.compiler.testTarget>
-    <version.org.hibernate.orm>6.0.0.Alpha4</version.org.hibernate.orm>
-    <version.org.junit.jupiter>5.6.0-M1</version.org.junit.jupiter>
+    <maven.compiler.testRelease>${maven.compiler.testSource}</maven.compiler.testRelease>
+    <version.org.hibernate>6.3.0.Final</version.org.hibernate>
+<!--    <version.org.hibernate.orm>6.0.0.Alpha7l</version.org.hibernate.orm>-->
+    <version.org.hibernate.orm>6.3.0.Final</version.org.hibernate.orm>
+    <version.org.junit.jupiter>5.10.0</version.org.junit.jupiter>
   </properties>
 
-  <dependencyManagement/>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${version.org.junit.jupiter}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -54,7 +68,7 @@
     <dependency>
       <groupId>jakarta.platform</groupId>
       <artifactId>jakarta.jakartaee-api</artifactId>
-      <version>9.0.0</version>
+      <version>10.0.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -63,10 +77,17 @@
       <version>3.9</version>
       <scope>test</scope>
     </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.hibernate.orm</groupId>-->
+<!--      <artifactId>hibernate-core</artifactId>-->
+<!--      <version>${version.org.hibernate.orm}</version>-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>org.hibernate.orm</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
-      <version>${version.org.hibernate.orm}</version>
+      <!--      <version>${version.org.hibernate.orm}</version>-->
+      <version>6.0.0.Alpha7</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -77,28 +98,15 @@
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>${version.org.junit.jupiter}</version>
+      <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>${version.org.junit.jupiter}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <version>${version.org.junit.jupiter}</version>
-      <scope>test</scope>
-    </dependency>
-<!--    <dependency>-->
-<!--      <groupId>org.testng</groupId>-->
-<!--      <artifactId>testng</artifactId>-->
-<!--      <version>6.9.10</version>-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>org.testng</groupId>-->
+    <!--      <artifactId>testng</artifactId>-->
+    <!--      <version>6.9.10</version>-->
+    <!--      <scope>test</scope>-->
+    <!--    </dependency>-->
   </dependencies>
 
   <build>
@@ -117,7 +125,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.2</version>
+          <version>3.11.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>

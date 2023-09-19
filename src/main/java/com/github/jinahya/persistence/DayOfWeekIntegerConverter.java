@@ -15,7 +15,7 @@
  */
 package com.github.jinahya.persistence;
 
-import javax.persistence.Converter;
+import jakarta.persistence.Converter;
 import java.time.DayOfWeek;
 
 import static java.util.Optional.ofNullable;
