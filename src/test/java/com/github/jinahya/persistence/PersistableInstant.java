@@ -12,6 +12,7 @@ import lombok.Setter;
 import java.io.Serial;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 @Entity
 @Table(name = PersistableInstant.TABLE_NAME)
@@ -29,6 +30,13 @@ public class PersistableInstant
 
     // -----------------------------------------------------------------------------------------------------------------
 
+    /**
+     * Creates a new instance from specified instant.
+     *
+     * @param instant the instant from which a new instance is created; not {@code null}.
+     * @return a new instance created from the {@code instant}.
+     * @see #from(Supplier, Instant)
+     */
     public static PersistableInstant from(final Instant instant) {
         return from(PersistableInstant::new, instant);
     }
@@ -46,9 +54,7 @@ public class PersistableInstant
 
     @Override
     public String toString() {
-        return super.toString() + '{' +
-               "id=" + id +
-               '}';
+        return _Identifiable._toString(super.toString(), this);
     }
 
     @Override
@@ -71,6 +77,13 @@ public class PersistableInstant
                 super.hashCode(),
                 _Identifiable._hashCode(this)
         );
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Override
+    public Long getId_() {
+        return id;
     }
 
     // -----------------------------------------------------------------------------------------------------------------

@@ -45,9 +45,7 @@ public class PersistableColor
 
     @Override
     public String toString() {
-        return super.toString() + '{' +
-               "id=" + id +
-               '}';
+        return _Identifiable._toString(super.toString(), this);
     }
 
     @Override
@@ -70,6 +68,13 @@ public class PersistableColor
                 super.hashCode(),
                 _Identifiable._hashCode(this)
         );
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Override
+    public Long getId_() {
+        return id;
     }
 
     // -----------------------------------------------------------------------------------------------------------------

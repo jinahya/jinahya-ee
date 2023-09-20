@@ -17,9 +17,10 @@ import java.util.stream.Collectors;
 /**
  * .
  *
- * @see <a href="https://www.w3.org/TR/css-color-3/#rgba-color">4.2.2. RGBA color values</a> (CSS Color Module Level 3)
- * @see <a href="https://www.w3.org/TR/css-color-4/#hex-color">5.2. The RGB Hexadecimal Notations: '#RRGGBB'</a> (CSS
- * Color Module Level 4)
+ * @see <a href="https://www.w3.org/TR/css-color-3/#rgba-color">4.2.2. RGBA color values</a> (www.w3.org / CSS Color
+ * Module Level 3)
+ * @see <a href="https://www.w3.org/TR/css-color-4/#hex-color">5.2. The RGB Hexadecimal Notations: '#RRGGBB'</a>
+ * (www.w3.org / CSS Color Module Level 4)
  */
 @MappedSuperclass
 @SuppressWarnings({
@@ -254,6 +255,17 @@ public abstract class _PersistableColor extends _AbstractPersistable {
      */
     public String toCssRgbHexadecimalNotation8() {
         return apply(r -> g -> b -> a -> String.format("%1$02x%2$02x%3$02x%4$02x", r, g, b, a));
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+    public float[] getRGBComponents() {
+        final var divisor = (float) _PersistableColor.RGBA_COMPONENT_MAX;
+        return new float[] {
+                ((float) getRed()) / divisor,
+                ((float) getGreen()) / divisor,
+                ((float) getBlue()) / divisor,
+                ((float) getAlpha()) / divisor
+        };
     }
 
     // ------------------------------------------------------------------------------------------------------------- red

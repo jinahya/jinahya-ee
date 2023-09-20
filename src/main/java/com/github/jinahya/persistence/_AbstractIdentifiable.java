@@ -32,6 +32,6 @@ public abstract class _AbstractIdentifiable<ID extends Serializable>
         if (!(obj instanceof _AbstractIdentifiable<?> that)) {
             return false;
         }
-        return Objects.equals(getId(), that.getId());
+        return Objects.equals(getId_(), that.getId_());
     }
 }

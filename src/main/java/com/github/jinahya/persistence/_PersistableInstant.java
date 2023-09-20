@@ -25,9 +25,17 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
     private static final long serialVersionUID = -6521255355577442373L;
 
     // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * The name of the table column to which the {@link _PersistableInstant_#epochSecond} attribute maps. The value is
+     * {@value}.
+     */
     public static final String COLUMN_NAME_EPOCH_SECOND = "epoch_second";
 
-    // https://www.petefreitag.com/tools/sql_reserved_words_checker/?word=nano
+    /**
+     * The name of the table column to which the {@link _PersistableInstant_#nano} attribute maps. The value is
+     * {@value}.
+     */
     public static final String COLUMN_NAME_NANO = "nano";
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -73,8 +81,12 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
 
     @Override
     public boolean equals(final Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof _PersistableInstant that)) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof _PersistableInstant that)) {
+            return false;
+        }
         if (!super.equals(obj)) {
             return false;
         }
@@ -108,6 +120,12 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
         return Objects.requireNonNull(mapper, "mapper is null").apply(toInstant());
     }
 
+    /**
+     * Returns an instance of {@link Instant} represents current state of this entity.
+     *
+     * @return an instance of {@link Instant} represents current state of this entity.
+     * @see Instant#ofEpochSecond(long, long)
+     */
     public Instant toInstant() {
         final Long _epochSecond = getEpochSecond();
         if (_epochSecond == null) {
@@ -122,10 +140,20 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
 
     // ----------------------------------------------------------------------------------------------------- epochSecond
 
+    /**
+     * Returns current value of {@link _PersistableInstant_#epochSecond} attribute.
+     *
+     * @return current value of the {@link _PersistableInstant_#epochSecond} attribute.
+     */
     public Long getEpochSecond() {
         return epochSecond;
     }
 
+    /**
+     * Replaces current value of {@link _PersistableInstant_#nano} attribute with specified value.
+     *
+     * @param epochSecond new value for the {@link _PersistableInstant_#nano} attribute.
+     */
     public void setEpochSecond(final Long epochSecond) {
         this.epochSecond = epochSecond;
     }
