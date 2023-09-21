@@ -22,14 +22,14 @@ public final class _PersistableColorUtils {
     // -----------------------------------------------------------------------------------------------------------------
     public static float[] toCIEXYZ(final _PersistableColor persistableColor, final ColorSpace rgbColorSpace) {
         Objects.requireNonNull(rgbColorSpace, "rgbColorSpace is null");
-        return rgbColorSpace.toCIEXYZ(persistableColor.getComponents(null));
+        return rgbColorSpace.toCIEXYZ(persistableColor.getColorComponents(null));
     }
 
     public static float[] toCMYK(final _PersistableColor persistableColor, final ColorSpace rgbColorSpace,
                                  final ColorSpace cmykColorSpace) {
         Objects.requireNonNull(cmykColorSpace, "cmykColorSpace is null");
         if (rgbColorSpace == null) {
-            return cmykColorSpace.fromRGB(persistableColor.getComponents(null));
+            return cmykColorSpace.fromRGB(persistableColor.getColorComponents(null));
         }
         return cmykColorSpace.fromCIEXYZ(toCIEXYZ(persistableColor, rgbColorSpace));
     }

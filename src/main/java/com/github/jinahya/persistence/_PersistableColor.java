@@ -49,6 +49,8 @@ public abstract class _PersistableColor extends _AbstractPersistable {
 
     private static final String DECIMAL_MAX_COMPONENT = "1.0";
 
+    private static final int NUMBER_OF_COLOR_COMPONENTS = 4;
+
     // -----------------------------------------------------------------------------------------------------------------
     public static final String COLUMN_NAME_RED = "red";
 
@@ -137,6 +139,24 @@ public abstract class _PersistableColor extends _AbstractPersistable {
             instance.setAlpha((nibbles.remove(0) << 4) | nibbles.remove(0));
         }
         assert nibbles.isEmpty();
+        return instance;
+    }
+
+    public static <T extends _PersistableColor> T fromColorComponents(
+            final Supplier<? extends T> initializer, final float[] components, final int offset) {
+        Objects.requireNonNull(initializer, "initializer is null");
+        Objects.requireNonNull(components, "components is null");
+        if (offset < 0) {
+            throw new IllegalArgumentException("offset(" + offset + ") is negative");
+        }
+        if ((offset + 4) > components.length) {
+            throw new IllegalArgumentException(
+                    "offset(" + offset + ") + 4 > components.length(" + components.length + ')');
+        }
+        final T instance = Objects.requireNonNull(initializer.get(), "null supplied from " + initializer);
+        int index = -1;
+        instance.setRedComponent(components[++index]);
+        // TODO: implement!
         return instance;
     }
 
@@ -272,28 +292,29 @@ public abstract class _PersistableColor extends _AbstractPersistable {
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * Sets four color components on specified array starting at specified offset.
+     * Sets {@value #NUMBER_OF_COLOR_COMPONENTS} color components on specified array starting at specified offset.
      *
-     * @param offset     the index of the array to which the first component is set.
      * @param components the array on which color components are set; may be {@code null} or should be longer than
-     *                   {@code 4}.
-     * @return given {@code components} or a newly created array.
+     *                   {@value #NUMBER_OF_COLOR_COMPONENTS}.
+     * @param offset     the index of the array to which the first component is set.
+     * @return given {@code components} or a newly created array of color components.
      */
     @Transient
-    public float[] getComponents(final int offset, float[] components) {
+    public float[] getColorComponents(float[] components, final int offset) {
         if (offset < 0) {
             throw new IllegalArgumentException("offset(" + offset + ") is negative");
         }
-        if (components != null && (components.length < (offset + 4))) {
+        if ((components != null) && (components.length < (offset + NUMBER_OF_COLOR_COMPONENTS))) {
             throw new IllegalArgumentException(
-                    "components.length(" + components.length + ") < offset(" + offset + ") + 4");
+                    "components.length(" + components.length + ")"
+                    + " < offset(" + offset + ") + " + NUMBER_OF_COLOR_COMPONENTS
+            );
         }
         if (components == null) {
-            components = new float[4];
+            components = new float[NUMBER_OF_COLOR_COMPONENTS];
         }
-        assert components.length >= offset + 4;
         final var divisor = (float) _PersistableColor.MAX_COMPONENT;
-        components[0] = ((float) getRed()) / divisor;
+        components[0] = getRedComponent();
         components[1] = ((float) getGreen()) / divisor;
         components[2] = ((float) getBlue()) / divisor;
         components[3] = ((float) getAlpha()) / divisor;
@@ -301,15 +322,15 @@ public abstract class _PersistableColor extends _AbstractPersistable {
     }
 
     /**
-     * Sets four color components on specified array starting at specified offset.
+     * Sets {@value #NUMBER_OF_COLOR_COMPONENTS} color components on specified array starting at {@code 0} index.
      *
      * @param components the array on which color components are set; may be {@code null} or should be longer than
-     *                   {@code 4}.
+     *                   {@value #NUMBER_OF_COLOR_COMPONENTS}.
      * @return given {@code components} or a newly created array.
      */
     @Transient
-    public float[] getComponents(float[] components) {
-        return getComponents(0, components);
+    public float[] getColorComponents(final float[] components) {
+        return getColorComponents(components, 0);
     }
 
     // ------------------------------------------------------------------------------------------------------------- red
