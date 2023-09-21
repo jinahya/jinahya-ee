@@ -16,10 +16,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 /**
  * .
@@ -42,7 +39,6 @@ public final class JavaAwtTestUtils {
             if (path == null || !Files.isDirectory(path)) {
                 continue;
             }
-            log.debug("path: {}", path);
             Files.walkFileTree(path, new SimpleFileVisitor<>() {
                 @Override
                 public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs)
@@ -71,40 +67,6 @@ public final class JavaAwtTestUtils {
             return getIccProfilesMac();
         }
         return Collections.emptyList();
-    }
-
-    private static void acceptIccProfilesMac(final Consumer<? super ICC_Profile> consumer) {
-        assert consumer != null;
-        Stream.of("/Library/ColorSync/Profiles", System.getProperty("user.home"))
-                .filter(Objects::nonNull)
-                .map(Paths::get)
-                .filter(Files::isDirectory)
-                .flatMap(d -> {
-                    try {
-                        return Files.list(d);
-                    } catch (final IOException ioe) {
-                        throw new UncheckedIOException(ioe);
-                    }
-                })
-                .filter(Files::isRegularFile)
-                .filter(p -> p.toFile().getName().endsWith(".icc"))
-                .map(f -> {
-                    try (var resource = new FileInputStream(f.toFile())) {
-                        return ICC_Profile.getInstance(resource);
-                    } catch (final IOException ioe) {
-                        throw new UncheckedIOException(ioe);
-                    }
-                })
-                .forEach(consumer);
-    }
-
-    public static void acceptIccProfiles(final Consumer<? super ICC_Profile> consumer) {
-        Objects.requireNonNull(consumer, "consumer is null");
-        final var osName = SystemUtils.OS_NAME;
-        log.debug("osName: {}", osName);
-        if (osName != null && osName.toLowerCase().contains("mac")) {
-            acceptIccProfilesMac(consumer);
-        }
     }
 
     private JavaAwtTestUtils() {

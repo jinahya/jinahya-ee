@@ -20,7 +20,7 @@ final class _PersistableColorTests {
     }
 
     static int newRandomizedRgbComponent() {
-        return ThreadLocalRandom.current().nextInt(_PersistableColor.RGBA_COMPONENT_MAX + 1);
+        return ThreadLocalRandom.current().nextInt(_PersistableColor.MAX_COMPONENT + 1);
     }
 
     static boolean matchesCssHexadecimalNotation(final CharSequence cssHexadecimalNotation) {

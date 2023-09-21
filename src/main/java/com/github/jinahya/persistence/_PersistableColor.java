@@ -3,12 +3,16 @@ package com.github.jinahya.persistence;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serial;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
@@ -33,9 +37,17 @@ public abstract class _PersistableColor extends _AbstractPersistable {
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    public static final int RGBA_COMPONENT_MIN = 0;
+    public static final int MIN_COMPONENT = 0;
 
-    public static final int RGBA_COMPONENT_MAX = 255;
+    public static final int MAX_COMPONENT = 255;
+
+    private static final float MIN_COMPONENT_FLOAT = MIN_COMPONENT;
+
+    private static final float MAX_COMPONENT_FLOAT = 1.0f;
+
+    private static final String DECIMAL_MIN_COMPONENT = "0.0";
+
+    private static final String DECIMAL_MAX_COMPONENT = "1.0";
 
     // -----------------------------------------------------------------------------------------------------------------
     public static final String COLUMN_NAME_RED = "red";
@@ -258,23 +270,77 @@ public abstract class _PersistableColor extends _AbstractPersistable {
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    public float[] getRGBComponents() {
-        final var divisor = (float) _PersistableColor.RGBA_COMPONENT_MAX;
-        return new float[] {
-                ((float) getRed()) / divisor,
-                ((float) getGreen()) / divisor,
-                ((float) getBlue()) / divisor,
-                ((float) getAlpha()) / divisor
-        };
+
+    /**
+     * Sets four color components on specified array starting at specified offset.
+     *
+     * @param offset     the index of the array to which the first component is set.
+     * @param components the array on which color components are set; may be {@code null} or should be longer than
+     *                   {@code 4}.
+     * @return given {@code components} or a newly created array.
+     */
+    @Transient
+    public float[] getComponents(final int offset, float[] components) {
+        if (offset < 0) {
+            throw new IllegalArgumentException("offset(" + offset + ") is negative");
+        }
+        if (components != null && (components.length < (offset + 4))) {
+            throw new IllegalArgumentException(
+                    "components.length(" + components.length + ") < offset(" + offset + ") + 4");
+        }
+        if (components == null) {
+            components = new float[4];
+        }
+        assert components.length >= offset + 4;
+        final var divisor = (float) _PersistableColor.MAX_COMPONENT;
+        components[0] = ((float) getRed()) / divisor;
+        components[1] = ((float) getGreen()) / divisor;
+        components[2] = ((float) getBlue()) / divisor;
+        components[3] = ((float) getAlpha()) / divisor;
+        return components;
+    }
+
+    /**
+     * Sets four color components on specified array starting at specified offset.
+     *
+     * @param components the array on which color components are set; may be {@code null} or should be longer than
+     *                   {@code 4}.
+     * @return given {@code components} or a newly created array.
+     */
+    @Transient
+    public float[] getComponents(float[] components) {
+        return getComponents(0, components);
     }
 
     // ------------------------------------------------------------------------------------------------------------- red
+
+    /**
+     * Returns current value of {@link _PersistableColor_#red} attribute.
+     *
+     * @return current value of the {@link _PersistableColor_#red} attribute.
+     */
     public Integer getRed() {
         return red;
     }
 
+    /**
+     * Replaces current value of {@link _PersistableColor_#red} attribute with specified value.
+     *
+     * @return new value of the {@link _PersistableColor_#red} attribute.
+     */
     public void setRed(final Integer red) {
         this.red = red;
+    }
+
+    @DecimalMax(DECIMAL_MAX_COMPONENT)
+    @DecimalMin(DECIMAL_MIN_COMPONENT)
+    @Transient
+    public Float getRedComponent() {
+        return Optional.ofNullable(getRed()).map(v -> v / MAX_COMPONENT_FLOAT).orElse(null);
+    }
+
+    public void setRedComponent(final Float redComponent) {
+        setRed(Optional.ofNullable(redComponent).map(v -> (int) (v * MAX_COMPONENT)).orElse(null));
     }
 
     // ----------------------------------------------------------------------------------------------------------- green
@@ -305,29 +371,29 @@ public abstract class _PersistableColor extends _AbstractPersistable {
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    @Max(RGBA_COMPONENT_MAX)
-    @Min(RGBA_COMPONENT_MIN)
+    @Max(MAX_COMPONENT)
+    @Min(MIN_COMPONENT)
     @NotNull
     @Basic(optional = false)
     @Column(name = COLUMN_NAME_RED, nullable = false, insertable = true, updatable = true)
     private Integer red;
 
-    @Max(RGBA_COMPONENT_MAX)
-    @Min(RGBA_COMPONENT_MIN)
+    @Max(MAX_COMPONENT)
+    @Min(MIN_COMPONENT)
     @NotNull
     @Basic(optional = false)
     @Column(name = COLUMN_NAME_GREEN, nullable = false, insertable = true, updatable = true)
     private Integer green;
 
-    @Max(RGBA_COMPONENT_MAX)
-    @Min(RGBA_COMPONENT_MIN)
+    @Max(MAX_COMPONENT)
+    @Min(MIN_COMPONENT)
     @NotNull
     @Basic(optional = false)
     @Column(name = COLUMN_NAME_BLUE, nullable = false, insertable = true, updatable = true)
     private Integer blue;
 
-    @Max(RGBA_COMPONENT_MAX)
-    @Min(RGBA_COMPONENT_MIN)
+    @Max(MAX_COMPONENT)
+    @Min(MIN_COMPONENT)
     @NotNull
     @Basic(optional = false)
     @Column(name = COLUMN_NAME_ALPHA, nullable = false, insertable = true, updatable = true)
