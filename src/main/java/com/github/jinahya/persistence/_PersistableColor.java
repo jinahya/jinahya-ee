@@ -326,12 +326,18 @@ public abstract class _PersistableColor extends _AbstractPersistable {
     /**
      * Replaces current value of {@link _PersistableColor_#red} attribute with specified value.
      *
-     * @return new value of the {@link _PersistableColor_#red} attribute.
+     * @param red new value of the {@link _PersistableColor_#red} attribute.
      */
     public void setRed(final Integer red) {
         this.red = red;
     }
 
+    /**
+     * Returns current value of {@link _PersistableColor_#red} attribute as {@code float} value.
+     *
+     * @return current value of the {@link _PersistableColor_#red} attribute as {@code float} value; between
+     * {@value #MIN_COMPONENT_FLOAT} and {@value #MAX_COMPONENT_FLOAT}, both inclusive.
+     */
     @DecimalMax(DECIMAL_MAX_COMPONENT)
     @DecimalMin(DECIMAL_MIN_COMPONENT)
     @Transient
