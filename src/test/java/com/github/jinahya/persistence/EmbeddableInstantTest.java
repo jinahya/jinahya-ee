@@ -20,7 +20,7 @@ class EmbeddableInstantTest extends _PersistableInstantTest<EmbeddableInstant> {
     class FromTest {
 
         private static Stream<TemporalAccessor> temporalStream() {
-            return _PersistableInstantTest.temporalStream();
+            return validTemporalStreamForFrom();
         }
 
         @MethodSource({"temporalStream"})

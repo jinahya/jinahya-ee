@@ -6,12 +6,18 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serial;
+import java.time.DateTimeException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalAmount;
+import java.time.temporal.TemporalUnit;
+import java.time.temporal.UnsupportedTemporalTypeException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -33,10 +39,10 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
     public static final String COLUMN_NAME_EPOCH_SECOND = "epoch_second";
 
     /**
-     * The name of the table column to which the {@link _PersistableInstant_#nano} attribute maps. The value is
-     * {@value}.
+     * The name of the table column to which the {@link _PersistableInstant_#nanoAdjustment} attribute maps. The value
+     * is {@value}.
      */
-    public static final String COLUMN_NAME_NANO = "nano";
+    public static final String COLUMN_NAME_NANO_ADJUSTMENT = "nano_adjustment";
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -56,7 +62,7 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
         Objects.requireNonNull(instant, "instant is null");
         final T instance = Objects.requireNonNull(initializer.get(), "null supplied from " + initializer);
         instance.setEpochSecond(instant.getEpochSecond());
-        instance.setNano(instant.getNano());
+        instance.setNanoAdjustment(instant.getNano());
         return instance;
     }
 
@@ -75,7 +81,7 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
     public String toString() {
         return super.toString() + '{'
                + "epochSecond=" + epochSecond
-               + ",nano=" + nano
+               + ",nanoAdjustment=" + nanoAdjustment
                + '}';
     }
 
@@ -92,7 +98,7 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
         }
         ;
         return Objects.equals(epochSecond, that.epochSecond)
-               && Objects.equals(nano, that.nano);
+               && Objects.equals(nanoAdjustment, that.nanoAdjustment);
     }
 
     @Override
@@ -100,11 +106,11 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
         return Objects.hash(
                 super.hashCode(),
                 epochSecond,
-                nano
+                nanoAdjustment
         );
     }
 
-// -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
 
     public OffsetDateTime toOffsetDateTime(final ZoneId zone) {
         Objects.requireNonNull(zone, "zone is null");
@@ -127,15 +133,48 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
      * @see Instant#ofEpochSecond(long, long)
      */
     public Instant toInstant() {
-        final Long _epochSecond = getEpochSecond();
-        if (_epochSecond == null) {
-            throw new IllegalStateException("epochSecond is null");
-        }
-        final Integer _nano = getNano();
-        if (_nano == null) {
-            throw new IllegalStateException("nano is null");
-        }
-        return Instant.ofEpochSecond(_epochSecond, _nano);
+        return Instant.ofEpochSecond(
+                Optional.ofNullable(getEpochSecond())
+                        .orElseThrow(() -> new IllegalStateException("epochSecond is null")),
+                Optional.ofNullable(getNanoAdjustment())
+                        .orElseThrow(() -> new IllegalStateException("epochSecond is null"))
+        );
+    }
+
+    /**
+     * Replaces attributes with an {@link Instant} obtained from specified temporal accessor.
+     *
+     * @param temporalAccessor the temporal accessor from which an {@link Instant} is obtained.
+     * @throws DateTimeException if unable to convert {@code temporalAccessor} to an {@link Instant}.
+     * @see Instant#from(TemporalAccessor)
+     * @see #fromInstant(Instant)
+     */
+    public void fromTemporalAccessor(final TemporalAccessor temporalAccessor) {
+        fromInstant(
+                Optional.ofNullable(temporalAccessor)
+                        .map(Instant::from)
+                        .orElse(null)
+        );
+    }
+
+    /**
+     * Replaces attributes with values from specified instant.
+     *
+     * @param instant the instant from which values are get.
+     * @see Instant#getEpochSecond()
+     * @see Instant#getNano()
+     */
+    public void fromInstant(final Instant instant) {
+        setEpochSecond(
+                Optional.ofNullable(instant)
+                        .map(Instant::getEpochSecond)
+                        .orElse(null)
+        );
+        setNanoAdjustment(
+                Optional.ofNullable(instant)
+                        .map(Instant::getNano)
+                        .orElse(null)
+        );
     }
 
     // ----------------------------------------------------------------------------------------------------- epochSecond
@@ -150,32 +189,71 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
     }
 
     /**
-     * Replaces current value of {@link _PersistableInstant_#nano} attribute with specified value.
+     * Replaces current value of {@link _PersistableInstant_#nanoAdjustment} attribute with specified value.
      *
-     * @param epochSecond new value for the {@link _PersistableInstant_#nano} attribute.
+     * @param epochSecond new value for the {@link _PersistableInstant_#nanoAdjustment} attribute.
      */
     public void setEpochSecond(final Long epochSecond) {
         this.epochSecond = epochSecond;
     }
 
+    /**
+     * Replaces current value of {@link _PersistableInstant_#epochSecond} attribute with {@link ChronoUnit#SECONDS}
+     * field value of specified temporalAmount.
+     *
+     * @param temporalAmount the temporal amount whose {@link ChronoUnit#SECONDS} field is set to
+     *                       {@link _PersistableInstant_#epochSecond} attribute.
+     * @throws DateTimeException                if a value for the {@link ChronoUnit#SECONDS} cannot be obtained
+     * @throws UnsupportedTemporalTypeException if the {@link ChronoUnit#SECONDS} is not supported
+     * @see TemporalAmount#get(TemporalUnit)
+     * @see ChronoUnit#SECONDS
+     */
+    public void setEpochSecondFrom(final TemporalAmount temporalAmount) {
+        setEpochSecond(
+                Optional.ofNullable(temporalAmount)
+                        .map(v -> v.get(ChronoUnit.SECONDS))
+                        .orElse(null)
+        );
+    }
+
     // ------------------------------------------------------------------------------------------------------------ nano
 
     /**
-     * Returns current value of {@link _PersistableInstant_#nano} attribute.
+     * Returns current value of {@link _PersistableInstant_#nanoAdjustment} attribute.
      *
-     * @return current value of the {@link _PersistableInstant_#nano} attribute.
+     * @return current value of the {@link _PersistableInstant_#nanoAdjustment} attribute.
      */
-    public Integer getNano() {
-        return nano;
+    public Integer getNanoAdjustment() {
+        return nanoAdjustment;
     }
 
     /**
-     * Replaces current value of {@link _PersistableInstant_#nano} attribute with specified value.
+     * Replaces current value of {@link _PersistableInstant_#nanoAdjustment} attribute with specified value.
      *
-     * @param nano a new value for the {@link _PersistableInstant_#nano} attribute.
+     * @param nanoAdjustment a new value for the {@link _PersistableInstant_#nanoAdjustment} attribute.
      */
-    public void setNano(final Integer nano) {
-        this.nano = nano;
+    public void setNanoAdjustment(final Integer nanoAdjustment) {
+        this.nanoAdjustment = nanoAdjustment;
+    }
+
+    /**
+     * Replaces current value of {@link _PersistableInstant_#nanoAdjustment} attribute with {@link ChronoUnit#NANOS}
+     * field value of specified temporalAmount.
+     *
+     * @param temporalAmount the temporal amount whose {@link ChronoUnit#NANOS} field is set to
+     *                       {@link _PersistableInstant_#nanoAdjustment} attribute.
+     * @throws DateTimeException                if a value for the {@link ChronoUnit#NANOS} cannot be obtained
+     * @throws UnsupportedTemporalTypeException if the {@link ChronoUnit#NANOS} is not supported
+     * @see TemporalAmount#get(TemporalUnit)
+     * @see ChronoUnit#SECONDS
+     */
+    public void setNanoAdjustmentFrom(final TemporalAmount temporalAmount) {
+        setNanoAdjustment(
+                Optional.ofNullable(temporalAmount)
+                        .map(v -> v.get(ChronoUnit.NANOS))
+                        .map(Math::toIntExact)
+                        .orElse(null)
+        );
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -186,6 +264,6 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
 
     @NotNull
     @Basic(optional = false)
-    @Column(name = COLUMN_NAME_NANO, nullable = false, insertable = true, updatable = true)
-    private Integer nano;
+    @Column(name = COLUMN_NAME_NANO_ADJUSTMENT, nullable = false, insertable = true, updatable = true)
+    private Integer nanoAdjustment = 0;
 }

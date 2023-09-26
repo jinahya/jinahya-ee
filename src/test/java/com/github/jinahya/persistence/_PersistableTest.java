@@ -1,6 +1,7 @@
 package com.github.jinahya.persistence;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.beans.IntrospectionException;
@@ -22,18 +23,47 @@ abstract class _PersistableTest<P extends _Persistable> {
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    @DisplayName("newEntityInstance().toString() should not blank")
-    @Test
-    void toString_NotBlank_NewEntityInstance() {
-        final var string = newEntityInstance().toString();
-        assertThat(string).isNotBlank();
+    @Nested
+    class EqualsTest {
+
+        @Test
+        void __NewEntityInstance() {
+            assertThat(newEntityInstance()).isEqualTo(newEntityInstance());
+        }
     }
 
-    @DisplayName("newRandomizedEntityInstance().toString() should not blank")
-    @Test
-    void toString_NotBlank_NewRandomizedEntityInstance() {
-        final var string = newRandomizedEntityInstance().toString();
-        assertThat(string).isNotBlank();
+    @Nested
+    class HashCodeTest {
+
+        @Test
+        void __NewEntityInstance() {
+            final var instance = newEntityInstance();
+            assertThatCode(instance::hashCode).doesNotThrowAnyException();
+        }
+
+        @Test
+        void __NewRandomizedEntityInstance() {
+            final var instance = newRandomizedEntityInstance();
+            assertThatCode(instance::hashCode).doesNotThrowAnyException();
+        }
+    }
+
+    @Nested
+    class ToStringTest {
+
+        @DisplayName("newEntityInstance().toString() should not blank")
+        @Test
+        void toString_NotBlank_NewEntityInstance() {
+            final var string = newEntityInstance().toString();
+            assertThat(string).isNotBlank();
+        }
+
+        @DisplayName("newRandomizedEntityInstance().toString() should not blank")
+        @Test
+        void toString_NotBlank_NewRandomizedEntityInstance() {
+            final var string = newRandomizedEntityInstance().toString();
+            assertThat(string).isNotBlank();
+        }
     }
 
     // -----------------------------------------------------------------------------------------------------------------
