@@ -37,19 +37,19 @@ public abstract class _PersistableColor extends _AbstractPersistable {
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    public static final int MIN_COMPONENT = 0;
+    public static final int MIN_COLOR = 0;
 
-    public static final int MAX_COMPONENT = 255;
+    public static final int MAX_COLOR = 255;
 
-    private static final float MIN_COMPONENT_FLOAT = MIN_COMPONENT;
+    static final float MIN_COMPONENT = 0.0f;
 
-    private static final float MAX_COMPONENT_FLOAT = 1.0f;
+    static final float MAX_COMPONENT = 1.0f;
 
     private static final String DECIMAL_MIN_COMPONENT = "0.0";
 
     private static final String DECIMAL_MAX_COMPONENT = "1.0";
 
-    private static final int NUMBER_OF_COLOR_COMPONENTS = 4;
+    static final int NUMBER_OF_COLORS = 4;
 
     // -----------------------------------------------------------------------------------------------------------------
     public static final String COLUMN_NAME_RED = "red";
@@ -89,6 +89,50 @@ public abstract class _PersistableColor extends _AbstractPersistable {
     static final Pattern PATTERN_CSS_HEXADECIMAL_NOTATION = Pattern.compile(REGEXP_CSS_HEXADECIMAL_NOTATION);
 
     // -----------------------------------------------------------------------------------------------------------------
+    private static int requireValidColor(final int color) {
+        if (color < MIN_COLOR) {
+            throw new IllegalArgumentException("color(" + color + ") < " + MIN_COLOR);
+        }
+        if (color > MAX_COLOR) {
+            throw new IllegalArgumentException("color(" + color + ") > " + MAX_COLOR);
+        }
+        return color;
+    }
+
+    static float requireValidComponent(final float component) {
+        if (component < MIN_COMPONENT) {
+            throw new IllegalArgumentException("component(" + component + ") < " + MIN_COMPONENT);
+        }
+        if (component > MAX_COMPONENT) {
+            throw new IllegalArgumentException("component(" + component + ") > " + MAX_COMPONENT);
+        }
+        return component;
+    }
+
+    static float toComponent(final int color) {
+        return requireValidColor(color) / (float) MAX_COLOR;
+    }
+
+    static int toColor(final float component) {
+        return (int) (requireValidComponent(component) * MAX_COLOR);
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+    public static <T extends _PersistableColor> T fromComponents(
+            final Supplier<? extends T> initializer, final float[] components) {
+        Objects.requireNonNull(initializer, "initializer is null");
+        Objects.requireNonNull(components, "components is null");
+        if (components.length != NUMBER_OF_COLORS) {
+            throw new IllegalArgumentException("components.length(" + components.length + " != " + NUMBER_OF_COLORS);
+        }
+        final T instance = Objects.requireNonNull(initializer.get(), "null supplied from " + initializer);
+        int index = -1;
+        instance.setRedComponent(components[++index]);
+        instance.setGreenComponent(components[++index]);
+        instance.setBlueComponent(components[++index]);
+        instance.setAlphaComponent(components[++index]);
+        return instance;
+    }
 
     /**
      * Returns an instance, supplied by specified supplier, whose color components set with values parsed from specified
@@ -142,24 +186,6 @@ public abstract class _PersistableColor extends _AbstractPersistable {
         return instance;
     }
 
-    public static <T extends _PersistableColor> T fromColorComponents(
-            final Supplier<? extends T> initializer, final float[] components, final int offset) {
-        Objects.requireNonNull(initializer, "initializer is null");
-        Objects.requireNonNull(components, "components is null");
-        if (offset < 0) {
-            throw new IllegalArgumentException("offset(" + offset + ") is negative");
-        }
-        if ((offset + 4) > components.length) {
-            throw new IllegalArgumentException(
-                    "offset(" + offset + ") + 4 > components.length(" + components.length + ')');
-        }
-        final T instance = Objects.requireNonNull(initializer.get(), "null supplied from " + initializer);
-        int index = -1;
-        instance.setRedComponent(components[++index]);
-        // TODO: implement!
-        return instance;
-    }
-
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
@@ -181,7 +207,7 @@ public abstract class _PersistableColor extends _AbstractPersistable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -191,10 +217,10 @@ public abstract class _PersistableColor extends _AbstractPersistable {
         if (!super.equals(obj)) {
             return false;
         }
-        return Objects.equals(red, that.red)
-               && Objects.equals(green, that.green)
-               && Objects.equals(blue, that.blue)
-               && Objects.equals(alpha, that.alpha);
+        return Objects.equals(red, that.red) &&
+               Objects.equals(green, that.green) &&
+               Objects.equals(blue, that.blue) &&
+               Objects.equals(alpha, that.alpha);
     }
 
     @Override
@@ -290,47 +316,25 @@ public abstract class _PersistableColor extends _AbstractPersistable {
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Sets {@value #NUMBER_OF_COLOR_COMPONENTS} color components on specified array starting at specified offset.
-     *
-     * @param components the array on which color components are set; may be {@code null} or should be longer than
-     *                   {@value #NUMBER_OF_COLOR_COMPONENTS}.
-     * @param offset     the index of the array to which the first component is set.
-     * @return given {@code components} or a newly created array of color components.
-     */
     @Transient
-    public float[] getColorComponents(float[] components, final int offset) {
-        if (offset < 0) {
-            throw new IllegalArgumentException("offset(" + offset + ") is negative");
-        }
-        if ((components != null) && (components.length < (offset + NUMBER_OF_COLOR_COMPONENTS))) {
-            throw new IllegalArgumentException(
-                    "components.length(" + components.length + ")"
-                    + " < offset(" + offset + ") + " + NUMBER_OF_COLOR_COMPONENTS
-            );
-        }
-        if (components == null) {
-            components = new float[NUMBER_OF_COLOR_COMPONENTS];
-        }
-        final var divisor = (float) _PersistableColor.MAX_COMPONENT;
-        components[0] = getRedComponent();
-        components[1] = ((float) getGreen()) / divisor;
-        components[2] = ((float) getBlue()) / divisor;
-        components[3] = ((float) getAlpha()) / divisor;
-        return components;
+    public int[] getColors() {
+        final int[] colors = new int[NUMBER_OF_COLORS];
+        int index = -1;
+        colors[++index] = getRed();
+        colors[++index] = getGreen();
+        colors[++index] = getBlue();
+        colors[++index] = getAlpha();
+        return colors;
     }
 
-    /**
-     * Sets {@value #NUMBER_OF_COLOR_COMPONENTS} color components on specified array starting at {@code 0} index.
-     *
-     * @param components the array on which color components are set; may be {@code null} or should be longer than
-     *                   {@value #NUMBER_OF_COLOR_COMPONENTS}.
-     * @return given {@code components} or a newly created array.
-     */
     @Transient
-    public float[] getColorComponents(final float[] components) {
-        return getColorComponents(components, 0);
+    public float[] getComponents() {
+        final int[] colors = getColors();
+        final float[] components = new float[colors.length];
+        for (int i = 0; i < components.length; i++) {
+            components[i] = toComponent(colors[i]);
+        }
+        return components;
     }
 
     // ------------------------------------------------------------------------------------------------------------- red
@@ -354,20 +358,29 @@ public abstract class _PersistableColor extends _AbstractPersistable {
     }
 
     /**
-     * Returns current value of {@link _PersistableColor_#red} attribute as {@code float} value.
+     * Returns current value of {@link _PersistableColor_#red} attribute as a {@code float} value.
      *
-     * @return current value of the {@link _PersistableColor_#red} attribute as {@code float} value; between
-     * {@value #MIN_COMPONENT_FLOAT} and {@value #MAX_COMPONENT_FLOAT}, both inclusive.
+     * @return current value of the {@link _PersistableColor_#red} attribute; between {@value #MIN_COMPONENT} and
+     * {@value #MAX_COMPONENT}, both inclusive.
      */
     @DecimalMax(DECIMAL_MAX_COMPONENT)
     @DecimalMin(DECIMAL_MIN_COMPONENT)
     @Transient
     public Float getRedComponent() {
-        return Optional.ofNullable(getRed()).map(v -> v / MAX_COMPONENT_FLOAT).orElse(null);
+        return Optional.ofNullable(getRed()).map(_PersistableColor::toComponent).orElse(null);
     }
 
+    /**
+     * Replaces current value of {@link _PersistableColor_#red} attribute with specified value.
+     *
+     * @param redComponent new value for the {@link _PersistableColor_#red} attribute; between {@value #MIN_COMPONENT}
+     *                     and {@value #MAX_COMPONENT}, both inclusive.
+     */
     public void setRedComponent(final Float redComponent) {
-        setRed(Optional.ofNullable(redComponent).map(v -> (int) (v * MAX_COMPONENT)).orElse(null));
+        if (redComponent != null) {
+            requireValidComponent(redComponent);
+        }
+        setRed(Optional.ofNullable(redComponent).map(_PersistableColor::toColor).orElse(null));
     }
 
     // ----------------------------------------------------------------------------------------------------------- green
@@ -379,6 +392,32 @@ public abstract class _PersistableColor extends _AbstractPersistable {
         this.green = green;
     }
 
+    /**
+     * Returns current value of {@link _PersistableColor_#green} attribute as a {@code float} value.
+     *
+     * @return current value of the {@link _PersistableColor_#green} attribute; between {@value #MIN_COMPONENT} and
+     * {@value #MAX_COMPONENT}, both inclusive.
+     */
+    @DecimalMax(DECIMAL_MAX_COMPONENT)
+    @DecimalMin(DECIMAL_MIN_COMPONENT)
+    @Transient
+    public Float getGreenComponent() {
+        return Optional.ofNullable(getGreen()).map(_PersistableColor::toComponent).orElse(null);
+    }
+
+    /**
+     * Replaces current value of {@link _PersistableColor_#green} attribute with specified value.
+     *
+     * @param greenComponent new value for the {@link _PersistableColor_#green} attribute; between
+     *                       {@value #MIN_COMPONENT} and {@value #MAX_COMPONENT}, both inclusive.
+     */
+    public void setGreenComponent(final Float greenComponent) {
+        if (greenComponent != null) {
+            requireValidComponent(greenComponent);
+        }
+        setGreen(Optional.ofNullable(greenComponent).map(_PersistableColor::toColor).orElse(null));
+    }
+
     // ------------------------------------------------------------------------------------------------------------ blue
     public Integer getBlue() {
         return blue;
@@ -386,6 +425,32 @@ public abstract class _PersistableColor extends _AbstractPersistable {
 
     public void setBlue(final Integer blue) {
         this.blue = blue;
+    }
+
+    /**
+     * Returns current value of {@link _PersistableColor_#blue} attribute as a {@code float} value.
+     *
+     * @return current value of the {@link _PersistableColor_#blue} attribute; between {@value #MIN_COMPONENT} and
+     * {@value #MAX_COMPONENT}, both inclusive.
+     */
+    @DecimalMax(DECIMAL_MAX_COMPONENT)
+    @DecimalMin(DECIMAL_MIN_COMPONENT)
+    @Transient
+    public Float getBlueComponent() {
+        return Optional.ofNullable(getBlue()).map(_PersistableColor::toComponent).orElse(null);
+    }
+
+    /**
+     * Replaces current value of {@link _PersistableColor_#blue} attribute with specified value.
+     *
+     * @param blueComponent new value for the {@link _PersistableColor_#blue} attribute; between {@value #MIN_COMPONENT}
+     *                      and {@value #MAX_COMPONENT}, both inclusive.
+     */
+    public void setBlueComponent(final Float blueComponent) {
+        if (blueComponent != null) {
+            requireValidComponent(blueComponent);
+        }
+        setBlue(Optional.ofNullable(blueComponent).map(_PersistableColor::toColor).orElse(null));
     }
 
     // ----------------------------------------------------------------------------------------------------------- alpha
@@ -397,32 +462,58 @@ public abstract class _PersistableColor extends _AbstractPersistable {
         this.alpha = alpha;
     }
 
+    /**
+     * Returns current value of {@link _PersistableColor_#alpha} attribute as a {@code float} value.
+     *
+     * @return current value of the {@link _PersistableColor_#alpha} attribute; between {@value #MIN_COMPONENT} and
+     * {@value #MAX_COMPONENT}, both inclusive.
+     */
+    @DecimalMax(DECIMAL_MAX_COMPONENT)
+    @DecimalMin(DECIMAL_MIN_COMPONENT)
+    @Transient
+    public Float getAlphaComponent() {
+        return Optional.ofNullable(getAlpha()).map(_PersistableColor::toComponent).orElse(null);
+    }
+
+    /**
+     * Replaces current value of {@link _PersistableColor_#alpha} attribute with specified value.
+     *
+     * @param alphaComponent new value for the {@link _PersistableColor_#alpha} attribute; between
+     *                       {@value #MIN_COMPONENT} and {@value #MAX_COMPONENT}, both inclusive.
+     */
+    public void setAlphaComponent(final Float alphaComponent) {
+        if (alphaComponent != null) {
+            requireValidComponent(alphaComponent);
+        }
+        setAlpha(Optional.ofNullable(alphaComponent).map(_PersistableColor::toColor).orElse(null));
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    @Max(MAX_COMPONENT)
-    @Min(MIN_COMPONENT)
+    @Max(MAX_COLOR)
+    @Min(MIN_COLOR)
     @NotNull
     @Basic(optional = false)
     @Column(name = COLUMN_NAME_RED, nullable = false, insertable = true, updatable = true)
-    private Integer red;
+    private Integer red = MIN_COLOR;
 
-    @Max(MAX_COMPONENT)
-    @Min(MIN_COMPONENT)
+    @Max(MAX_COLOR)
+    @Min(MIN_COLOR)
     @NotNull
     @Basic(optional = false)
     @Column(name = COLUMN_NAME_GREEN, nullable = false, insertable = true, updatable = true)
-    private Integer green;
+    private Integer green = MIN_COLOR;
 
-    @Max(MAX_COMPONENT)
-    @Min(MIN_COMPONENT)
+    @Max(MAX_COLOR)
+    @Min(MIN_COLOR)
     @NotNull
     @Basic(optional = false)
     @Column(name = COLUMN_NAME_BLUE, nullable = false, insertable = true, updatable = true)
-    private Integer blue;
+    private Integer blue = MIN_COLOR;
 
-    @Max(MAX_COMPONENT)
-    @Min(MIN_COMPONENT)
+    @Max(MAX_COLOR)
+    @Min(MIN_COLOR)
     @NotNull
     @Basic(optional = false)
     @Column(name = COLUMN_NAME_ALPHA, nullable = false, insertable = true, updatable = true)
-    private Integer alpha;
+    private Integer alpha = MIN_COLOR;
 }

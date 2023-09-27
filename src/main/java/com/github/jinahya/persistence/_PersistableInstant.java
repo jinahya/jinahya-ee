@@ -11,14 +11,12 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalAmount;
-import java.time.temporal.TemporalUnit;
-import java.time.temporal.UnsupportedTemporalTypeException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.IntFunction;
+import java.util.function.LongFunction;
 import java.util.function.Supplier;
 
 @MappedSuperclass
@@ -61,8 +59,7 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
         Objects.requireNonNull(initializer, "initializer is null");
         Objects.requireNonNull(instant, "instant is null");
         final T instance = Objects.requireNonNull(initializer.get(), "null supplied from " + initializer);
-        instance.setEpochSecond(instant.getEpochSecond());
-        instance.setNanoAdjustment(instant.getNano());
+        instance.fromInstant(instant);
         return instance;
     }
 
@@ -97,8 +94,8 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
             return false;
         }
         ;
-        return Objects.equals(epochSecond, that.epochSecond)
-               && Objects.equals(nanoAdjustment, that.nanoAdjustment);
+        return Objects.equals(epochSecond, that.epochSecond) &&
+               Objects.equals(nanoAdjustment, that.nanoAdjustment);
     }
 
     @Override
@@ -112,18 +109,44 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
 
     // -----------------------------------------------------------------------------------------------------------------
 
+    /**
+     * Returns current state of this entity as an instance of {@link OffsetDateTime} combined with specified zone id.
+     *
+     * @param zone the zone id.
+     * @return current state of this entity as an instance of {@link OffsetDateTime}.
+     * @see #toZonedDateTime(ZoneId)
+     * @see ZonedDateTime#toOffsetDateTime()
+     */
     public OffsetDateTime toOffsetDateTime(final ZoneId zone) {
         Objects.requireNonNull(zone, "zone is null");
         return toZonedDateTime(zone).toOffsetDateTime();
     }
 
+    /**
+     * Returns current state of this entity as an instance of {@link ZonedDateTime} combined with specified zone id.
+     *
+     * @param zone the zone id.
+     * @return current state of this entity as an instance of {@link ZonedDateTime}.
+     * @see #toInstant()
+     * @see Instant#atZone(ZoneId)
+     */
     public ZonedDateTime toZonedDateTime(final ZoneId zone) {
         Objects.requireNonNull(zone, "zone is null");
-        return toTemporalAccessor(v -> v.atZone(zone));
+        return toTemporal(v -> v.atZone(zone));
     }
 
-    public <T extends TemporalAccessor> T toTemporalAccessor(final Function<? super Instant, ? extends T> mapper) {
-        return Objects.requireNonNull(mapper, "mapper is null").apply(toInstant());
+    /**
+     * Applies an {@link Instant} represents current state of this entity to specified function, and returns the
+     * result.
+     *
+     * @param function the function to be applied.
+     * @param <R>      result type parameter
+     * @return the result of the {@code function}.
+     * @see #toInstant()
+     */
+    public <R extends TemporalAccessor> R toTemporal(final Function<? super Instant, ? extends R> function) {
+        return Objects.requireNonNull(function, "function is null")
+                .apply(toInstant());
     }
 
     /**
@@ -133,25 +156,96 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
      * @see Instant#ofEpochSecond(long, long)
      */
     public Instant toInstant() {
-        return Instant.ofEpochSecond(
-                Optional.ofNullable(getEpochSecond())
-                        .orElseThrow(() -> new IllegalStateException("epochSecond is null")),
-                Optional.ofNullable(getNanoAdjustment())
-                        .orElseThrow(() -> new IllegalStateException("epochSecond is null"))
-        );
+        return toAppliedWithNonNull(s -> n -> Instant.ofEpochSecond(s, n));
+    }
+
+    /**
+     * Applies current values of {@link _PersistableInstant_#epochSecond} attribute and
+     * {@link _PersistableInstant_#nanoAdjustment} attribute, in a currying manner, to specified function, and returns
+     * the result.
+     * <p>
+     * {@snippet :
+     * toAppliedWithNonNull(s -> n -> {
+     *     return null;
+     * });
+     *}
+     * {@snippet :
+     * toAppliedWithNonNull(s -> {
+     *     return n -> {
+     *         return null;
+     *     };
+     * });
+     *}
+     *
+     * @param function the function to be applied.
+     * @param <R>      result type parameter
+     * @return the result of the {@code function}.
+     * @throws IllegalStateException if either {@link _PersistableInstant_#epochSecond} attribute or
+     *                               {@link _PersistableInstant_#nanoAdjustment} attribute is currently {@code null}.
+     * @see #toApplied(Function)
+     */
+    public <R> R toAppliedWithNonNull(final LongFunction<? extends IntFunction<? extends R>> function) {
+        Objects.requireNonNull(function, "function is null");
+        return toApplied(s -> {
+            if (s == null) {
+                throw new IllegalStateException("epochSecond is currently null");
+            }
+            return n -> {
+                if (n == null) {
+                    throw new IllegalStateException("nanoAdjustment is currently null");
+                }
+                return function.apply(s).apply(n);
+            };
+        });
+    }
+
+    /**
+     * Applies current values of {@link _PersistableInstant_#epochSecond} attribute and
+     * {@link _PersistableInstant_#nanoAdjustment} attribute, in a currying manner, to specified function, and returns
+     * the result.
+     * <p>
+     * {@snippet :
+     * toAppliedWithNonNull(s -> n -> {
+     *     // s may be null
+     *     // n may be null
+     *     return null;
+     * });
+     *}
+     * {@snippet :
+     * toAppliedWithNonNull(s -> {
+     *     // s may be null
+     *     return  n -> {
+     *         // n may be null
+     *         return null;
+     *     };
+     * });
+     *}
+     *
+     * @param function the function to be applied.
+     * @param <R>      result type parameter
+     * @return the result of the {@code function}.
+     * @throws IllegalStateException if either {@link _PersistableInstant_#epochSecond} attribute or
+     *                               {@link _PersistableInstant_#nanoAdjustment} attribute is currently {@code null}.
+     * @see #toAppliedWithNonNull(LongFunction)
+     */
+    public <R> R toApplied(
+            final Function<? super Long, ? extends Function<? super Integer, ? extends R>> function) {
+        return Objects.requireNonNull(function, "mapper is null")
+                .apply(getEpochSecond())
+                .apply(getNanoAdjustment());
     }
 
     /**
      * Replaces attributes with an {@link Instant} obtained from specified temporal accessor.
      *
-     * @param temporalAccessor the temporal accessor from which an {@link Instant} is obtained.
-     * @throws DateTimeException if unable to convert {@code temporalAccessor} to an {@link Instant}.
+     * @param temporal the temporal accessor from which an {@link Instant} is obtained.
+     * @throws DateTimeException if unable to convert {@code temporal} to an {@link Instant}.
      * @see Instant#from(TemporalAccessor)
      * @see #fromInstant(Instant)
      */
-    public void fromTemporalAccessor(final TemporalAccessor temporalAccessor) {
+    public void fromTemporal(final TemporalAccessor temporal) {
         fromInstant(
-                Optional.ofNullable(temporalAccessor)
+                Optional.ofNullable(temporal)
                         .map(Instant::from)
                         .orElse(null)
         );
@@ -165,16 +259,21 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
      * @see Instant#getNano()
      */
     public void fromInstant(final Instant instant) {
-        setEpochSecond(
-                Optional.ofNullable(instant)
+        fromSupplied(
+                () -> Optional.ofNullable(instant)
                         .map(Instant::getEpochSecond)
-                        .orElse(null)
-        );
-        setNanoAdjustment(
-                Optional.ofNullable(instant)
+                        .orElse(null),
+                () -> Optional.ofNullable(instant)
                         .map(Instant::getNano)
                         .orElse(null)
         );
+    }
+
+    public void fromSupplied(final Supplier<Long> epochSecondSupplier, final Supplier<Integer> nanoAdjustmentSupplier) {
+        Objects.requireNonNull(epochSecondSupplier, "epochSecondSupplier is null");
+        Objects.requireNonNull(nanoAdjustmentSupplier, "nanoAdjustmentSupplier is null");
+        setEpochSecond(epochSecondSupplier.get());
+        setNanoAdjustment(nanoAdjustmentSupplier.get());
     }
 
     // ----------------------------------------------------------------------------------------------------- epochSecond
@@ -189,34 +288,15 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
     }
 
     /**
-     * Replaces current value of {@link _PersistableInstant_#nanoAdjustment} attribute with specified value.
+     * Replaces current value of {@link _PersistableInstant_#epochSecond} attribute with specified value.
      *
-     * @param epochSecond new value for the {@link _PersistableInstant_#nanoAdjustment} attribute.
+     * @param epochSecond new value for the {@link _PersistableInstant_#epochSecond} attribute.
      */
     public void setEpochSecond(final Long epochSecond) {
         this.epochSecond = epochSecond;
     }
 
-    /**
-     * Replaces current value of {@link _PersistableInstant_#epochSecond} attribute with {@link ChronoUnit#SECONDS}
-     * field value of specified temporalAmount.
-     *
-     * @param temporalAmount the temporal amount whose {@link ChronoUnit#SECONDS} field is set to
-     *                       {@link _PersistableInstant_#epochSecond} attribute.
-     * @throws DateTimeException                if a value for the {@link ChronoUnit#SECONDS} cannot be obtained
-     * @throws UnsupportedTemporalTypeException if the {@link ChronoUnit#SECONDS} is not supported
-     * @see TemporalAmount#get(TemporalUnit)
-     * @see ChronoUnit#SECONDS
-     */
-    public void setEpochSecondFrom(final TemporalAmount temporalAmount) {
-        setEpochSecond(
-                Optional.ofNullable(temporalAmount)
-                        .map(v -> v.get(ChronoUnit.SECONDS))
-                        .orElse(null)
-        );
-    }
-
-    // ------------------------------------------------------------------------------------------------------------ nano
+    // -------------------------------------------------------------------------------------------------- nanoAdjustment
 
     /**
      * Returns current value of {@link _PersistableInstant_#nanoAdjustment} attribute.
@@ -234,26 +314,6 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
      */
     public void setNanoAdjustment(final Integer nanoAdjustment) {
         this.nanoAdjustment = nanoAdjustment;
-    }
-
-    /**
-     * Replaces current value of {@link _PersistableInstant_#nanoAdjustment} attribute with {@link ChronoUnit#NANOS}
-     * field value of specified temporalAmount.
-     *
-     * @param temporalAmount the temporal amount whose {@link ChronoUnit#NANOS} field is set to
-     *                       {@link _PersistableInstant_#nanoAdjustment} attribute.
-     * @throws DateTimeException                if a value for the {@link ChronoUnit#NANOS} cannot be obtained
-     * @throws UnsupportedTemporalTypeException if the {@link ChronoUnit#NANOS} is not supported
-     * @see TemporalAmount#get(TemporalUnit)
-     * @see ChronoUnit#SECONDS
-     */
-    public void setNanoAdjustmentFrom(final TemporalAmount temporalAmount) {
-        setNanoAdjustment(
-                Optional.ofNullable(temporalAmount)
-                        .map(v -> v.get(ChronoUnit.NANOS))
-                        .map(Math::toIntExact)
-                        .orElse(null)
-        );
     }
 
     // -----------------------------------------------------------------------------------------------------------------

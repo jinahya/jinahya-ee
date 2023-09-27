@@ -27,8 +27,11 @@ public class PersistableColor
     public static final String TABLE_NAME = "color";
 
     // -----------------------------------------------------------------------------------------------------------------
+    public static PersistableColor fromComponents(final float[] components) {
+        return fromComponents(PersistableColor::new, components);
+    }
 
-    public static PersistableColor from(final CharSequence cssRgbHexadecimalNotation) {
+    public static PersistableColor fromCssRgbHexadecimalNotation(final CharSequence cssRgbHexadecimalNotation) {
         return fromCssRgbHexadecimalNotation(PersistableColor::new, cssRgbHexadecimalNotation);
     }
 

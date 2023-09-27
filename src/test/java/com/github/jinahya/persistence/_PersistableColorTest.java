@@ -11,8 +11,10 @@ import java.awt.color.ICC_ColorSpace;
 import java.awt.color.ICC_ProfileRGB;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Set;
 
-import static com.github.jinahya.persistence._PersistableColorTests.newRandomizedRgbComponent;
+import static com.github.jinahya.persistence._PersistableColorTests.newRandomizedColor;
+import static com.github.jinahya.persistence._PersistableColorTests.newRandomizedComponents;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
@@ -26,11 +28,93 @@ abstract class _PersistableColorTest<T extends _PersistableColor> extends _Abstr
     @Override
     T newRandomizedEntityInstance() {
         final T instance = super.newRandomizedEntityInstance();
-        instance.setRed(newRandomizedRgbComponent());
-        instance.setGreen(newRandomizedRgbComponent());
-        instance.setBlue(newRandomizedRgbComponent());
-        instance.setAlpha(newRandomizedRgbComponent());
+        instance.setRed(newRandomizedColor());
+        instance.setGreen(newRandomizedColor());
+        instance.setBlue(newRandomizedColor());
+        instance.setAlpha(newRandomizedColor());
         return instance;
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+    @DisplayName("fromComponents")
+    @Nested
+    class FromComponentsTest {
+
+        @DisplayName("fromComponents(initializer,components)")
+        @Test
+        void __() {
+            final float[] components = newRandomizedComponents();
+            final var instance = _PersistableColor.fromComponents(entityInitializer, components);
+            assertThat(instance)
+                    .isNotNull()
+                    .extracting(_PersistableColor::getComponents)
+                    .isEqualTo(components);
+        }
+
+        @DisplayName("fromComponents(components)")
+        @Test
+        void __redefined() {
+            final float[] components = newRandomizedComponents();
+            final T instance;
+            try {
+                final var method = entityClass.getMethod("fromComponents", String.class);
+                try {
+                    instance = entityClass.cast(method.invoke(null, components));
+                } catch (final ReflectiveOperationException roe) {
+                    throw new RuntimeException(roe);
+                }
+            } catch (final NoSuchMethodException nsme) {
+                return;
+            }
+            assertThat(instance)
+                    .isNotNull()
+                    .extracting(_PersistableColor::getComponents)
+                    .isEqualTo(components);
+        }
+    }
+
+    @DisplayName("fromCssRgbHexadecimalNotation")
+    @Nested
+    class FromCssRgbHexadecimalNotationTest {
+
+        @DisplayName("fromCssRgbHexadecimalNotation(initializer,cssRgbHexadecimalNotation)")
+        @Test
+        void __() {
+            final var cssRgbHexadecimalNotation = _PersistableColorTests.randomCssRgbHexadecimalNotation();
+            final var instance = _PersistableColor.fromCssRgbHexadecimalNotation(
+                    entityInitializer, cssRgbHexadecimalNotation);
+            assertThat(instance).isNotNull().satisfies(i -> {
+                assertThat(Set.of(i.toCssRgbHexadecimalNotation3(),
+                                  i.toCssRgbHexadecimalNotation4(),
+                                  i.toCssRgbHexadecimalNotation6(),
+                                  i.toCssRgbHexadecimalNotation8()))
+                        .contains(cssRgbHexadecimalNotation);
+            });
+        }
+
+        @DisplayName("fromCssRgbHexadecimalNotation(cssRgbHexadecimalNotation)")
+        @Test
+        void __redefined() {
+            final var cssRgbHexadecimalNotation = _PersistableColorTests.randomCssRgbHexadecimalNotation();
+            final T instance;
+            try {
+                final var method = entityClass.getMethod("fromCssRgbHexadecimalNotation", String.class);
+                try {
+                    instance = entityClass.cast(method.invoke(null, cssRgbHexadecimalNotation));
+                } catch (final ReflectiveOperationException roe) {
+                    throw new RuntimeException(roe);
+                }
+            } catch (final NoSuchMethodException nsme) {
+                return;
+            }
+            assertThat(instance).isNotNull().satisfies(i -> {
+                assertThat(Set.of(i.toCssRgbHexadecimalNotation3(),
+                                  i.toCssRgbHexadecimalNotation4(),
+                                  i.toCssRgbHexadecimalNotation6(),
+                                  i.toCssRgbHexadecimalNotation8()))
+                        .contains(cssRgbHexadecimalNotation);
+            });
+        }
     }
 
     // -----------------------------------------------------------------------------------------------------------------

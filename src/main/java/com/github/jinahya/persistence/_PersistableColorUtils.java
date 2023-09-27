@@ -20,16 +20,32 @@ import java.util.Objects;
 public final class _PersistableColorUtils {
 
     // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Returns an array of {@code CIEXYZ} color components converted from specified persistable color object.
+     *
+     * @param persistableColor the persistable color object whose {@code RGBA} color components are converted.
+     * @param rgbColorSpace    an auxiliary {@code RGB} color space; may be {@code null}.
+     * @return an array of converted color components.
+     */
     public static float[] toCIEXYZ(final _PersistableColor persistableColor, final ColorSpace rgbColorSpace) {
         Objects.requireNonNull(rgbColorSpace, "rgbColorSpace is null");
-        return rgbColorSpace.toCIEXYZ(persistableColor.getColorComponents(null));
+        return rgbColorSpace.toCIEXYZ(persistableColor.getComponents());
     }
 
+    /**
+     * Returns an array of {@code CMYK} color components converted from specified persistable color object.
+     *
+     * @param persistableColor the persistable color object whose {@code RGBA} color components are converted.
+     * @param rgbColorSpace    an auxiliary {@code RGB} color space; may be {@code null}.
+     * @param cmykColorSpace   a target {@code CMYK} color space.
+     * @return an array of converted color components.
+     */
     public static float[] toCMYK(final _PersistableColor persistableColor, final ColorSpace rgbColorSpace,
                                  final ColorSpace cmykColorSpace) {
         Objects.requireNonNull(cmykColorSpace, "cmykColorSpace is null");
         if (rgbColorSpace == null) {
-            return cmykColorSpace.fromRGB(persistableColor.getColorComponents(null));
+            return cmykColorSpace.fromRGB(persistableColor.getComponents());
         }
         return cmykColorSpace.fromCIEXYZ(toCIEXYZ(persistableColor, rgbColorSpace));
     }

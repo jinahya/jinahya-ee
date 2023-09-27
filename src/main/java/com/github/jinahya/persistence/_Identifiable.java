@@ -3,6 +3,10 @@ package com.github.jinahya.persistence;
 import java.io.Serializable;
 import java.util.Objects;
 
+@SuppressWarnings({
+        "java:S100", // _...
+        "java:S119"  // <ID>
+})
 public interface _Identifiable<ID extends Serializable> extends _Persistable {
 
     static String _toString(final String superString, final _Identifiable<?> object) {
