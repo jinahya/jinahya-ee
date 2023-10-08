@@ -3,19 +3,23 @@ package com.github.jinahya.persistence;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serial;
 import java.time.DateTimeException;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalAmount;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.IntFunction;
+import java.util.function.IntSupplier;
 import java.util.function.LongFunction;
 import java.util.function.Supplier;
 
@@ -94,8 +98,8 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
             return false;
         }
         ;
-        return Objects.equals(epochSecond, that.epochSecond) &&
-               Objects.equals(nanoAdjustment, that.nanoAdjustment);
+        return Objects.equals(epochSecond, that.epochSecond)
+               && Objects.equals(nanoAdjustment, that.nanoAdjustment);
     }
 
     @Override
@@ -205,14 +209,14 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
      * the result.
      * <p>
      * {@snippet :
-     * toAppliedWithNonNull(s -> n -> {
+     * toApplied(s -> n -> {
      *     // s may be null
      *     // n may be null
      *     return null;
      * });
      *}
      * {@snippet :
-     * toAppliedWithNonNull(s -> {
+     * toApplied(s -> {
      *     // s may be null
      *     return  n -> {
      *         // n may be null
@@ -314,6 +318,51 @@ public abstract class _PersistableInstant extends _AbstractPersistable {
      */
     public void setNanoAdjustment(final Integer nanoAdjustment) {
         this.nanoAdjustment = nanoAdjustment;
+    }
+
+    public <R> R getNanoAdjustmentAsApplied(final Function<? super Integer, ? extends R> function) {
+        Objects.requireNonNull(function, "function is null");
+        return function.apply(getNanoAdjustment());
+    }
+
+    @Transient
+    public <T extends TemporalAmount> T getNanoAdjustmentAsAmount(final Function<? super Integer, ? extends T> function) {
+        return getNanoAdjustmentAsApplied(function);
+    }
+
+    @Transient
+    public Duration getNanoAdjustmentAsDuration() {
+        return getNanoAdjustmentAsAmount(
+                v -> Optional.ofNullable(v).map(Duration::ofNanos).orElse(null)
+        );
+    }
+
+    public void setNanoAdjustmentWithSuppliedAsInt(final IntSupplier supplier) {
+        Objects.requireNonNull(supplier, "supplier is null");
+        setNanoAdjustment(supplier.getAsInt());
+    }
+
+    public void setNanoAdjustmentWithSupplied(final Supplier<Integer> supplier) {
+        Objects.requireNonNull(supplier, "supplier is null");
+        setNanoAdjustment(supplier.get());
+    }
+
+    @Transient
+    public void setNanoAdjustmentWithNonosPartOf(final Duration duration) {
+        setNanoAdjustmentWithSupplied(
+                () -> Optional.ofNullable(duration)
+                        .map(Duration::toNanosPart)
+                        .orElse(null)
+        );
+    }
+
+    @Transient
+    public void setNanoAdjustmentWithNonosPartOfDurationFrom(final TemporalAmount amount) {
+        setNanoAdjustmentWithNonosPartOf(
+                Optional.ofNullable(amount)
+                        .map(Duration::from)
+                        .orElse(null)
+        );
     }
 
     // -----------------------------------------------------------------------------------------------------------------

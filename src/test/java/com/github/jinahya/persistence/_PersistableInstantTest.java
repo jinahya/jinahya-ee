@@ -6,14 +6,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.Period;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.TemporalAccessor;
+import java.time.temporal.UnsupportedTemporalTypeException;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -134,6 +140,70 @@ abstract class _PersistableInstantTest<T extends _PersistableInstant>
             final var instance = spy(newEntityInstance());
             instance.fromTemporal(null);
             verify(instance, times(1)).fromInstant(null);
+        }
+    }
+
+    @DisplayName("getNanoAdjustmentAsDuration()Ljava.time.Duration;")
+    @Nested
+    class GetNanoAdjustmentAsDurationTest {
+
+        @Test
+        void _Null_Null() {
+            final var instance = spy(newEntityInstance());
+            given(instance.getNanoAdjustment()).willReturn(null);
+            assertThat(instance.getNanoAdjustmentAsDuration()).isNull();
+        }
+
+        @Test
+        void __() {
+            final var instance = spy(newEntityInstance());
+            final var nanos = ThreadLocalRandom.current().nextInt(1000000000);
+            given(instance.getNanoAdjustment()).willReturn(nanos);
+            assertThat(instance.getNanoAdjustmentAsDuration()).isEqualTo(Duration.ofNanos(nanos));
+        }
+    }
+
+    @DisplayName("setNanoAdjustmentWithSuppliedAsIntTest(supplier)")
+    @Nested
+    class SetNanoAdjustmentWithSuppliedAsIntTest {
+
+        @Test
+        void __() {
+            final var instance = spy(newEntityInstance());
+            final var nanos = ThreadLocalRandom.current().nextInt(1000000000);
+            instance.setNanoAdjustmentWithSuppliedAsInt(() -> nanos);
+            verify(instance, times(1)).setNanoAdjustment(nanos);
+        }
+    }
+
+    @DisplayName("SetNanoAdjustmentWithNanosPartOfDurationFrom(amount)")
+    @Nested
+    class SetNanoAdjustmentWithNanosPartOfDurationFromTest {
+
+        @DisplayName("null -> setNanoAdjustment(null)")
+        @Test
+        void _Null_Null() {
+            final var instance = spy(newEntityInstance());
+            instance.setNanoAdjustmentWithNonosPartOfDurationFrom(null);
+            verify(instance, times(1)).setNanoAdjustmentWithNonosPartOf(null);
+        }
+
+        @DisplayName("null -> setNanoAdjustment(period)")
+        @Test
+        void __PeriodOf1Day() {
+            final var instance = spy(newEntityInstance());
+            final var amount = Period.ofDays(1);
+            assertThatThrownBy(() -> instance.setNanoAdjustmentWithNonosPartOfDurationFrom(amount))
+                    .isInstanceOf(UnsupportedTemporalTypeException.class);
+        }
+
+        @DisplayName("null -> setNanoAdjustment(duration)")
+        @Test
+        void __() {
+            final var instance = spy(newEntityInstance());
+            final var amount = Duration.ofNanos(ThreadLocalRandom.current().nextInt(1000000000));
+            instance.setNanoAdjustmentWithNonosPartOfDurationFrom(amount);
+            verify(instance, times(1)).setNanoAdjustmentWithNonosPartOf(amount);
         }
     }
 
